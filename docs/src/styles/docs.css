@@ -20,3 +20,8 @@
 .docs-main details[open] > summary::before { transform: rotate(45deg); }
 .docs-main details[open] > summary { margin-block-end: .5rem; }
 .docs-main details + details { margin-block-start: .5rem; }
+
+/* Spinning icons for the loading slot demos (neither icon set animates its own spinner) */
+@keyframes docs-spin { to { transform: rotate(360deg); } }
+.docs-spin { animation: docs-spin 1s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .docs-spin { animation-duration: 4s; } }

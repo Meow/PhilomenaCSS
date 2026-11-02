@@ -40,13 +40,15 @@ const alerts = `<div class="alert info">
 
 const loadingIndicator = '<svg class="loading-indicator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1em" height="1em"><path d="M35 32a3.001 3.001 0 0 1-6 0l3-26.074L35 32Z" class="minute"/><path d="M35 32a3.001 3.001 0 0 1-6 0l3-13.037L35 32Z" class="hour"/><g class="base"><circle cx="32" cy="32" r="29" class="face"/><path d="M32 3v7m0 44v7m22-29h7M3 32h7" class="ticking"/></g></svg>';
 
-const buttonRow = (set: IconSet) => (color?: string) => {
+// With `spinner` the loading slot holds the set's spinning icon instead of the clock indicator
+const buttonRow = (set: IconSet, spinner = false) => (color?: string) => {
+  const loadingContent = spinner ? icon(set, 'spinner', 'docs-spin') : loadingIndicator;
   const cls = color ? `button button-${color}` : 'button';
   const label = color ?? 'default';
   const btn = (extra: string, attrs: string, text: string, loading = false) =>
-    `  <button type="button" class="${cls}${extra}"${attrs}>${loading ? `<span class="loading-icon">${loadingIndicator}</span>` : ''}<span class="button-content"><span class="button-text">${text}</span></span></button>`;
+    `  <button type="button" class="${cls}${extra}"${attrs}>${loading ? `<span class="loading-icon">${loadingContent}</span>` : ''}<span class="button-content"><span class="button-text">${text}</span></span></button>`;
   const iconBtn = (extra: string, attrs: string, loading = false) =>
-    `  <button type="button" class="${cls} icon-only${extra}"${attrs} aria-label="${ucfirst(label)} icon-only button">${loading ? `<span class="loading-icon">${loadingIndicator}</span>` : ''}<span class="button-content"><span class="button-icon">${icon(set, 'clipboard')}</span></span></button>`;
+    `  <button type="button" class="${cls} icon-only${extra}"${attrs} aria-label="${ucfirst(label)} icon-only button">${loading ? `<span class="loading-icon">${loadingContent}</span>` : ''}<span class="button-content"><span class="button-icon">${icon(set, 'clipboard')}</span></span></button>`;
   return `<div class="button-group separated">
 ${btn('', '', `${ucfirst(label)}`)}
 ${btn('', ' disabled', 'Disabled')}
@@ -113,9 +115,9 @@ ${badgeColors.map(color => {
 const iconStory = (set: IconSet): Story => ({
   id: `icons-${set}`,
   title: `Icons: ${iconSetLabels[set]}`,
-  description: `The framework ships no icons, only empty slots for them: .form-checkbox-check-icon, .form-select-icon, .button-icon and .loading-icon. These demos fill them with ${set === 'fontawesome' ? 'Font Awesome Free solid icons (CC BY 4.0, fontawesome.com)' : 'Lucide icons (ISC, lucide.dev)'}, which are only used by this documentation and are not part of the package. Any inline SVG or icon font works.`,
+  description: `The framework ships no icons, only empty slots for them: .form-checkbox-check-icon, .form-select-icon, .button-icon and .loading-icon. These demos fill them with ${set === 'fontawesome' ? 'Font Awesome Free solid icons (CC BY 4.0, fontawesome.com)' : 'Lucide icons (ISC, lucide.dev)'}, which are only used by this documentation and are not part of the package. The loading buttons here use the set's spinner icon (${set === 'fontawesome' ? 'spinner' : 'loader-circle'}) rotated by a docs-only animation, the main demos use the clock indicator. Any inline SVG or icon font works.`,
   html: `${formFields('regular', set, `icons-${set}`)}
-${buttonRow(set)('primary')}`,
+${buttonRow(set, true)('primary')}`,
 });
 
 export const stories: Story[] = [

@@ -10,7 +10,7 @@ import * as fontAwesome from '@fortawesome/free-solid-svg-icons';
  * - Lucide: https://lucide.dev, ISC license
  */
 export type IconSet = 'fontawesome' | 'lucide';
-export type IconName = 'check' | 'chevron-down' | 'clipboard';
+export type IconName = 'check' | 'chevron-down' | 'clipboard' | 'spinner';
 
 export const iconSetLabels: Record<IconSet, string> = {
   fontawesome: 'Font Awesome Free',
@@ -21,9 +21,12 @@ const faIcons: Record<IconName, { icon: [number, number, unknown, unknown, strin
   'check': fontAwesome.faCheck as never,
   'chevron-down': fontAwesome.faChevronDown as never,
   'clipboard': fontAwesome.faClipboard as never,
+  'spinner': fontAwesome.faSpinner as never,
 };
 
 // The build runs from docs/
+// Lucide has no 'spinner', its equivalent is 'loader-circle'
+const lucideFiles: Partial<Record<IconName, string>> = { spinner: 'loader-circle' };
 const lucideDir = resolve(process.cwd(), 'node_modules/lucide-static/icons');
 
 /** Returns an inline `<svg>` sized to the text, `fixedWidth` mirrors Font Awesome's fa-fw */
@@ -33,7 +36,7 @@ export const icon = (set: IconSet, name: IconName, className = ''): string => {
     const [width, height, , , path] = faIcons[name].icon;
     return `<svg${cls} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="1.25em" height="1em" fill="currentColor" aria-hidden="true"><path d="${path}"/></svg>`;
   }
-  const body = readFileSync(resolve(lucideDir, `${name}.svg`), 'utf8')
+  const body = readFileSync(resolve(lucideDir, `${lucideFiles[name] ?? name}.svg`), 'utf8')
     .replace(/<!--[\s\S]*?-->/g, '')
     .match(/<svg[^>]*>([\s\S]*)<\/svg>/)![1]
     .replace(/\s+/g, ' ')
