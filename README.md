@@ -74,7 +74,7 @@ Single components can be used on their own, after configuring `@went.tf/hammerti
 
 ## Status
 
-Extracted from the HammerTime app, work in progress. Documentation site: coming.
+Extracted from the HammerTime app, work in progress. Documentation and live demo: <https://wentthefox.github.io/HammerTimeCSS/> (source in [`docs/`](docs), an Astro site that is not part of the npm package).
 
 ## Releases
 

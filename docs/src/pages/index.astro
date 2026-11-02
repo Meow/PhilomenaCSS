@@ -1,0 +1,144 @@
+---
+import Base from '../layouts/Base.astro';
+import Story from '../components/Story.astro';
+import { stories } from '../lib/stories';
+import { getTokenGroups } from '../lib/tokens';
+
+const tokenGroups = getTokenGroups();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="HammerTimeCSS">
+  <header class="header">
+    <strong>HammerTimeCSS</strong>
+    <nav class="docs-nav">
+      <a href={`${base}/#stories`}>Stories</a>
+      <a href={`${base}/#playground`}>Playground</a>
+      <a href={`${base}/#tokens`}>Tokens</a>
+      <a href="https://github.com/WentTheFox/HammerTimeCSS">GitHub</a>
+      <a href="https://www.npmjs.com/package/@went.tf/hammertime-css">npm</a>
+    </nav>
+  </header>
+
+  <main class="docs-main">
+    <article class="card">
+      <header class="card-header"><h1>HammerTimeCSS</h1></header>
+      <p>The design of HammerTime as an extensible, HTML/CSS-only framework. Everything on this page is rendered with the published stylesheet; the controls below are docs-only JavaScript and are not part of the package.</p>
+      <code class="code-span">npm install @went.tf/hammertime-css</code>
+    </article>
+
+    <section class="card">
+      <header class="card-header"><h2>Display options</h2></header>
+      <div class="docs-toolbar">
+        <span class="docs-toolbar-label">Theme</span>
+        <button type="button" class="button" data-theme-set="auto"><span class="button-content"><span class="button-text">Auto</span></span></button>
+        <button type="button" class="button" data-theme-set="light"><span class="button-content"><span class="button-text">Light</span></span></button>
+        <button type="button" class="button" data-theme-set="dark"><span class="button-content"><span class="button-text">Dark</span></span></button>
+        <span class="docs-toolbar-label">Direction</span>
+        <button type="button" class="button" data-toggle-rtl><span class="button-content"><span class="button-text">Toggle RTL</span></span></button>
+        <span class="docs-toolbar-label">Style</span>
+        <button type="button" class="button" data-toggle-flat><span class="button-content"><span class="button-text">Toggle flat UI</span></span></button>
+      </div>
+    </section>
+
+    <section id="stories" class="docs-main" style="padding:0">
+      {stories.map(story => <Story story={story} />)}
+    </section>
+
+    <section id="playground" class="card">
+      <header class="card-header"><h2>--ht-brand playground</h2></header>
+      <p>Needs the CSS-only build, which derives the palette from <code class="code-span">--ht-brand</code> at runtime. Edit any custom property below to see it applied live.</p>
+      <div class="docs-toolbar">
+        <label for="brand-input">Brand</label>
+        <input id="brand-input" class="input-field" type="color" value="#5865f2" data-brand-input>
+        <button type="button" class="button" data-brand-reset><span class="button-content"><span class="button-text">Reset</span></span></button>
+        <button type="button" class="button" data-brand-copy><span class="button-content"><span class="button-text">Copy CSS</span></span></button>
+      </div>
+      <div class="docs-playground-grid">
+        {['--ht-value-button-border-radius', '--ht-value-spacing-2', '--ht-color-card-bg-light'].map(name => (
+          <div class="form-control"><label class="form-control-label">{name}<input class="input-field full-width" type="text" data-token-input={name} placeholder="override"></label></div>
+        ))}
+      </div>
+      <pre class="docs-source" data-brand-output></pre>
+    </section>
+
+    <section id="tokens" class="card">
+      <header class="card-header"><h2>Token reference</h2></header>
+      <p>Generated from the compiled Sass token maps. Click a name to copy it.</p>
+      {tokenGroups.map(group => (
+        <details>
+          <summary>{group.title} ({group.tokens.length})</summary>
+          <div class="table-wrap responsive">
+            <table class="table docs-token-table">
+              <thead><tr><th>Property</th><th>Default</th></tr></thead>
+              <tbody>
+                {group.tokens.map(token => (
+                  <tr><td data-copy-text={token.name}>{token.name}</td><td>{token.value}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      ))}
+    </section>
+  </main>
+
+  <script>
+    const root = document.documentElement;
+    const safe = <T,>(fn: () => T): T | undefined => { try { return fn(); } catch { return undefined; } };
+
+    const setTheme = (theme: string) => {
+      if (theme === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', theme);
+      safe(() => localStorage.setItem('ht-docs-theme', theme));
+    };
+    document.querySelectorAll<HTMLElement>('[data-theme-set]').forEach(el => el.addEventListener('click', () => setTheme(el.dataset.themeSet!)));
+    const stored = safe(() => localStorage.getItem('ht-docs-theme'));
+    if (stored) setTheme(stored);
+
+    document.querySelector('[data-toggle-rtl]')?.addEventListener('click', () => root.setAttribute('dir', root.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl'));
+    document.querySelector('[data-toggle-flat]')?.addEventListener('click', () => document.body.classList.toggle('flat-ui'));
+
+    const copy = async (text: string, button?: HTMLElement) => {
+      const label = button?.querySelector('.button-text');
+      const original = label?.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        if (label) label.textContent = 'Copied!';
+      } catch {
+        if (label) label.textContent = 'Copy failed';
+      }
+      if (label) setTimeout(() => { label.textContent = original ?? ''; }, 1500);
+    };
+    document.querySelectorAll<HTMLElement>('[data-copy-source]').forEach(btn => btn.addEventListener('click', () => {
+      copy(btn.closest('article')?.querySelector('.docs-source')?.textContent ?? '', btn);
+    }));
+    document.querySelectorAll<HTMLElement>('[data-copy-text]').forEach(el => el.addEventListener('click', () => copy(el.dataset.copyText!)));
+
+    document.querySelectorAll<HTMLElement>('[data-demo-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelector(btn.dataset.demoToggle!)?.classList.toggle('visible');
+    }));
+
+    // --ht-brand playground
+    const brandInput = document.querySelector<HTMLInputElement>('[data-brand-input]')!;
+    const output = document.querySelector<HTMLElement>('[data-brand-output]')!;
+    const tokenInputs = [...document.querySelectorAll<HTMLInputElement>('[data-token-input]')];
+    const defaultBrand = brandInput.value;
+    const overrides = () => {
+      const declarations: string[] = [];
+      if (brandInput.value !== defaultBrand) declarations.push(`--ht-brand: ${brandInput.value};`);
+      tokenInputs.forEach(input => { if (input.value.trim()) declarations.push(`${input.dataset.tokenInput}: ${input.value.trim()};`); });
+      return declarations;
+    };
+    const apply = () => {
+      root.style.removeProperty('--ht-brand');
+      tokenInputs.forEach(input => root.style.removeProperty(input.dataset.tokenInput!));
+      const declarations = overrides();
+      declarations.forEach(line => { const [name, value] = line.slice(0, -1).split(/:\s*/); root.style.setProperty(name, value); });
+      output.textContent = declarations.length ? `:root {\n  ${declarations.join('\n  ')}\n}` : '/* defaults, nothing overridden */';
+    };
+    brandInput.addEventListener('input', apply);
+    tokenInputs.forEach(input => input.addEventListener('input', apply));
+    document.querySelector('[data-brand-reset]')?.addEventListener('click', () => { brandInput.value = defaultBrand; tokenInputs.forEach(i => { i.value = ''; }); apply(); });
+    document.querySelector<HTMLElement>('[data-brand-copy]')?.addEventListener('click', e => copy(output.textContent ?? '', e.currentTarget as HTMLElement));
+    apply();
+  </script>
+</Base>
