@@ -29,6 +29,11 @@
   }
 
   &[type="color"] {
+    // The reset leaves color inputs without an intrinsic size
+    width: design.app-value('input-field-color-width');
+    height: design.app-value('input-field-color-height');
+    cursor: pointer;
+
     &::-moz-color-swatch {
       border: none;
     }
