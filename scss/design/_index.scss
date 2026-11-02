@@ -1,0 +1,8 @@
+// The reset comes first, so everything else can build on top of it
+@use 'the-new-css-reset/css/reset.css';
+// Configuration, it has to be forwarded for `@forward ... with (...)` to reach it
+@forward 'config';
+@forward 'functions';
+@forward 'common';
+@forward 'mixins';
+@use 'layout';

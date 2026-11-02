@@ -1,0 +1,503 @@
+@use "sass:color";
+@use "sass:map";
+@use "sass:math";
+@use "config";
+@use "derive";
+
+$_z-index-map: (
+  background: 1,
+  default: 2,
+  focus: 3,
+  form-input-group-symbol: 4,
+  header: 5,
+  sidebar-close-overlay: 6,
+  sidebar: 7,
+  combobox: 8,
+  combobox-suggestions: 9,
+  combobox-suggestions-header: 10,
+);
+
+$_value-map: (
+  base-font-size: 16px,
+  font-family-base: #{'Montserrat', sans-serif},
+  font-family-mono: #{'Source Code Pro', 'Consolas', monospace},
+  bg-gradient-opacity: .5,
+  bg-gradient-start-position: 0%,
+  bg-gradient-mid-position: 50%,
+  bg-gradient-end-position: 100%,
+  bg-gradient-angle: 15deg,
+  header-height: 3.25rem,
+  header-spacing-horizontal: .625rem,
+  header-spacing-vertical: .625rem,
+  header-border: 0.0625rem,
+  header-brand-font-size: 1.25rem,
+  content-spacing: 1rem,
+  content-container-max-width: 1080px,
+  content-heading-1: 1.8125em,
+  content-heading-2: 1.625em,
+  content-heading-3: 1.375em,
+  content-heading-4: 1.25em,
+  content-heading-margin-bottom: .25em,
+  button-padding-horizontal: (
+    default: .375rem,
+    md: .5rem,
+    lg: .625rem,
+  ),
+  button-padding-vertical: (
+    default: .25rem,
+    md: .375rem,
+    lg: .375rem,
+  ),
+  button-border-width: .0625rem,
+  button-shadow-size: .125rem,
+  button-border-radius: .25rem,
+  button-font-size: (
+    default: .875rem,
+    md: .95rem,
+    lg: 1rem,
+  ),
+  button-content-gap: .25rem,
+  button-group-gap: .375rem,
+  grid-column-gap: 0,
+  popup-max-width: 400px,
+  popup-wide-max-width: 40em,
+  card-padding: 1rem,
+  card-border-radius: 0.25rem,
+  card-spacing: .5rem,
+  alert-spacing: 1rem,
+  alert-border-radius: .5rem,
+  popup-border: .125rem,
+  popup-box-shadow: 1rem,
+  input-field-padding: (
+    default: .375rem,
+    lg: .5rem,
+    xl: .75rem,
+  ),
+  input-field-border: .0625rem,
+  input-field-border-radius: .25rem,
+  input-field-box-shadow-inset-y: .0625rem,
+  input-field-box-shadow: .125rem,
+  form-control-spacing: .5rem,
+  focus-outline: .1875em,
+  collapsible-padding: .375em,
+  collapsible-border-radius: .5em,
+  form-checkbox-width: 1em,
+  form-checkbox-height: 1em,
+  form-checkbox-border: .0625em,
+  form-checkbox-border-radius: .25em,
+  form-radio-select-icon: 65%,
+  form-select-icon-size: 1em,
+  form-select-icon-padding: .25em,
+  table-cell-spacing: .5em,
+  table-border-size: .0625em,
+  code-border: .0625em,
+  code-padding-vertical: .125em,
+  code-padding-horizontal: .5em,
+  code-border-radius: .25em,
+  code-line-height: 1.5em,
+  code-small-font-size: .75em,
+  progress-bar-height: .75em,
+  loading-indicator-full-revolution-time: 5s,
+  badge-border: .125rem,
+  badge-border-radius: .5rem,
+  badge-padding-horozontal: .25rem,
+  badge-spacing: .25rem,
+  badge-grooup-spacing: .25rem,
+  badge-font-size: .875rem,
+  nav-spacing: .125rem,
+  nav-link-border-radius: .25rem,
+  nav-link-padding-horizontal: (
+    default: .375rem,
+    md: .5rem,
+    lg: .6rem,
+  ),
+  nav-link-padding-vertical: (
+    default: .25rem,
+    md: .375rem,
+    lg: .5rem,
+  ),
+  faq-body-padding: 0.75rem,
+  faq-body-line-height: 1.3,
+);
+
+$_text-color-light: config.$text-color-light;
+$_text-color-dark: config.$text-color-dark;
+$_base-blue: derive.brand();
+$_button-primary-bg-dark: $_base-blue;
+$_button-primary-bg-light: derive.adjust($_button-primary-bg-dark, $lightness: 22%);
+$_bg-gradient-start: config.$bg-gradient-start;
+$_bg-gradient-mid: $_base-blue;
+$_bg-gradient-end: config.$bg-gradient-end;
+$_badge-base-color-light: hsl(219, 50%, 25%);
+$_badge-base-color-dark: hsl(219, 50%, 80%);
+$_badge_muted_lightness_adjust: 15%;
+$_badge-green-hue: -60;
+$_badge-cyan-hue: -25;
+$_badge-purple-hue: 50;
+$_badge-red-hue: 120;
+$_badge-yellow-hue: 190;
+$_dark_theme_color: #222;
+$_light_theme_color: #eee;
+
+$_color-map: (
+  layout-bg: (
+    light: #bbb,
+    dark: #000
+  ),
+  layout-color: (
+    light: $_text-color-light,
+    dark: $_text-color-dark,
+  ),
+  bg-gradient-start: (
+    light: $_bg-gradient-start,
+    dark: $_bg-gradient-start,
+  ),
+  bg-gradient-mid: (
+    light: $_bg-gradient-mid,
+    dark: $_bg-gradient-mid,
+  ),
+  bg-gradient-end: (
+    light: $_bg-gradient-end,
+    dark: $_bg-gradient-end,
+  ),
+  header-bg: (
+    light: derive.adjust($_base-blue, $lightness: 27%, $saturation: -10%),
+    dark: #1A1B1E
+  ),
+  header-border: (
+    light: derive.adjust($_base-blue, $lightness: 20%, $saturation: -10%),
+    dark: #2C2E33
+  ),
+  header-brand: (
+    light: derive.adjust($_base-blue, $lightness: -5%, $saturation: -15%),
+    dark: #909296
+  ),
+  card-bg: (
+    light: derive.adjust($_base-blue, $lightness: 30%, $saturation: -10%),
+    dark: #1A1B1E
+  ),
+  card-color: (
+    light: $_text-color-light,
+    dark: $_text-color-dark,
+  ),
+  alert-bg: (
+    light: rgba(255, 255, 255, .2),
+    dark: rgba(20, 21, 23, 0.2),
+  ),
+  alert-color: (
+    light: rgb(62, 61, 58),
+    dark: rgb(193, 194, 197),
+  ),
+  alert-warning-bg: (
+    light: rgba(246, 178, 143, 0.2),
+    dark: rgba(232, 89, 12, 0.2),
+  ),
+  alert-warning-color: (
+    light: #000,
+    dark: rgb(255, 255, 255),
+  ),
+  alert-warning-hl-color: (
+    light: rgb(126, 58, 4),
+    dark: #ffd8a8,
+  ),
+  button-gradient-shade: (
+    light: rgba(0, 0, 0, .05),
+    dark: rgba(0, 0, 0, .05),
+  ),
+  button-border-color: (
+    light: rgba(0, 0, 0, .2),
+    dark: rgba(255, 255, 255, .2),
+  ),
+  button-default-color: (
+    light: #000,
+    dark: #fff,
+  ),
+  button-default-bg: (
+    light: derive.adjust($_base-blue, $lightness: 20%, $saturation: -100%),
+    dark: derive.adjust($_base-blue, $lightness: -25%, $saturation: -100%),
+  ),
+  button-default-border-color: (
+    light: derive.adjust($_base-blue, $lightness: 10%, $saturation: -100%),
+    dark: derive.adjust($_base-blue, $lightness: -30%, $saturation: -100%),
+  ),
+  button-primary-color: (
+    light: #000,
+    dark: #fff,
+  ),
+  button-primary-bg: (
+    light: $_button-primary-bg-light,
+    dark: $_button-primary-bg-dark,
+  ),
+  button-primary-border-color: (
+    light: derive.adjust($_button-primary-bg-dark, $lightness: 12%, $saturation: -10%),
+    dark: derive.adjust($_button-primary-bg-dark, $lightness: -10%, $saturation: -10%),
+  ),
+  button-success-color: (
+    light: #000,
+    dark: #fff,
+  ),
+  button-success-bg: (
+    light: color.adjust(#559933, $lightness: 22%),
+    dark: #559933,
+  ),
+  button-success-border-color: (
+    light: color.adjust(#559933, $lightness: 12%, $saturation: -10%),
+    dark: color.adjust(#559933, $lightness: -10%, $saturation: -10%),
+  ),
+  button-danger-color: (
+    light: #000,
+    dark: #fff,
+  ),
+  button-danger-bg: (
+    light: color.adjust(#993333, $lightness: 30%),
+    dark: #993333,
+  ),
+  button-danger-border-color: (
+    light: color.adjust(#993333, $lightness: 20%, $saturation: -10%),
+    dark: color.adjust(#993333, $lightness: -10%, $saturation: -10%),
+  ),
+  button-warning-color: (
+    light: #000,
+    dark: #fff,
+  ),
+  button-warning-bg: (
+    light: color.adjust(#997733, $lightness: 30%),
+    dark: #997733,
+  ),
+  button-warning-border-color: (
+    light: color.adjust(#997733, $lightness: 20%, $saturation: -10%),
+    dark: color.adjust(#997733, $lightness: -10%, $saturation: -10%),
+  ),
+  button-light-color: (
+    light: $_dark_theme_color,
+    dark: $_dark_theme_color,
+  ),
+  button-light-bg: (
+    light: $_light_theme_color,
+    dark: $_light_theme_color,
+  ),
+  button-light-border-color: (
+    light: #aaa,
+    dark: #aaa,
+  ),
+  button-dark-color: (
+    light: $_light_theme_color,
+    dark: $_light_theme_color,
+  ),
+  button-dark-bg: (
+    light: $_dark_theme_color,
+    dark: $_dark_theme_color,
+  ),
+  button-dark-border-color: (
+    light: #000,
+    dark: #000,
+  ),
+  popup-border-color: (
+    light: derive.adjust($_base-blue, $lightness: 20%, $saturation: -10%),
+    dark: #2c2e33,
+  ),
+  input-field-color: (
+    light: #212121,
+    dark: #c1c2c5,
+  ),
+  input-field-placeholder-color: (
+    light: rgba(#212121, .5),
+    dark: rgba(#c1c2c5, .5),
+  ),
+  input-field-bg: (
+    light: derive.adjust($_base-blue, $lightness: 25%, $saturation: -10%),
+    dark: #25262b,
+  ),
+  input-field-invalid-color: (
+    light: #763211,
+    dark: #eeaa80,
+  ),
+  input-field-invalid-bg: (
+    light: #fff0ee,
+    dark: #44332b,
+  ),
+  input-field-border-color: (
+    light: derive.adjust($_base-blue, $lightness: 20%, $saturation: -10%),
+    dark: #373a40,
+  ),
+  input-field-focus-border-color: (
+    light: derive.adjust($_base-blue, $lightness: 20%),
+    dark: $_base-blue,
+  ),
+  input-field-invalid-focus-border-color: (
+    light: #763211,
+    dark: #eeaa80,
+  ),
+  input-field-box-shadow: (
+    light: rgba(0, 0, 0, .25),
+    dark: rgba(0, 0, 0, .5),
+  ),
+  collapsible-bg: (
+    light: rgba(#fff, .5),
+    dark: rgba(#000, .5),
+  ),
+  table-border: (
+    light: #6d6e70,
+    dark: #373a40,
+  ),
+  code-color: (
+    light: #323339,
+    dark: #EFEFF0,
+  ),
+  code-bg: (
+    light: #F5F5FA,
+    dark: #1F202F,
+  ),
+  code-border: (
+    light: #D4D3D9,
+    dark: #373846,
+  ),
+  code-syntax-command: (
+    light: #7A3E9D,
+    dark: #C792EA,
+  ),
+  code-syntax-flag: (
+    light: #1B6B93,
+    dark: #82AAFF,
+  ),
+  code-syntax-string: (
+    light: #2E7D32,
+    dark: #C3E88D,
+  ),
+  code-syntax-number: (
+    light: #B25000,
+    dark: #F78C6C,
+  ),
+  code-syntax-key: (
+    light: #1B6B93,
+    dark: #89DDFF,
+  ),
+  code-syntax-punctuation: (
+    light: #6B6D78,
+    dark: #8A8CA0,
+  ),
+  content-link: (
+    light: derive.adjust($_base-blue, $lightness: -10%),
+    dark: derive.adjust($_base-blue, $lightness: 10%),
+  ),
+  combobox-highlighted-item-bg: (
+    light: derive.adjust($_button-primary-bg-light, $saturation: -15%),
+    dark: derive.adjust($_button-primary-bg-dark, $saturation: -15%),
+  ),
+  badge-default-color: (
+    light: color.adjust($_badge-base-color-light, $saturation: -100%),
+    dark: color.adjust($_badge-base-color-dark, $saturation: -100%),
+  ),
+  badge-default-bg: (
+    light: color.adjust($_badge-base-color-dark, $saturation: -100%),
+    dark: color.adjust($_badge-base-color-light, $saturation: -100%),
+  ),
+  badge-secondary-bg: (
+    light: rgba(255, 255, 255, .2),
+    dark: rgba(0, 0, 0, .2),
+  ),
+  badge-muted-color: (
+    light: color.adjust($_badge-base-color-light, $lightness: $_badge_muted_lightness_adjust, $saturation: -100%),
+    dark: color.adjust($_badge-base-color-dark, $lightness: $_badge_muted_lightness_adjust, $saturation: -100%),
+  ),
+  badge-muted-bg: (
+    light: color.adjust($_badge-base-color-dark, $lightness: $_badge_muted_lightness_adjust, $saturation: -100%),
+    dark: color.adjust($_badge-base-color-light, $lightness: $_badge_muted_lightness_adjust, $saturation: -100%),
+  ),
+  badge-green-color: (
+    light: color.adjust($_badge-base-color-light, $hue: $_badge-green-hue),
+    dark: color.adjust($_badge-base-color-dark, $hue: $_badge-green-hue),
+  ),
+  badge-green-bg: (
+    light: color.adjust($_badge-base-color-dark, $hue: $_badge-green-hue),
+    dark: color.adjust($_badge-base-color-light, $hue: $_badge-green-hue),
+  ),
+  badge-blue-color: (
+    light: $_badge-base-color-light,
+    dark: $_badge-base-color-dark,
+  ),
+  badge-blue-bg: (
+    light: $_badge-base-color-dark,
+    dark: $_badge-base-color-light,
+  ),
+  badge-cyan-color: (
+    light: color.adjust($_badge-base-color-light, $hue: $_badge-cyan-hue),
+    dark: color.adjust($_badge-base-color-dark, $hue: $_badge-cyan-hue),
+  ),
+  badge-cyan-bg: (
+    light: color.adjust($_badge-base-color-dark, $hue: $_badge-cyan-hue),
+    dark: color.adjust($_badge-base-color-light, $hue: $_badge-cyan-hue),
+  ),
+  badge-purple-color: (
+    light: color.adjust($_badge-base-color-light, $hue: $_badge-purple-hue),
+    dark: color.adjust($_badge-base-color-dark, $hue: $_badge-purple-hue),
+  ),
+  badge-purple-bg: (
+    light: color.adjust($_badge-base-color-dark, $hue: $_badge-purple-hue),
+    dark: color.adjust($_badge-base-color-light, $hue: $_badge-purple-hue),
+  ),
+  badge-red-color: (
+    light: color.adjust($_badge-base-color-light, $hue: $_badge-red-hue),
+    dark: color.adjust($_badge-base-color-dark, $hue: $_badge-red-hue),
+  ),
+  badge-red-bg: (
+    light: color.adjust($_badge-base-color-dark, $hue: $_badge-red-hue),
+    dark: color.adjust($_badge-base-color-light, $hue: $_badge-red-hue),
+  ),
+  badge-yellow-color: (
+    light: color.adjust($_badge-base-color-light, $hue: $_badge-yellow-hue),
+    dark: color.adjust($_badge-base-color-dark, $hue: $_badge-yellow-hue),
+  ),
+  badge-yellow-bg: (
+    light: color.adjust($_badge-base-color-dark, $hue: $_badge-yellow-hue),
+    dark: color.adjust($_badge-base-color-light, $hue: $_badge-yellow-hue),
+  ),
+  drop-shadow: (
+    light: rgba(255, 255, 255, .5),
+    dark: rgba(0, 0, 0, .5),
+  ),
+  form-message-error: (
+    light: #800,
+    dark: #faa
+  ),
+  form-message-success: (
+    light: #282,
+    dark: #afa
+  ),
+  muted-text: (
+    light: #555,
+    dark: #999,
+  ),
+);
+
+$_breakpoints: (
+  sm: 400px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1200px,
+  xxl: 1600px,
+);
+
+$_spacing: (
+  0: 0,
+  1: .25em,
+  2: .5em,
+  3: 1em,
+  4: 1.75em,
+);
+
+// Final maps, the defaults with the configured extensions applied
+$z-index-map: map.merge($_z-index-map, config.$extend-z-indexes);
+$color-map: map.merge($_color-map, config.$extend-colors);
+$breakpoints: map.merge($_breakpoints, config.$extend-breakpoints);
+$spacing: map.merge($_spacing, config.$extend-spacing);
+
+// The spacing and size steps are tokens as well, so the utilities can be re-themed through CSS
+$_scale-values: ();
+@each $key, $size in $spacing {
+  $_scale-values: map.merge($_scale-values, ("spacing-#{$key}": $size));
+}
+@each $step in config.$sizing {
+  $_scale-values: map.merge($_scale-values, ("size-#{$step}": #{math.div($step, 10)}em));
+}
+$value-map: map.merge(map.merge($_value-map, $_scale-values), config.$extend-values);

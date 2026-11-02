@@ -1,0 +1,26 @@
+// Brand-derived colors. Two modes, picked with `$color-derivation` in the config:
+//  - 'sass' (default): computed at compile time with color.adjust, the result is a plain color
+//  - 'css': emitted as CSS relative color syntax based on `--ht-brand`, so the whole palette can be
+//    re-themed at runtime by changing a single custom property. Needs relative color support
+//    (Chrome 119+, Safari 16.4+, Firefox 128+).
+@use "sass:color";
+@use "sass:math";
+@use "sass:meta";
+@use "config";
+
+// The brand color: a color in 'sass' mode, a reference to the custom property in 'css' mode
+@function brand() {
+  @if config.$color-derivation == 'css' {
+    @return var(--ht-brand);
+  }
+  @return config.$brand-color;
+}
+
+// Drop-in for color.adjust (percentage points for $lightness and $saturation, degrees for $hue)
+@function adjust($base, $lightness: 0%, $saturation: 0%, $hue: 0) {
+  @if meta.type-of($base) == 'color' {
+    @return color.adjust($base, $lightness: $lightness, $saturation: $saturation, $hue: $hue);
+  }
+  // Sass clamps saturation and lightness, CSS would flip the hue for a negative saturation
+  @return hsl(from #{$base} calc(h + #{$hue}) clamp(0, calc(s + #{math.div($saturation, 1%)}), 100) clamp(0, calc(l + #{math.div($lightness, 1%)}), 100));
+}
