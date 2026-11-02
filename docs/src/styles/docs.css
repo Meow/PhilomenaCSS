@@ -28,3 +28,9 @@
 
 .docs-notes { display: flex; flex-flow: column; gap: .5rem; margin-block: .5rem; padding-inline-start: 1.25rem; }
 .docs-notes li { list-style: disc; }
+
+/* Copy buttons in the token reference: clipboard icon, swapped for a check once copied */
+.docs-icon-copied { display: none; }
+.docs-copied .docs-icon-copy { display: none; }
+.docs-copied .docs-icon-copied { display: inline; }
+.docs-token-table td:first-child .copyable-text-data { font-family: var(--ht-value-font-family-mono); }

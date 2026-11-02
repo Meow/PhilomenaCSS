@@ -3,8 +3,11 @@ import Base from '../layouts/Base.astro';
 import Story from '../components/Story.astro';
 import { stories } from '../lib/stories';
 import { getTokenGroups } from '../lib/tokens';
+import { icon } from '../lib/icons';
 
 const tokenGroups = getTokenGroups();
+const clipboardIcon = icon('fontawesome', 'clipboard');
+const checkIcon = icon('fontawesome', 'check');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base title="HammerTimeCSS">
@@ -63,7 +66,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <section id="tokens" class="card">
       <header class="card-header"><h2>Token reference</h2></header>
-      <p>Generated from the compiled Sass token maps. Click a name to copy it.</p>
+      <p>Generated from the compiled Sass token maps. Use the copy button next to a property name to copy it.</p>
       {tokenGroups.map(group => (
         <details>
           <summary>{group.title} ({group.tokens.length})</summary>
@@ -72,7 +75,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <thead><tr><th>Property</th><th>Default</th></tr></thead>
               <tbody>
                 {group.tokens.map(token => (
-                  <tr><td data-copy-text={token.name}>{token.name}</td><td>{token.value}</td></tr>
+                  <tr>
+                    <td>
+                      <div class="copyable-text">
+                        <button type="button" class="button button-primary icon-only" data-copy-text={token.name} aria-label={`Copy ${token.name}`} title="Copy to clipboard">
+                          <span class="button-content">
+                            <span class="button-icon docs-icon-copy" set:html={clipboardIcon} />
+                            <span class="button-icon docs-icon-copied" set:html={checkIcon} />
+                          </span>
+                        </button>
+                        <code class="code-span copyable-text-data">{token.name}</code>
+                      </div>
+                    </td>
+                    <td>{token.value}</td>
+                  </tr>
                 ))}
               </tbody>
             </table>
@@ -120,7 +136,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     document.querySelectorAll<HTMLElement>('[data-copy-source]').forEach(btn => btn.addEventListener('click', () => {
       copy(btn.closest('article')?.querySelector('.docs-source')?.textContent ?? '', btn);
     }));
-    document.querySelectorAll<HTMLElement>('[data-copy-text]').forEach(el => el.addEventListener('click', () => copy(el.dataset.copyText!)));
+    document.querySelectorAll<HTMLElement>('[data-copy-text]').forEach(btn => btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copyText!);
+      } catch {
+        return;
+      }
+      btn.classList.replace('button-primary', 'button-success');
+      btn.classList.add('pressed', 'docs-copied');
+      setTimeout(() => {
+        btn.classList.replace('button-success', 'button-primary');
+        btn.classList.remove('pressed', 'docs-copied');
+      }, 1500);
+    }));
 
     document.querySelectorAll<HTMLElement>('[data-demo-toggle]').forEach(btn => btn.addEventListener('click', () => {
       document.querySelector(btn.dataset.demoToggle!)?.classList.toggle('visible');
