@@ -102,14 +102,16 @@
 }
 
 .form-control-radio {
-  display: block;
+  // Flex centering instead of inline-block + vertical-align, which differ between browsers
+  display: flex;
+  align-items: center;
 
   .form-radio-input-wrap {
     position: relative;
     display: inline-block;
     width: design.app-value('form-checkbox-width');
     height: design.app-value('form-checkbox-height');
-    vertical-align: text-top;
+    flex: 0 0 auto;
 
     &:focus {
       z-index: design.app-z-index('focus');
