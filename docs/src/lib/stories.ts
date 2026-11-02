@@ -36,16 +36,18 @@ const alerts = `<div class="alert info">
   </div>
 </div>`;
 
+const loadingIndicator = '<svg class="loading-indicator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1em" height="1em"><path d="M35 32a3.001 3.001 0 0 1-6 0l3-26.074L35 32Z" class="minute"/><path d="M35 32a3.001 3.001 0 0 1-6 0l3-13.037L35 32Z" class="hour"/><g class="base"><circle cx="32" cy="32" r="29" class="face"/><path d="M32 3v7m0 44v7m22-29h7M3 32h7" class="ticking"/></g></svg>';
+
 const buttonRow = (color?: string) => {
   const cls = color ? `button button-${color}` : 'button';
   const label = color ?? 'default';
-  const btn = (extra: string, attrs: string, text: string) =>
-    `  <button type="button" class="${cls}${extra}"${attrs}><span class="button-content"><span class="button-text">${text}</span></span></button>`;
+  const btn = (extra: string, attrs: string, text: string, loading = false) =>
+    `  <button type="button" class="${cls}${extra}"${attrs}>${loading ? `<span class="loading-icon">${loadingIndicator}</span>` : ''}<span class="button-content"><span class="button-text">${text}</span></span></button>`;
   return `<div class="button-group separated">
 ${btn('', '', `${ucfirst(label)}`)}
 ${btn('', ' disabled', 'Disabled')}
 ${btn(' pressed', '', 'Pressed')}
-${btn(' loading', ' disabled', 'Loading')}
+${btn(' loading', ' disabled', 'Loading', true)}
 </div>`;
 };
 
@@ -103,7 +105,7 @@ ${badgeColors.map(color => {
 
 export const stories: Story[] = [
   { id: 'alerts', title: 'Alerts', description: 'Info and warning variants, plus a compact layout with actions.', html: alerts },
-  { id: 'buttons', title: 'Buttons', description: 'Every colour in the default, disabled, pressed and loading state.', html: buttons },
+  { id: 'buttons', title: 'Buttons', description: 'Every colour in the default, disabled, pressed and loading state. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the dimmed content, on a gradient in the button colour.', html: buttons },
   { id: 'forms-regular', title: 'Forms: regular', description: 'Input, select, checkbox and radio.', html: formFields('regular') },
   { id: 'forms-readonly', title: 'Forms: readonly', description: 'The same controls with the readonly attribute.', html: formFields('readonly') },
   { id: 'forms-disabled', title: 'Forms: disabled', description: 'The same controls disabled.', html: formFields('disabled') },
