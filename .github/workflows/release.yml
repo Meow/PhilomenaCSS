@@ -1,0 +1,97 @@
+name: Release
+
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ci-release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  # npm provenance and trusted publishing
+  id-token: write
+
+jobs:
+  commitlint:
+    name: 'Lint commit messages'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Lint commits
+        uses: wagoid/commitlint-github-action@b948419dd99f3fd78a6548d48f94e3df7f6bf3ed # v6.2.1
+
+  release:
+    name: 'Version, publish to npm and release'
+    needs: commitlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+
+      # dry_run: compute the next version without creating/pushing the tag yet.
+      # The tag and GitHub release are only created once the package has actually
+      # been published, so a failed build never leaves a version tag with no
+      # matching npm release behind it.
+      - name: Compute next version from conventional commits
+        id: tag
+        uses: mathieudutour/github-tag-action@a22cf08638b34d5badda920f9daf6e72c477b07b # v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+          default_bump: false
+          dry_run: true
+
+      - name: Set up pnpm
+        if: steps.tag.outputs.new_tag
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+
+      - name: Set up Node.js v24
+        if: steps.tag.outputs.new_tag
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install pnpm dependencies
+        if: steps.tag.outputs.new_tag
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Build
+        if: steps.tag.outputs.new_tag
+        run: pnpm run build
+
+      # The version only lives in the git tag, package.json stays at 0.0.0
+      - name: Set package version
+        if: steps.tag.outputs.new_tag
+        run: npm version "${{ steps.tag.outputs.new_version }}" --no-git-tag-version --allow-same-version
+
+      # Authenticates with the NPM_TOKEN secret when it is set, otherwise through
+      # npm trusted publishing (OIDC) once the package has it configured on npmjs.com
+      - name: Publish to npm
+        if: steps.tag.outputs.new_tag
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag release
+        if: steps.tag.outputs.new_tag
+        run: |
+          git tag ${{ steps.tag.outputs.new_tag }}
+          git push origin ${{ steps.tag.outputs.new_tag }}
+
+      - name: Create GitHub release
+        if: steps.tag.outputs.new_tag
+        run: gh release create "$TAG" --title "$TAG" --verify-tag --notes "$CHANGELOG"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.new_tag }}
+          CHANGELOG: ${{ steps.tag.outputs.changelog }}
