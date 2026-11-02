@@ -1,3 +1,5 @@
+import { icon, iconSetLabels, type IconSet } from './icons';
+
 export interface Story {
   id: string;
   title: string;
@@ -38,15 +40,13 @@ const alerts = `<div class="alert info">
 
 const loadingIndicator = '<svg class="loading-indicator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1em" height="1em"><path d="M35 32a3.001 3.001 0 0 1-6 0l3-26.074L35 32Z" class="minute"/><path d="M35 32a3.001 3.001 0 0 1-6 0l3-13.037L35 32Z" class="hour"/><g class="base"><circle cx="32" cy="32" r="29" class="face"/><path d="M32 3v7m0 44v7m22-29h7M3 32h7" class="ticking"/></g></svg>';
 
-const clipboardIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/></svg>';
-
-const buttonRow = (color?: string) => {
+const buttonRow = (set: IconSet) => (color?: string) => {
   const cls = color ? `button button-${color}` : 'button';
   const label = color ?? 'default';
   const btn = (extra: string, attrs: string, text: string, loading = false) =>
     `  <button type="button" class="${cls}${extra}"${attrs}>${loading ? `<span class="loading-icon">${loadingIndicator}</span>` : ''}<span class="button-content"><span class="button-text">${text}</span></span></button>`;
   const iconBtn = (extra: string, attrs: string, loading = false) =>
-    `  <button type="button" class="${cls} icon-only${extra}"${attrs} aria-label="${ucfirst(label)} icon-only button">${loading ? `<span class="loading-icon">${loadingIndicator}</span>` : ''}<span class="button-content"><span class="button-icon">${clipboardIcon}</span></span></button>`;
+    `  <button type="button" class="${cls} icon-only${extra}"${attrs} aria-label="${ucfirst(label)} icon-only button">${loading ? `<span class="loading-icon">${loadingIndicator}</span>` : ''}<span class="button-content"><span class="button-icon">${icon(set, 'clipboard')}</span></span></button>`;
   return `<div class="button-group separated">
 ${btn('', '', `${ucfirst(label)}`)}
 ${btn('', ' disabled', 'Disabled')}
@@ -58,48 +58,44 @@ ${iconBtn(' loading', ' disabled', true)}
 </div>`;
 };
 
-const buttons = [undefined, 'primary', 'success', 'danger', 'warning', 'light', 'dark'].map(buttonRow).join('\n');
+const buttonsFor = (set: IconSet) => [undefined, 'primary', 'success', 'danger', 'warning', 'light', 'dark'].map(buttonRow(set)).join('\n');
 
-// Font Awesome Free (CC BY 4.0) check and chevron-down, the icons the original app uses
-const checkIcon = '<svg class="form-checkbox-check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="1.25em" height="1em" fill="currentColor" aria-hidden="true"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>';
-const chevronIcon = '<span class="form-select-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1.25em" height="1em" fill="currentColor" aria-hidden="true"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></span>';
-
-const formFields = (state: 'regular' | 'readonly' | 'disabled') => {
+const formFields = (state: 'regular' | 'readonly' | 'disabled', set: IconSet = 'fontawesome', prefix: string = state) => {
   const attr = state === 'regular' ? '' : ` ${state}`;
   return `<div class="form-control-group vertical">
   <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
     <div class="form-control">
-      <label class="form-control-label" for="${state}-text">Text input</label>
-      <input id="${state}-text" class="input-field" type="text" value="Hello"${attr}>
+      <label class="form-control-label" for="${prefix}-text">Text input</label>
+      <input id="${prefix}-text" class="input-field" type="text" value="Hello"${attr}>
     </div>
   </div>
   <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
     <div class="form-control">
-      <label class="form-control-label" for="${state}-select">Select</label>
+      <label class="form-control-label" for="${prefix}-select">Select</label>
       <div class="form-control-select">
-        <select id="${state}-select" class="form-select-input input-field"${attr}>
+        <select id="${prefix}-select" class="form-select-input input-field"${attr}>
           <option>First</option>
           <option>Second</option>
         </select>
-        ${chevronIcon}
+        <span class="form-select-icon">${icon(set, 'chevron-down')}</span>
       </div>
     </div>
   </div>
   <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
     <div class="form-control-checkbox">
       <span class="form-checkbox-input-wrap">
-        <input id="${state}-check" class="form-checkbox-input" type="checkbox" checked${state === 'regular' ? '' : ' disabled'}>
-        ${checkIcon}
+        <input id="${prefix}-check" class="form-checkbox-input" type="checkbox" checked${state === 'regular' ? '' : ' disabled'}>
+        ${icon(set, 'check', 'form-checkbox-check-icon')}
       </span>
-      <label class="form-checkbox-label" for="${state}-check">Checkbox</label>
+      <label class="form-checkbox-label" for="${prefix}-check">Checkbox</label>
     </div>
   </div>
   <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
     <div class="form-control-radio">
       <span class="form-radio-input-wrap">
-        <input id="${state}-radio" class="form-radio-input" type="radio" name="${state}-radio" checked${state === 'regular' ? '' : ' disabled'}>
+        <input id="${prefix}-radio" class="form-radio-input" type="radio" name="${prefix}-radio" checked${state === 'regular' ? '' : ' disabled'}>
         <span class="form-radio-select-icon"></span>
-      </span><label class="form-radio-label" for="${state}-radio">Radio</label>
+      </span><label class="form-radio-label" for="${prefix}-radio">Radio</label>
     </div>
   </div>
 </div>`;
@@ -113,12 +109,23 @@ ${badgeColors.map(color => {
 }).join('\n')}
 </span>`;
 
+
+const iconStory = (set: IconSet): Story => ({
+  id: `icons-${set}`,
+  title: `Icons: ${iconSetLabels[set]}`,
+  description: `The framework ships no icons, only empty slots for them: .form-checkbox-check-icon, .form-select-icon, .button-icon and .loading-icon. These demos fill them with ${set === 'fontawesome' ? 'Font Awesome Free solid icons (CC BY 4.0, fontawesome.com)' : 'Lucide icons (ISC, lucide.dev)'}, which are only used by this documentation and are not part of the package. Any inline SVG or icon font works.`,
+  html: `${formFields('regular', set, `icons-${set}`)}
+${buttonRow(set)('primary')}`,
+});
+
 export const stories: Story[] = [
   { id: 'alerts', title: 'Alerts', description: 'Info and warning variants, plus a compact layout with actions.', html: alerts },
-  { id: 'buttons', title: 'Buttons', description: 'Every colour in the default, disabled, pressed and loading state. Icon-only variants (.icon-only with a .button-icon) follow. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the dimmed content, on a gradient in the button colour.', html: buttons },
+  { id: 'buttons', title: 'Buttons', description: 'Every colour in the default, disabled, pressed and loading state. Icon-only variants (.icon-only with a .button-icon) follow. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the dimmed content, on a gradient in the button colour.', html: buttonsFor('fontawesome') },
   { id: 'forms-regular', title: 'Forms: regular', description: 'Input, select, checkbox and radio.', html: formFields('regular') },
   { id: 'forms-readonly', title: 'Forms: readonly', description: 'The same controls with the readonly attribute.', html: formFields('readonly') },
   { id: 'forms-disabled', title: 'Forms: disabled', description: 'The same controls disabled.', html: formFields('disabled') },
+  iconStory('fontawesome'),
+  iconStory('lucide'),
   { id: 'badges', title: 'Badges', description: 'Colours, with optional prefix and suffix.', html: [badgeGroup(), badgeGroup('Prefixed'), badgeGroup(undefined, 'Suffixed'), badgeGroup('Prefixed', 'Suffixed')].join('\n') },
   { id: 'table', title: 'Table', description: 'Header, body header cell and footer. Add .responsive to the wrapper to scroll on narrow screens.', html: `<div class="table-wrap">
   <table class="table">
