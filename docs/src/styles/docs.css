@@ -25,3 +25,6 @@
 @keyframes docs-spin { to { transform: rotate(360deg); } }
 .docs-spin { animation: docs-spin 1s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .docs-spin { animation-duration: 4s; } }
+
+.docs-notes { display: flex; flex-flow: column; gap: .5rem; margin-block: .5rem; padding-inline-start: 1.25rem; }
+.docs-notes li { list-style: disc; }

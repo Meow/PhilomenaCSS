@@ -5,6 +5,8 @@ export interface Story {
   title: string;
   description: string;
   html: string;
+  /** Markup pitfalls shown next to the story, trusted HTML */
+  notes?: string[];
 }
 
 const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
@@ -122,8 +124,11 @@ ${buttonRow(set, true)('primary')}`,
 
 export const stories: Story[] = [
   { id: 'alerts', title: 'Alerts', description: 'Info and warning variants, plus a compact layout with actions.', html: alerts },
-  { id: 'buttons', title: 'Buttons', description: 'Every colour in the default, disabled, pressed and loading state. Icon-only variants (.icon-only with a .button-icon) follow. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the dimmed content, on a gradient in the button colour.', html: buttonsFor('fontawesome') },
-  { id: 'forms-regular', title: 'Forms: regular', description: 'Input, select, checkbox and radio.', html: formFields('regular') },
+  { id: 'buttons', title: 'Buttons', description: 'Every colour in the default, disabled, pressed and loading state. Icon-only variants (.icon-only with a .button-icon) follow. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the dimmed content, on a gradient in the button colour.', html: buttonsFor('fontawesome'), notes: ["Loading: put a <code class=\"code-span\">.loading-icon</code> element before <code class=\"code-span\">.button-content</code> inside the button. The gradient and the dimming of the content come from it, a button with only <code class=\"code-span\">.loading</code> shows no gradient. It is a slot for any icon or spinner. <code class=\"code-span\">.icon-only</code> buttons put their icon in <code class=\"code-span\">.button-icon</code>."] },
+  { id: 'forms-regular', title: 'Forms: regular', description: 'Input, select, checkbox and radio.', html: formFields('regular'), notes: [
+    "Icons are slots: the framework ships none. <code class=\"code-span\">.form-checkbox-check-icon</code> and <code class=\"code-span\">.form-select-icon</code> are positioned for a fixed-width icon (about 1.25em wide, 1em tall, such as Font Awesome's <code class=\"code-span\">fa-fw</code>), a text glyph will not line up.",
+    "Radio: before v0.1.2 any whitespace between <code class=\"code-span\">.form-radio-input-wrap</code> and <code class=\"code-span\">.form-radio-label</code> pushed the label out. From v0.1.2 the control is a flex row and the markup may be formatted freely.",
+  ] },
   { id: 'forms-readonly', title: 'Forms: readonly', description: 'The same controls with the readonly attribute.', html: formFields('readonly') },
   { id: 'forms-disabled', title: 'Forms: disabled', description: 'The same controls disabled.', html: formFields('disabled') },
   iconStory('fontawesome'),
@@ -149,7 +154,7 @@ export const stories: Story[] = [
     <p>This is the contents of the collapsible container.</p>
     <p>Visibility is controlled with the <code class="code-span">.visible</code> class.</p>
   </div>
-</div>` },
+</div>`, notes: ["Details: the CSS reset removes the disclosure marker of <code class=\"code-span\">&lt;summary&gt;</code> (<code class=\"code-span\">list-style: none</code>), so a <code class=\"code-span\">&lt;details&gt;</code> toggle shows no hint that it can be clicked. Give <code class=\"code-span\">&lt;summary&gt;</code> its own affordance, such as a chevron, a border or a pointer cursor (see the &quot;HTML source&quot; toggles on this page). The framework only styles <code class=\"code-span\">.collapsible</code>, it never drives <code class=\"code-span\">.visible</code> for you."] },
   { id: 'card', title: 'Card', description: 'A container with an optional header.', html: `<article class="card">
   <header class="card-header"><h2>Card title</h2></header>
   <p>${lorem}</p>

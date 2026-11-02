@@ -72,6 +72,22 @@ Single components can be used on their own, after configuring `@went.tf/hammerti
 @use '@went.tf/hammertime-css/components/button';
 ```
 
+## Markup notes
+
+The framework is plain CSS, so some structure is on you:
+
+- **Icons are slots, none are shipped.** `.form-checkbox-check-icon`, `.form-select-icon`, `.button-icon` and
+  `.loading-icon` are positioned for a fixed-width icon (about `1.25em` wide, `1em` tall, e.g. an inline SVG
+  or Font Awesome's `fa-fw`). A text glyph will not line up.
+- **Loading buttons need a `.loading-icon` element** placed before `.button-content` inside the button. The
+  gradient and the dimmed content come from it, `.loading` alone shows neither.
+- **Radio controls:** before v0.1.2, whitespace between `.form-radio-input-wrap` and `.form-radio-label` pushed
+  the label out of line with checkbox labels. From v0.1.2 the control is a flex row and formatting is free.
+- **`<summary>` has no marker.** The CSS reset removes the disclosure marker, so give `<details>` toggles their own
+  affordance (chevron, border, pointer cursor).
+
+See the [documentation site](https://wentthefox.github.io/HammerTimeCSS/) for rendered examples.
+
 ## Status
 
 Extracted from the HammerTime app, work in progress. Documentation and live demo: <https://wentthefox.github.io/HammerTimeCSS/> (source in [`docs/`](docs), an Astro site that is not part of the npm package).
