@@ -99,8 +99,7 @@ const formFields = (state: 'regular' | 'readonly' | 'disabled') => {
       <span class="form-radio-input-wrap">
         <input id="${state}-radio" class="form-radio-input" type="radio" name="${state}-radio" checked${state === 'regular' ? '' : ' disabled'}>
         <span class="form-radio-select-icon"></span>
-      </span>
-      <label class="form-radio-label" for="${state}-radio">Radio</label>
+      </span><label class="form-radio-label" for="${state}-radio">Radio</label>
     </div>
   </div>
 </div>`;
