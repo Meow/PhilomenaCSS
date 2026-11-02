@@ -60,6 +60,10 @@ ${iconBtn(' loading', ' disabled', true)}
 
 const buttons = [undefined, 'primary', 'success', 'danger', 'warning', 'light', 'dark'].map(buttonRow).join('\n');
 
+// Font Awesome Free (CC BY 4.0) check and chevron-down, the icons the original app uses
+const checkIcon = '<svg class="form-checkbox-check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="1.25em" height="1em" fill="currentColor" aria-hidden="true"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>';
+const chevronIcon = '<span class="form-select-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1.25em" height="1em" fill="currentColor" aria-hidden="true"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></span>';
+
 const formFields = (state: 'regular' | 'readonly' | 'disabled') => {
   const attr = state === 'regular' ? '' : ` ${state}`;
   return `<div class="form-control-group vertical">
@@ -77,7 +81,7 @@ const formFields = (state: 'regular' | 'readonly' | 'disabled') => {
           <option>First</option>
           <option>Second</option>
         </select>
-        <span class="form-select-icon">&#9662;</span>
+        ${chevronIcon}
       </div>
     </div>
   </div>
@@ -85,7 +89,7 @@ const formFields = (state: 'regular' | 'readonly' | 'disabled') => {
     <div class="form-control-checkbox">
       <span class="form-checkbox-input-wrap">
         <input id="${state}-check" class="form-checkbox-input" type="checkbox" checked${state === 'regular' ? '' : ' disabled'}>
-        <span class="form-checkbox-check-icon">&#10003;</span>
+        ${checkIcon}
       </span>
       <label class="form-checkbox-label" for="${state}-check">Checkbox</label>
     </div>
