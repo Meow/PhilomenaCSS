@@ -61,6 +61,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div class="form-control"><label class="form-control-label">{name}<input class="input-field full-width" type="text" data-token-input={name} placeholder="override"></label></div>
         ))}
       </div>
+      <h3>Background gradient</h3>
+      <p>The gradient is opt-in in the library (<code class="code-span">$background-gradient: true</code> in Sass), the compiled stylesheet does not include it. This toggle only paints it with docs-only CSS from the same <code class="code-span">--ht-color-bg-gradient-*</code> and <code class="code-span">--ht-value-bg-gradient-*</code> tokens. The middle is the brand color, the start and end follow it until you pick a color.</p>
+      <div class="docs-toolbar">
+        <div class="form-control-checkbox">
+          <span class="form-checkbox-input-wrap">
+            <input id="gradient-toggle" class="form-checkbox-input" type="checkbox" data-gradient-toggle>
+            <span class="form-checkbox-check-icon" set:html={checkIcon} />
+          </span><label class="form-checkbox-label" for="gradient-toggle">Show gradient</label>
+        </div>
+        <label for="gradient-start">Start</label>
+        <input id="gradient-start" class="input-field" type="color" data-gradient-color="start">
+        <label for="gradient-end">End</label>
+        <input id="gradient-end" class="input-field" type="color" data-gradient-color="end">
+        <button type="button" class="button" data-gradient-reset><span class="button-content"><span class="button-text">Follow brand</span></span></button>
+      </div>
       <pre class="docs-source" data-brand-output></pre>
     </section>
 
@@ -158,23 +173,64 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     const brandInput = document.querySelector<HTMLInputElement>('[data-brand-input]')!;
     const output = document.querySelector<HTMLElement>('[data-brand-output]')!;
     const tokenInputs = [...document.querySelectorAll<HTMLInputElement>('[data-token-input]')];
+    const gradientToggle = document.querySelector<HTMLInputElement>('[data-gradient-toggle]')!;
+    const gradientInputs = [...document.querySelectorAll<HTMLInputElement>('[data-gradient-color]')];
+    const gradientCustom = new Set<string>();
     const defaultBrand = brandInput.value;
+    const gradientToken = (end: string) => `--ht-color-bg-gradient-${end}`;
+
+    // Resolves a color token (which may be a relative color expression, computed as color(srgb ...)) to #rrggbb
+    // by painting it on a 1px canvas
+    const probe = document.createElement('span');
+    probe.style.display = 'none';
+    document.body.append(probe);
+    const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true })!;
+    const resolveColor = (token: string) => {
+      probe.style.color = `var(${token})`;
+      context.clearRect(0, 0, 1, 1);
+      context.fillStyle = getComputedStyle(probe).color;
+      context.fillRect(0, 0, 1, 1);
+      const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
+      return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+    };
+    // Keeps the pickers in sync with the derived colors for the ends that follow the brand
+    const syncGradientInputs = () => {
+      gradientInputs.forEach(input => {
+        const end = input.dataset.gradientColor!;
+        if (!gradientCustom.has(end)) {
+          root.style.removeProperty(gradientToken(end));
+          input.value = resolveColor(gradientToken(end));
+        }
+      });
+    };
+
     const overrides = () => {
       const declarations: string[] = [];
       if (brandInput.value !== defaultBrand) declarations.push(`--ht-brand: ${brandInput.value};`);
       tokenInputs.forEach(input => { if (input.value.trim()) declarations.push(`${input.dataset.tokenInput}: ${input.value.trim()};`); });
+      gradientInputs.forEach(input => {
+        const end = input.dataset.gradientColor!;
+        if (gradientCustom.has(end)) declarations.push(`${gradientToken(end)}: ${input.value};`);
+      });
       return declarations;
     };
     const apply = () => {
       root.style.removeProperty('--ht-brand');
       tokenInputs.forEach(input => root.style.removeProperty(input.dataset.tokenInput!));
+      gradientInputs.forEach(input => root.style.removeProperty(gradientToken(input.dataset.gradientColor!)));
       const declarations = overrides();
       declarations.forEach(line => { const [name, value] = line.slice(0, -1).split(/:\s*/); root.style.setProperty(name, value); });
-      output.textContent = declarations.length ? `:root {\n  ${declarations.join('\n  ')}\n}` : '/* defaults, nothing overridden */';
+      syncGradientInputs();
+      document.body.classList.toggle('docs-gradient', gradientToggle.checked);
+      const notes = gradientToggle.checked ? '\n/* the gradient also needs $background-gradient: true in Sass */' : '';
+      output.textContent = (declarations.length ? `:root {\n  ${declarations.join('\n  ')}\n}` : '/* defaults, nothing overridden */') + notes;
     };
     brandInput.addEventListener('input', apply);
     tokenInputs.forEach(input => input.addEventListener('input', apply));
-    document.querySelector('[data-brand-reset]')?.addEventListener('click', () => { brandInput.value = defaultBrand; tokenInputs.forEach(i => { i.value = ''; }); apply(); });
+    gradientToggle.addEventListener('change', apply);
+    gradientInputs.forEach(input => input.addEventListener('input', () => { gradientCustom.add(input.dataset.gradientColor!); apply(); }));
+    document.querySelector('[data-gradient-reset]')?.addEventListener('click', () => { gradientCustom.clear(); apply(); });
+    document.querySelector('[data-brand-reset]')?.addEventListener('click', () => { brandInput.value = defaultBrand; tokenInputs.forEach(i => { i.value = ''; }); gradientCustom.clear(); gradientToggle.checked = false; apply(); });
     document.querySelector<HTMLElement>('[data-brand-copy]')?.addEventListener('click', e => copy(output.textContent ?? '', e.currentTarget as HTMLElement));
     apply();
   </script>

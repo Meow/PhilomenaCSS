@@ -34,3 +34,18 @@
 .docs-copied .docs-icon-copy { display: none; }
 .docs-copied .docs-icon-copied { display: inline; }
 .docs-token-table td:first-child .copyable-text-data { font-family: var(--ht-value-font-family-mono); }
+
+/* Docs-only gradient layer driven by the framework's --ht-*-bg-gradient-* tokens (the library only emits it with $background-gradient: true) */
+body.docs-gradient::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: var(--ht-z-index-background);
+  opacity: var(--ht-value-bg-gradient-opacity);
+  background-image: linear-gradient(calc(180deg - var(--docs-gradient-angle, var(--ht-value-bg-gradient-angle))), var(--ht-color-bg-gradient-start) var(--ht-value-bg-gradient-start-position), var(--ht-color-bg-gradient-mid) var(--ht-value-bg-gradient-mid-position), var(--ht-color-bg-gradient-end) var(--ht-value-bg-gradient-end-position));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  pointer-events: none;
+}
+:root[dir="rtl"] body.docs-gradient { --docs-gradient-angle: calc(-1 * var(--ht-value-bg-gradient-angle)); }
+@media print { body.docs-gradient::before { display: none; } }
