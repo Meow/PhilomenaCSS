@@ -5,6 +5,8 @@
 $brand-color: #5865f2 !default;
 $text-color-light: #313131 !default;
 $text-color-dark: #C1C2C5 !default;
+// The page background gradient is opt-in: set to true to paint it behind the page (a fixed `body::before` layer)
+$background-gradient: false !default;
 $bg-gradient-start: #585ef2 !default;
 $bg-gradient-end: #a55ea5 !default;
 
