@@ -127,9 +127,17 @@ $_text-color-dark: config.$text-color-dark;
 $_base-blue: derive.brand();
 $_button-primary-bg-dark: $_base-blue;
 $_button-primary-bg-light: derive.adjust($_button-primary-bg-dark, $lightness: 22%);
-$_bg-gradient-start: config.$bg-gradient-start;
+// The ends follow the brand color unless set explicitly: the start is a hair off the brand hue, the end is a
+// desaturated, darker color further around the color wheel (#5865f2 gives roughly #585ef2 and #a55ea5)
+$_bg-gradient-start: derive.adjust($_base-blue, $hue: 2);
+@if config.$bg-gradient-start {
+  $_bg-gradient-start: config.$bg-gradient-start;
+}
 $_bg-gradient-mid: $_base-blue;
-$_bg-gradient-end: config.$bg-gradient-end;
+$_bg-gradient-end: derive.adjust($_base-blue, $lightness: -13%, $saturation: -59%, $hue: 65);
+@if config.$bg-gradient-end {
+  $_bg-gradient-end: config.$bg-gradient-end;
+}
 $_badge-base-color-light: hsl(219, 50%, 25%);
 $_badge-base-color-dark: hsl(219, 50%, 80%);
 $_badge_muted_lightness_adjust: 15%;

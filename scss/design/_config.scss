@@ -7,8 +7,9 @@ $text-color-light: #313131 !default;
 $text-color-dark: #C1C2C5 !default;
 // The page background gradient is opt-in: set to true to paint it behind the page (a fixed `body::before` layer)
 $background-gradient: false !default;
-$bg-gradient-start: #585ef2 !default;
-$bg-gradient-end: #a55ea5 !default;
+// Gradient ends, derived from the brand color when null (the middle of the gradient is always the brand color)
+$bg-gradient-start: null !default;
+$bg-gradient-end: null !default;
 
 // How colors derived from the brand color are produced: 'sass' (compile time, works everywhere) or
 // 'css' (runtime through `--ht-brand`, re-themable with CSS only, needs relative color syntax support)

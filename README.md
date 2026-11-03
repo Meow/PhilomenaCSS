@@ -63,7 +63,9 @@ Configure the framework **before anything else loads it**:
 
 The page background gradient is opt-in and off by default (the compiled `dist/` stylesheets do not include it).
 Enable it in Sass with `$background-gradient: true`, its colors and layout are the `bg-gradient-*` tokens
-(`$bg-gradient-start`, `$bg-gradient-end`, `--ht-color-bg-gradient-*`, `--ht-value-bg-gradient-*`).
+(`--ht-color-bg-gradient-*`, `--ht-value-bg-gradient-*`). The middle of the gradient is the brand color. The
+start and end follow it too (a hue shift of the brand color), unless you set `$bg-gradient-start` and
+`$bg-gradient-end` to fixed colors.
 
 Everything else is a CSS custom property, so it can also be changed at runtime
 (`--ht-value-*`, `--ht-color-*-light`/`-dark`). Themes are switched with `data-theme="light|dark"` on `:root`
