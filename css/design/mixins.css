@@ -19,8 +19,6 @@ $bar-controls: .button, .tag a, .badge a;
   @mixin $(variation) warning;
   @mixin $(variation) danger;
   @mixin $(variation) special;
-  @mixin $(variation) light;
-  @mixin $(variation) dark;
 }
 
 /*
@@ -41,7 +39,7 @@ $bar-controls: .button, .tag a, .badge a;
   outline-offset: calc(-1 * var(--focus-outline));
 }
 
-/* A checkbox that drives a script-free toggle (burger menu, toggle box, clamp): out of sight, but still focusable */
+/* A checkbox that drives a script-free toggle (burger menu, clamp): out of sight, but still focusable */
 @define-mixin hidden-toggle {
   position: absolute;
   opacity: 0;
@@ -124,7 +122,7 @@ $bar-controls: .button, .tag a, .badge a;
  * Color variants of the components, from the roles of a type color (see css/design/tokens.css). The class is always
  * {component}-{type}: .button-{type}, .badge-{type}, .alert-{type}, .counter-{type}, .pagination-{type}, .card-{type},
  * .block-{type}, .progress-{type}, .table-{type} (on a table, a row or a cell) and .media-{type} (on a box or an overlay).
- * The types are neutral (the default look), primary, success, warning, danger, special, light and dark.
+ * The types are neutral (the default look), primary, success, warning, danger and special.
  */
 @define-mixin button-color-variation $type {
   .button.button-$(type) {
@@ -137,10 +135,9 @@ $bar-controls: .button, .tag a, .badge a;
 @define-mixin alert-color-variation $type {
   .alert.alert-$(type) {
     background-color: var(--$(type)-tint-color);
-    border-color: var(--$(type)-tint-color);
   }
 
-  .alert.alert-$(type) .alert-title,
+  .alert.alert-$(type) a,
   .alert.alert-$(type) .alert-icon {
     color: var(--$(type)-tint-text-color);
   }
@@ -247,16 +244,7 @@ $bar-controls: .button, .tag a, .badge a;
     color: var(--$(type)-tint-text-color);
   }
 
-  .card.card-$(type)
-    .button:not(
-      .button-primary,
-      .button-success,
-      .button-danger,
-      .button-warning,
-      .button-special,
-      .button-light,
-      .button-dark
-    ) {
+  .card.card-$(type) .button:not(.button-primary, .button-success, .button-danger, .button-warning, .button-special) {
     color: var(--$(type)-text-color);
     background-color: var(--$(type)-color);
     --_border-color: var(--$(type)-border-color);

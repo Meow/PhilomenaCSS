@@ -49,6 +49,11 @@
   margin-top: var(--block-spacing);
 }
 
+/* The burger panel and its overlay are fixed to the screen, a margin would push them down from its top */
+.docs-preview > :is(.burger, .burger-overlay) {
+  margin-top: 0;
+}
+
 .docs-preview > .alert + .alert {
   margin-top: var(--alert-gap);
 }

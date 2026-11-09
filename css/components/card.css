@@ -40,9 +40,3 @@
 }
 
 @mixin each-type card-color-variation;
-
-/* The bodies of light and dark cards follow the theme, so their links take the link color made for tinted surfaces */
-.card.card-light a:where(:not($(content-controls))),
-.card.card-dark a:where(:not($(content-controls))) {
-  color: var(--link-strong-color);
-}

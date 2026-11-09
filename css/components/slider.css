@@ -68,6 +68,14 @@
   border-radius: 50%;
 }
 
+.slider:not(:disabled):hover::-webkit-slider-thumb {
+  box-shadow: inset 0 0 0 100em var(--hover-shade-color);
+}
+
+.slider:not(:disabled):hover::-moz-range-thumb {
+  box-shadow: inset 0 0 0 100em var(--hover-shade-color);
+}
+
 .slider:focus-visible {
   @mixin focus-ring-offset;
 }

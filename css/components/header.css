@@ -14,7 +14,7 @@
   padding: var(--header-spacing-vertical) var(--header-spacing-horizontal);
   box-sizing: border-box;
   border-bottom: var(--border-width) solid var(--tint-color);
-  box-shadow: var(--emphasis-shadow);
+  box-shadow: var(--edge-shadow);
 }
 
 /* A header lays its children out in a row: the brand, then whatever follows, pushed apart */
@@ -26,7 +26,9 @@
   position: absolute;
 }
 
-.header.non-stick + * {
+/* What follows makes room for it; a burger menu after the header is fixed to the screen, so the room is made after it */
+.header.non-stick + :not(.burger, .burger-overlay),
+.header.non-stick + .burger + .burger-overlay + * {
   margin-top: var(--header-height);
 }
 

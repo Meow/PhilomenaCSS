@@ -117,7 +117,7 @@ for (const theme of ['light', 'dark']) {
   const hover = color('hover-color', card);
   const hoverWell = color('hover-color', well);
   const white = { r: 255, g: 255, b: 255, a: 1 };
-  const types = ['neutral', 'primary', 'success', 'warning', 'danger', 'special', 'light', 'dark'];
+  const types = ['neutral', 'primary', 'success', 'warning', 'danger', 'special'];
   const tags = [
     'default',
     'rating',
@@ -177,7 +177,6 @@ for (const theme of ['light', 'dark']) {
         tintBg = color(`${t}-tint-color`, card),
         bar = color(`${t}-bar-color`, card);
       const affix = color(`${t}-affix-color`, card);
-      const fixed = t === 'light' || t === 'dark';
       const rows = [
         [`${t} button text`, color(`${t}-text-color`, fill), fill],
         [
@@ -191,20 +190,18 @@ for (const theme of ['light', 'dark']) {
           color('active-shade-color', fill),
         ],
         [`${t} tint text on tint`, color(`${t}-tint-text-color`, tintBg), tintBg],
-        ...(fixed ? [] : [[`${t} text on tint`, color('text-color', tintBg), tintBg]]),
-        ...(fixed ? [] : [[`${t} strong link on tint`, color('link-strong-color', tintBg), tintBg]]),
-        ...(fixed ? [] : [[`${t} tint text on surface`, color(`${t}-tint-text-color`, card), card]]),
+        [`${t} text on tint`, color('text-color', tintBg), tintBg],
+        [`${t} strong link on tint`, color('link-strong-color', tintBg), tintBg],
+        [`${t} tint text on surface`, color(`${t}-tint-text-color`, card), card],
         [`${t} tint text on affix`, color(`${t}-tint-text-color`, affix), affix],
         [`${t} bar text`, color(`${t}-bar-text-color`, bar), bar],
       ];
-      if (!fixed) {
-        const wash = color(`${t}-wash-color`, card);
-        rows.push(
-          [`${t} text on wash`, color('text-color', wash), wash],
-          [`${t} muted text on wash`, color('muted-text-color', wash), wash],
-          [`${t} tint text on wash`, color(`${t}-tint-text-color`, wash), wash],
-        );
-      }
+      const wash = color(`${t}-wash-color`, card);
+      rows.push(
+        [`${t} text on wash`, color('text-color', wash), wash],
+        [`${t} muted text on wash`, color('muted-text-color', wash), wash],
+        [`${t} tint text on wash`, color(`${t}-tint-text-color`, wash), wash],
+      );
       return rows;
     }),
     // the actions in a media box header, tinted by their kind on the title bar
@@ -213,12 +210,6 @@ for (const theme of ['light', 'dark']) {
       [`${t} action filled`, card, color(`tag-${t}-text-color`, card)],
     ]),
     ['comments action filled', card, color('bar-link-color', card)],
-    // links in the bodies of light and dark cards, which follow the theme
-    ...['light', 'dark'].map(t => [
-      `strong link on ${t} wash`,
-      color('link-strong-color', color(`${t}-wash-color`, card)),
-      color(`${t}-wash-color`, card),
-    ]),
     // tags
     ...tags.map(t => [
       `${t} tag text`,
@@ -250,15 +241,9 @@ for (const theme of ['light', 'dark']) {
     ['well on surface', well, card],
     ['deep well on surface', deepWell, card],
     ['accent on surface', color('accent-color', card), card],
-    ...types
-      .filter(t => t !== 'light' && t !== 'dark')
-      .map(t => [`${t} button on surface`, color(`${t}-color`, card), card]),
-    ...types
-      .filter(t => t !== 'light' && t !== 'dark')
-      .map(t => [`${t} tint on surface`, color(`${t}-tint-color`, card), card]),
-    ...types
-      .filter(t => t !== 'light' && t !== 'dark')
-      .map(t => [`${t} bar on surface`, color(`${t}-bar-color`, card), card]),
+    ...types.map(t => [`${t} button on surface`, color(`${t}-color`, card), card]),
+    ...types.map(t => [`${t} tint on surface`, color(`${t}-tint-color`, card), card]),
+    ...types.map(t => [`${t} bar on surface`, color(`${t}-bar-color`, card), card]),
     ...types.map(t => [`${t} affix on tint`, color(`${t}-affix-color`, card), color(`${t}-tint-color`, card)]),
   ];
 

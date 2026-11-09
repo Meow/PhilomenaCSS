@@ -191,41 +191,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     const stored = safe(() => localStorage.getItem('philomena-docs-theme'));
     if (stored) setTheme(stored);
 
-    const copy = async (text: string, button?: HTMLElement) => {
-      const label = button?.querySelector('.button-text');
+    // A copy button keeps its result color (and label, if it has one) for a moment, then returns to its own look
+    const copy = async (text: string, button: HTMLElement) => {
+      if (button.classList.contains('pressed')) return;
+      const ok = await navigator.clipboard.writeText(text).then(
+        () => true,
+        () => false,
+      );
+      const label = button.querySelector('.button-text');
       const original = label?.textContent;
-      try {
-        await navigator.clipboard.writeText(text);
-        if (label) label.textContent = 'Copied!';
-      } catch {
-        if (label) label.textContent = 'Copy failed';
-      }
-      if (label) {
-        setTimeout(() => {
-          label.textContent = original ?? '';
-        }, 1500);
-      }
+      const own = button.classList.contains('button-primary') ? 'button-primary' : '';
+      const result = ok ? 'button-success' : 'button-danger';
+      if (label) label.textContent = ok ? 'Copied!' : 'Copy failed';
+      if (own) button.classList.remove(own);
+      button.classList.add(result, 'pressed');
+      button.classList.toggle('docs-copied', ok);
+      setTimeout(() => {
+        if (label) label.textContent = original ?? '';
+        button.classList.remove(result, 'pressed', 'docs-copied');
+        if (own) button.classList.add(own);
+      }, 1500);
     };
     document.querySelectorAll<HTMLElement>('[data-copy-source]').forEach(btn =>
       btn.addEventListener('click', () => {
         copy(btn.closest('article')?.querySelector('.docs-source')?.textContent ?? '', btn);
       }),
     );
-    document.querySelectorAll<HTMLElement>('[data-copy-text]').forEach(btn =>
-      btn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(btn.dataset.copyText!);
-        } catch {
-          return;
-        }
-        btn.classList.replace('button-primary', 'button-success');
-        btn.classList.add('pressed', 'docs-copied');
-        setTimeout(() => {
-          btn.classList.replace('button-success', 'button-primary');
-          btn.classList.remove('pressed', 'docs-copied');
-        }, 1500);
-      }),
-    );
+    document
+      .querySelectorAll<HTMLElement>('[data-copy-text]')
+      .forEach(btn => btn.addEventListener('click', () => copy(btn.dataset.copyText!, btn)));
 
     // Tabs: the framework styles .selected, moving it is the page's job
     document.addEventListener('click', event => {

@@ -19,7 +19,8 @@
  *   </nav>
  * .navbar-menu.end aligns a menu with the end of its item, a .navbar-spacer pushes the items after it to the end of
  * the bar. Counts next to items and on icons are .counter elements (css/components/counter.css). The bar works on
- * its own or inside a .header.
+ * its own or inside a .header. On its own, .flush is for a bar that runs from edge to edge of the screen: it keeps
+ * only the bottom line of the inset shadow.
  *
  * The bar is one row and never wraps. Below the md breakpoint its items are hidden, except the .navbar-burger (the
  * label or button that opens a burger menu with the same links, css/components/burger.css, which only shows there)
@@ -35,6 +36,11 @@
   background-color: var(--header-color);
   border-bottom: var(--border-width) solid var(--tint-color);
   box-shadow: var(--emphasis-shadow);
+}
+
+/* A bar that touches the edges of the screen keeps only the bottom line of the shadow, like a header */
+.navbar.flush {
+  box-shadow: var(--edge-shadow);
 }
 
 /* Inside a header the bar fills its height and the header draws the frame */
@@ -56,7 +62,6 @@
   box-shadow: inset 0 0 0 100em var(--_shade);
   transition-property: color, box-shadow;
   transition-duration: 0.1s;
-  border-inline-end: var(--border-width) solid var(--inset-shadow-color);
   font-size: var(--header-font-size);
   text-decoration: none;
   white-space: nowrap;

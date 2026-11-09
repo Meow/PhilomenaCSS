@@ -61,9 +61,3 @@
 }
 
 @mixin each-type block-color-variation;
-
-/* The content of light and dark blocks follows the theme, so its links keep the regular link color */
-.block.block-light .block-content a:where(:not($(content-controls))),
-.block.block-dark .block-content a:where(:not($(content-controls))) {
-  color: var(--link-color);
-}

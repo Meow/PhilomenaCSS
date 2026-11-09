@@ -1,4 +1,4 @@
-import { icon, iconSetLabels, type IconSet } from './icons';
+import { icon, iconSetLabels, type IconName, type IconSet } from './icons';
 
 export interface Story {
   id: string;
@@ -21,54 +21,13 @@ const badge = (text: string, classes = '') =>
 const block = (title: string, body: string) =>
   `<section class="block"><header class="block-header"><span class="block-header-title">${title}</span></header><div class="block-content">${body}</div></section>`;
 
-const alerts = `<div class="alert alert-primary">
-  <div class="alert-icon">i</div>
-  <div class="alert-content">
-    <div class="alert-title">Primary alert</div>
-    <div class="alert-text">${lorem}</div>
-  </div>
-</div>
-<div class="alert alert-warning">
-  <div class="alert-icon">!</div>
-  <div class="alert-content">
-    <div class="alert-title">Warning alert</div>
-    <div class="alert-text">${lorem}</div>
-  </div>
-</div>
-<div class="alert alert-success">
-  <div class="alert-icon">✓</div>
-  <div class="alert-content">
-    <div class="alert-title">Success alert</div>
-    <div class="alert-text">${lorem}</div>
-  </div>
-</div>
-<div class="alert alert-danger">
-  <div class="alert-icon">×</div>
-  <div class="alert-content">
-    <div class="alert-title">Danger alert</div>
-    <div class="alert-text">${lorem}</div>
-  </div>
-</div>
-<div class="alert alert-special">
-  <div class="alert-icon">★</div>
-  <div class="alert-content">
-    <div class="alert-title">Special alert</div>
-    <div class="alert-text">${lorem} <a href="#">A link</a>.</div>
-  </div>
-</div>
-<div class="alert">
-  <div class="alert-content">
-    <div class="alert-title">Plain alert</div>
-    <div class="alert-text">${lorem}</div>
-  </div>
-</div>
-<div class="alert alert-primary compact">
-  <div class="alert-content">
-    <div class="alert-title">Compact alert title</div>
-    <div class="alert-text">Compact alert text</div>
-    <div class="alert-actions">${button('Compact alert action')}</div>
-  </div>
-</div>`;
+const alertIcon = (name: IconName) => `<span class="alert-icon">${icon('fontawesome', name)}</span>`;
+const alerts = `<div class="alert alert-primary">${alertIcon('question')}<div class="alert-text">Primary alert. ${lorem} <a href="#">A link</a>.</div></div>
+<div class="alert alert-warning">${alertIcon('exclamation')}<div class="alert-text">Warning alert. ${lorem} <a href="#">A link</a>.</div></div>
+<div class="alert alert-success">${alertIcon('check')}<div class="alert-text">Success alert. ${lorem} <a href="#">A link</a>.</div></div>
+<div class="alert alert-danger">${alertIcon('flag')}<div class="alert-text">Danger alert. ${lorem} <a href="#">A link</a>.</div></div>
+<div class="alert alert-special">${alertIcon('star')}<div class="alert-text">Special alert. ${lorem} <a href="#">A link</a>.</div></div>
+<div class="alert">Plain alert without an icon. ${lorem} <a href="#">A link</a>.</div>`;
 
 const loadingIndicator =
   '<svg class="loading-indicator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1em" height="1em"><path d="M35 32a3.001 3.001 0 0 1-6 0l3-26.074L35 32Z" class="minute"/><path d="M35 32a3.001 3.001 0 0 1-6 0l3-13.037L35 32Z" class="hour"/><g class="base"><circle cx="32" cy="32" r="29" class="face"/><path d="M32 3v7m0 44v7m22-29h7M3 32h7" class="ticking"/></g></svg>';
@@ -211,7 +170,7 @@ ${comboboxItem('America/Argentina/Buenos_Aires (Argentina Standard Time)', ' add
 </div>`;
 
 const buttonsFor = (set: IconSet) =>
-  `<div class="docs-stack">\n${[undefined, 'primary', 'success', 'danger', 'warning', 'special', 'light', 'dark'].map(buttonRow(set)).join('\n')}\n</div>`;
+  `<div class="docs-stack">\n${[undefined, 'primary', 'success', 'danger', 'warning', 'special'].map(buttonRow(set)).join('\n')}\n</div>`;
 
 const formFields = (
   state: 'regular' | 'readonly' | 'disabled',
@@ -498,19 +457,6 @@ const tabs = `<div class="docs-stack">
 </section>
 </div>`;
 
-const toggleBox = `<div class="docs-stack">
-<div>
-  <input class="toggle-box" type="checkbox" id="toggle-box-demo-1">
-  <label class="toggle-box-label" for="toggle-box-demo-1">Advanced options</label>
-  <div class="toggle-box-content"><p>Hidden until the label is clicked. No script is involved, the label checks a hidden checkbox.</p></div>
-</div>
-<div>
-  <input class="toggle-box" type="checkbox" id="toggle-box-demo-2" checked>
-  <label class="toggle-box-label" for="toggle-box-demo-2">Open from the start</label>
-  <div class="toggle-box-content"><p>This one has the checked attribute. ${lorem}</p></div>
-</div>
-</div>`;
-
 const spoilers = `<p>The detective gathers everyone in the library and announces that the killer is <span class="spoiler" tabindex="0">the butler, who was <a href="#">seen in the garden</a></span>. Hover the bar, or focus it with the keyboard, to read it.</p>
 <p>Already revealed: <span class="spoiler revealed">the butler did it</span>.</p>
 <hr>
@@ -546,7 +492,7 @@ const layoutHelpers = `<div class="docs-stack">
   <aside class="layout-side">${block('.layout-side', `<p>A side column of a fixed width. It stacks over the main column on narrow screens.</p>`)}</aside>
   <div class="layout-main">${block('.layout-main', `<p>${lorem} ${lorem}</p>`)}</div>
 </div>
-<div class="layout-narrow layout-center"><div class="alert"><div class="alert-content"><p>.layout-narrow .layout-center: a readable column, centered.</p></div></div></div>
+<div class="layout-narrow layout-center"><div class="alert">.layout-narrow .layout-center: a readable column, centered.</div></div>
 <div class="flex flex-wrap flex-center flex-between gap-md">
   ${badge('.flex .flex-center .flex-between .gap-md')}
   ${badge('second', 'badge-primary')}
@@ -587,8 +533,16 @@ const avatars = `<div class="docs-stack">
 
 // Comments: a short one (the "Show more" label stays out of sight), a long one cut after six lines, one cut after
 // three with --communication-max-height, and a deleted one
-const communication = (id: string, name: string, colors: [string, string], body: string, extra = '', style = '') =>
-  `<article class="communication${extra}"${style ? ` style="${style}"` : ''}>
+const communication = (
+  id: string,
+  name: string,
+  colors: [string, string],
+  body: string,
+  extra = '',
+  style = '',
+  notice = '',
+) =>
+  `<article class="communication${extra}"${style ? ` style="${style}"` : ''}>${notice ? `\n  <div class="communication-notice">${notice}</div>` : ''}
   <div class="communication-body">
     <img class="avatar avatar-md square communication-avatar" src="${face(...colors)}" alt="">
     <div class="communication-content">
@@ -620,9 +574,11 @@ ${communication(
   'communication-demo-4',
   'Deleted comment',
   ['#da77f2', '#862e9c'],
-  `        <p><strong>Deletion reason: Rule #1 (Moderator)</strong></p>
-        <p> ${lorem} ${lorem} ${lorem} ${lorem} ${lorem} ${lorem}</p>`,
+  `        <p><strong>Deletion reason: Rule #0 (Princess Luna)</strong>, typed by the author: it stays ordinary text.</p>
+        <p>${lorem} ${lorem} ${lorem} ${lorem} ${lorem} ${lorem}</p>`,
   ' deleted',
+  '',
+  `${fai('trash')}Deleted: Rule #1 <span class="communication-notice-by">Moderator</span>`,
 )}
 </div>`;
 
@@ -889,7 +845,7 @@ const nestedQuotes = (depth: number): string => {
   return html.trimEnd();
 };
 
-const badgeColors = [undefined, 'primary', 'success', 'warning', 'danger', 'special', 'light', 'dark'];
+const badgeColors = [undefined, 'primary', 'success', 'warning', 'danger', 'special'];
 const badgeGroup = (prefix?: string, suffix?: string) => `<span class="badge-group">
 ${badgeColors
   .map(color => {
@@ -912,7 +868,7 @@ export const stories: Story[] = [
     id: 'alerts',
     title: 'Alerts',
     description:
-      'An alert is neutral without a colour; .alert-{color} tints it and colours its title and icon. Here: primary, warning, success, danger and special, a plain one, and a compact layout with actions.',
+      "A flat tinted bar of text and links, as Philomena's flash notices. An alert is neutral without a colour; .alert-{color} tints it and colours its links and its optional .alert-icon (put the text in an .alert-text next to one). Here: primary, warning, success, danger and special, and a plain one.",
     html: alerts,
   },
   {
@@ -1006,13 +962,6 @@ export const stories: Story[] = [
     html: tabs,
   },
   {
-    id: 'toggle-box',
-    title: 'Toggle box',
-    description:
-      'A section that opens when its label is clicked, driven by a hidden checkbox, so it works without a script (unlike the collapsible). The checkbox, the label and the content have to follow each other in that order.',
-    html: toggleBox,
-  },
-  {
     id: 'spoiler',
     title: 'Spoiler text and separators',
     description:
@@ -1096,8 +1045,7 @@ export const stories: Story[] = [
   {
     id: 'badges',
     title: 'Badges',
-    description:
-      'The default, primary, success, warning, danger and special colours plus the fixed light and dark ones, with optional prefix and suffix.',
+    description: 'The default, primary, success, warning, danger and special colours, with optional prefix and suffix.',
     html: `<div class="docs-stack">\n${[badgeGroup(), badgeGroup('Prefixed'), badgeGroup(undefined, 'Suffixed'), badgeGroup('Prefixed', 'Suffixed')].join('\n')}\n</div>`,
   },
   {
@@ -1139,7 +1087,7 @@ ${badgeColors.map(color => `  <span class="counter${color ? ` counter-${color}` 
     id: 'communication',
     title: 'Communication',
     description:
-      'A comment, post or message: an avatar next to the author and the text, over a bar of options, laid out as the comments on Philomena: a square avatar, the name over the role label, the time and Report on one side of the bar and the actions on the other. On narrow screens the avatar and the author become a header row over the text. Long text is cut off after --communication-max-height (six lines by default, three on the third one here) and the rest is behind a Show more label, which works without a script. The label only appears when the text is longer than the limit, as the first comment shows. .deleted tints a removed one.',
+      'A comment, post or message: an avatar next to the author and the text, over a bar of options, laid out as the comments on Philomena: a square avatar, the name over the role label, the time and Report on one side of the bar and the actions on the other. On narrow screens the avatar and the author become a header row over the text. Long text is cut off after --communication-max-height (six lines by default, three on the third one here) and the rest is behind a Show more label, which works without a script. The label only appears when the text is longer than the limit, as the first comment shows. .deleted tints a removed one. The last one is deleted: what the site says about it is a .communication-notice bar outside the text, which nothing typed into a comment can imitate.',
     html: communications,
     notes: [
       'The cut works with the clamp: a hidden checkbox (<code class="code-span">.clamp-toggle</code>) right before <code class="code-span">.communication-text.clamp</code>, and the two labels inside the text. Leave them out and the text is never cut. The limit is a height, so any length works: <code class="code-span">--communication-max-height: 200px</code>.',
@@ -1241,14 +1189,14 @@ ${tagCategories
       <tr class="table-warning"><td>Lint</td><td><a href="#">3 warnings</a></td><td class="numeric">4 s</td></tr>
       <tr class="table-danger"><td>Tests</td><td><a href="#">1 failure</a></td><td class="numeric">48 s</td></tr>
       <tr class="table-special"><td>Review</td><td>assistant approved</td><td class="numeric">—</td></tr>
-      <tr><td>Deploy</td><td class="table-primary">queued</td><td class="numeric table-light">—</td></tr>
+      <tr><td>Deploy</td><td class="table-primary">queued</td><td class="numeric">—</td></tr>
     </tbody>
     <tfoot>
       <tr><td colspan="2">4 of 5 steps done</td><td class="numeric">64 s</td></tr>
     </tfoot>
   </table>
 </div>
-${['primary', 'warning', 'danger', 'special', 'light', 'dark']
+${['primary', 'warning', 'danger', 'special']
   .map(
     c => `<div class="table-wrap">
   <table class="table table-${c}">
@@ -1376,7 +1324,7 @@ ${nestedQuotes(8)}`,
   <div class="block-content"><p>${lorem}</p></div>
 </section>
 <div class="docs-playground-grid">
-${['primary', 'success', 'warning', 'danger', 'special', 'light', 'dark']
+${['primary', 'success', 'warning', 'danger', 'special']
   .map(
     c => `  <section class="block block-${c}">
     <header class="block-header"><span class="block-header-title">${c[0].toUpperCase() + c.slice(1)} block</span><a href="#">Link</a></header>
@@ -1410,7 +1358,7 @@ ${['primary', 'success', 'warning', 'danger', 'special', 'light', 'dark']
   <p>${lorem} <a href="#">A link</a>.</p>
 </article>
 <div class="docs-playground-grid">
-${['primary', 'success', 'warning', 'danger', 'special', 'light', 'dark']
+${['primary', 'success', 'warning', 'danger', 'special']
   .map(
     c => `  <article class="card card-${c}">
     <header class="card-header"><h3>${c[0].toUpperCase() + c.slice(1)} card</h3></header>

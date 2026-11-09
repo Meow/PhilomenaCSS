@@ -70,9 +70,20 @@
  */
 
 .media-box .media-box-header.actions {
+  flex-wrap: wrap;
   gap: 0;
   padding: 0;
   align-items: stretch;
+}
+
+/* An action is never cut off: if a row of long counts does not fit the box, it wraps */
+.media-box .media-box-header.actions > :where(.media-box-action, .media-box-score) {
+  overflow: visible;
+}
+
+/* Icons are as wide as their shape here and not a fixed width, which the narrow boxes have no room for */
+.media-box .media-box-header .media-box-action > svg {
+  inline-size: auto;
 }
 
 .media-box .media-box-header .media-box-action,
@@ -118,8 +129,21 @@
   pointer-events: none;
 }
 
-/* The boxes are narrow on phones (two to a row), so the actions sit closer together to fit */
+/* Small boxes (a .small list, and every list on phones) have a smaller header, as Philomena's small thumbnails */
+.media-list.small .media-box .media-box-header {
+  font-size: var(--media-header-small-font-size);
+}
+
+.media-list.small .media-box .media-box-header .media-box-action,
+.media-list.small .media-box .media-box-header .media-box-score {
+  padding-inline: var(--spacing-xs);
+}
+
 @media not all and (min-width: $breakpoint-md) {
+  .media-box .media-box-header {
+    font-size: var(--media-header-small-font-size);
+  }
+
   .media-box .media-box-header .media-box-action,
   .media-box .media-box-header .media-box-score {
     padding-inline: var(--spacing-xs);

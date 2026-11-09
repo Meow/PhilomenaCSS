@@ -21,6 +21,7 @@
   border: var(--border-width) solid var(--control-border-color);
   border-radius: var(--border-radius-inner);
   background-color: var(--well-color);
+  transition: border-color 0.1s;
 }
 
 .menu-check-input[type="radio"] + .menu-check-box {
@@ -32,28 +33,20 @@
   background-color: var(--primary-color);
 }
 
-/* The check mark: two sides of a small rotated box */
+/* The check mark: a shape cut out of a filled square, which stays crisp at any font size and zoom */
 .menu-check-input:checked + .menu-check-box:after {
   content: "";
   position: absolute;
-  inset-block-start: 10%;
-  inset-inline-start: 32%;
-  inline-size: 25%;
-  block-size: 55%;
-  border: solid var(--primary-text-color);
-  border-width: 0 0.15em 0.15em 0;
-  transform: rotate(45deg);
+  inset: 15%;
+  background-color: var(--primary-text-color);
+  clip-path: polygon(12% 48%, 0% 62%, 38% 96%, 100% 22%, 86% 8%, 37% 68%);
 }
 
 /* The dot of a radio */
 .menu-check-input[type="radio"]:checked + .menu-check-box:after {
   inset: 25%;
-  inline-size: auto;
-  block-size: auto;
-  border: 0;
   border-radius: 50%;
-  background-color: var(--primary-text-color);
-  transform: none;
+  clip-path: none;
 }
 
 .menu-check-input:focus-visible + .menu-check-box {
@@ -75,8 +68,27 @@
   margin-inline: var(--navbar-menu-padding-horizontal);
 }
 
+/* The box reacts to the pointer over its row, as the form controls do */
+label:hover > .menu-check-input:where(:not(:disabled, :checked)) + .menu-check-box {
+  border-color: var(--text-color);
+}
+
 /* A label as a menu item does not select its text on a double click */
 label.dropdown-item,
 label.navbar-menu-item {
   user-select: none;
+}
+
+/* A row whose control is disabled fades as a whole and does not react to the pointer */
+/* Add .disabled to the row for browsers without :has(), where only the control fades */
+label.dropdown-item:has(:disabled),
+label.navbar-menu-item:has(:disabled),
+label.dropdown-item.disabled,
+label.navbar-menu-item.disabled {
+  pointer-events: none;
+  @mixin faded;
+}
+
+label:is(:has(:disabled), .disabled) > :is(.menu-check-box, .form-switch-input:disabled) {
+  opacity: 1;
 }

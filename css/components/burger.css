@@ -25,6 +25,7 @@
 
 .burger {
   position: fixed;
+  margin: 0;
   z-index: var(--z-sidebar);
   inset-block: 0;
   inset-inline-start: 0;
@@ -56,6 +57,7 @@
 
 .burger-overlay {
   position: fixed;
+  margin: 0;
   z-index: var(--z-sidebar-overlay);
   inset: 0;
   background-color: var(--veil-color);

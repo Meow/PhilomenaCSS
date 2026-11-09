@@ -33,6 +33,11 @@
   background-color: var(--active-shade-color);
 }
 
+/* After a button's text the counter keeps a word space, the content gap alone is made for icons */
+.button-content > .counter:not(.corner) {
+  margin-inline-start: var(--spacing-xs);
+}
+
 .counter-anchor {
   position: relative;
   display: inline-flex;

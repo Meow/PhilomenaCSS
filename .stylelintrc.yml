@@ -1,5 +1,5 @@
 ---
-# Philomena's configuration, adapted: rem borders need four decimals, --_private properties and the :not() lists of the
+# Philomena's configuration, adapted: small rem sizes need four decimals, --_private properties and the :not() lists of the
 # rhythm rules are allowed, and 0px stays in custom properties that are used inside calc()
 extends: stylelint-config-recommended
 rules:

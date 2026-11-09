@@ -51,7 +51,7 @@ h6 {
 }
 
 /* Headings keep a large distance from what surrounds them, except where they are the label of a component */
-:where(h1, h2, h3, h4, h5, h6):where(:not(.card-header *, .alert-title, th *, td *, .badge *, .tag *, .button *)) {
+:where(h1, h2, h3, h4, h5, h6):where(:not(.card-header *, th *, td *, .badge *, .tag *, .button *)) {
   margin-block: var(--heading-spacing);
 }
 
@@ -115,7 +115,7 @@ h6 {
  * any margin of your own wins.
  */
 /* prettier-ignore */
-$flow-containers: body, main, .content, .card, .block-content, .tab-panel, .collapsible-inner, .accordion-item-body, .alert-content, .popup, .card-forms-section, .toggle-box-content, .layout-main, .layout-side;
+$flow-containers: body, main, .content, .card, .block-content, .tab-panel, .collapsible-inner, .accordion-item-body, .popup, .card-forms-section, .layout-main, .layout-side;
 /* prettier-ignore */
 $flow-blocks: .card, .block, .communication, blockquote, .blockquote, .media-list, .table-wrap, .alert, .code-block, .collapsible.visible, .tag-box, .accordion, .form-control-group, .content;
 /* prettier-ignore */
@@ -141,6 +141,12 @@ $flow-text: p, ul, ol;
 
 :where($(flow-containers)) > :where($(flow-blocks)) + :where($(flow-text), .button, $(flow-groups)) {
   margin-top: var(--spacing-md);
+}
+
+/* Form controls that are stacked without a .form-control-group, and the submit row after them, keep the form distance */
+/* prettier-ignore */
+:where($(flow-containers)) > :where(.form-control-wrap, .form-control, .form-control-group) + :where(.form-control-wrap, .form-control, .form-control-submit, .from-control-submit) {
+  margin-top: var(--form-control-spacing);
 }
 
 /* People who ask for reduced motion get no transitions; the loading indicator keeps turning, it conveys state */

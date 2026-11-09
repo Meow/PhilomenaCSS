@@ -14,8 +14,7 @@
  *  --{type}-bar-color / -bar-text-color            the title bar of a colored card, block, media box or table
  *  --{type}-wash-color                             the body of a colored card
  *  --{type}-affix-color                            the prefix and suffix of a badge, the hover of a pagination link
- * light and dark are fixed colors with the same roles, tag categories get --tag-{category}-color / -text-color /
- * -affix-color from the tag-color mixin.
+ * Tag categories get --tag-{category}-color / -text-color / -affix-color from the tag-color mixin.
  *
  * Colors derived from another color use relative color syntax on $variables, which is computed into a static
  * color at build time. Use $variables and not var(--variables) as the origin, a var() can't be computed and
@@ -68,26 +67,6 @@ $_syntax-punctuation: #6b6d78;
   --$(type)-bar-text-color: hsl(from $color h calc(s + $sat) 90%);
   --$(type)-wash-color: hsl(from $color h calc(s + $sat - 15) 12%);
   --$(type)-affix-color: hsl(from $color h calc(s + $sat + 25) 12%);
-}
-
-/* The light and dark types are fixed colors, the same in both themes (their washes are set per theme) */
-@define-mixin fixed-type-colors {
-  --light-color: #eeeeee;
-  --light-text-color: #222222;
-  --light-border-color: #ffffff;
-  --light-tint-color: #eeeeee;
-  --light-tint-text-color: #222222;
-  --light-bar-color: #eeeeee;
-  --light-bar-text-color: #222222;
-  --light-affix-color: #dddddd;
-  --dark-color: #222222;
-  --dark-text-color: #eeeeee;
-  --dark-border-color: #555555;
-  --dark-tint-color: #222222;
-  --dark-tint-text-color: #eeeeee;
-  --dark-bar-color: #222222;
-  --dark-bar-text-color: #eeeeee;
-  --dark-affix-color: #111111;
 }
 
 /* A tag category: a tint of the hue with bold text in the hue (darkened on the light theme, lightened on the
@@ -160,9 +139,6 @@ $_syntax-punctuation: #6b6d78;
   --overlay-text-color: #ffffff;
   --veil-color: rgba(0, 0, 0, 0.6);
   --veil-text-color: #ffffff;
-  /* The washes of the fixed types */
-  --light-wash-color: hsl(0, 0%, 92%);
-  --dark-wash-color: hsl(0, 0%, 88%);
   /* Syntax highlighting */
   --syntax-command-color: hsl(from $_syntax-command h s 37%);
   --syntax-flag-color: hsl(from $_syntax-flag h s 32%);
@@ -177,7 +153,6 @@ $_syntax-punctuation: #6b6d78;
   @mixin type-color-light warning, $warning-color;
   @mixin type-color-light danger, $danger-color;
   @mixin type-color-light special, $special-color;
-  @mixin fixed-type-colors;
   @mixin tag-colors light;
 }
 
@@ -224,8 +199,6 @@ $_syntax-punctuation: #6b6d78;
   --overlay-text-color: #ffffff;
   --veil-color: rgba(0, 0, 0, 0.6);
   --veil-text-color: #ffffff;
-  --light-wash-color: hsl(0, 0%, 20%);
-  --dark-wash-color: hsl(0, 0%, 10%);
   --syntax-command-color: hsl(from $_syntax-command h s 73%);
   --syntax-flag-color: hsl(from $_syntax-flag h s 70%);
   --syntax-string-color: hsl(from $_syntax-string h s 68%);
@@ -239,7 +212,6 @@ $_syntax-punctuation: #6b6d78;
   @mixin type-color-dark warning, $warning-color;
   @mixin type-color-dark danger, $danger-color;
   @mixin type-color-dark special, $special-color;
-  @mixin fixed-type-colors;
   @mixin tag-colors dark;
 }
 
@@ -264,7 +236,7 @@ $_syntax-punctuation: #6b6d78;
   --heading-4-size: 1.2rem;
   --heading-5-size: 1.1rem;
   --heading-6-size: 1rem;
-  --base-font: "Montserrat", sans-serif;
+  --base-font: verdana, arial, helvetica, sans-serif;
   --mono-font: "Source Code Pro", "Consolas", monospace;
   /* Line heights, as in Philomena: tight for the page and headings, looser for paragraphs and other running text */
   --base-line-height: 1.15;
@@ -293,8 +265,8 @@ $_syntax-punctuation: #6b6d78;
   --border-radius-outer: 0.25rem;
   --border-radius-large: 0.5rem;
   /* Border widths: the regular one for borders and dividers, the thick one for emphasis (popups, table header rules) */
-  --border-width: 0.0625rem;
-  --border-thick-width: 0.125rem;
+  --border-width: 1px;
+  --border-thick-width: 2px;
   /* The gap between the items of a group: buttons, badges, tags, media boxes */
   --group-gap: var(--spacing-md);
   --header-height: 3.25rem;
@@ -315,6 +287,8 @@ $_syntax-punctuation: #6b6d78;
   /* The drop shadow of menus: dropdowns, navbar menus, combobox suggestions */
   --menu-shadow: 0 var(--spacing-sm) var(--spacing-lg) var(--shadow-color);
   --emphasis-shadow: inset 1px 1px 0 var(--inset-highlight-color), inset -1px -1px 0 var(--inset-shadow-color);
+  /* The same for a bar that runs from edge to edge of the screen: only its bottom line, the other sides have no edge */
+  --edge-shadow: inset 0 -1px 0 var(--inset-shadow-color);
   --block-header-padding-vertical: var(--spacing-md);
   --block-header-padding-horizontal: var(--spacing-lg);
   --block-content-padding: var(--spacing-lg);
@@ -331,19 +305,21 @@ $_syntax-punctuation: #6b6d78;
   --media-header-padding-vertical: var(--spacing-sm);
   --media-header-padding-horizontal: var(--spacing-sm);
   --media-header-font-size: 0.875em;
+  --media-header-small-font-size: 0.7857em;
   --media-overlay-padding: var(--spacing-xs) var(--spacing-sm);
   --media-overlay-inset-horizontal: var(--spacing-lg);
   --media-overlay-inset-vertical: var(--spacing-sm);
   --media-overlay-gap: var(--spacing-sm);
   --media-spoiler-blur: 1rem;
-  --alert-spacing: var(--spacing-lg);
+  --alert-padding-vertical: var(--spacing-md);
+  --alert-padding-horizontal: var(--spacing-lg);
   --alert-gap: var(--spacing-md);
   --popup-box-shadow: 1rem;
   --input-padding: var(--spacing-sm);
   --color-input-width: 4rem;
   --color-input-height: 2.5rem;
-  --input-shadow-offset: 0.0625rem;
-  --input-shadow-size: 0.125rem;
+  --input-shadow-offset: 1px;
+  --input-shadow-size: 2px;
   --form-control-spacing: var(--spacing-md);
   --focus-outline: 0.1875em;
   /* How much unavailable controls and muted content are faded */
