@@ -177,17 +177,24 @@ for (const theme of ['light', 'dark']) {
         tintBg = color(`${t}-tint-color`, card),
         bar = color(`${t}-bar-color`, card);
       const affix = color(`${t}-affix-color`, card);
+      const button = color(`${t}-button-color`, card);
       const rows = [
-        [`${t} button text`, color(`${t}-text-color`, fill), fill],
+        [`${t} fill text`, color(`${t}-text-color`, fill), fill],
         [
-          `${t} button text hovered`,
+          `${t} fill text hovered`,
           color(`${t}-text-color`, color('hover-shade-color', fill)),
           color('hover-shade-color', fill),
         ],
+        [`${t} button text`, color(`${t}-button-text-color`, button), button],
+        [
+          `${t} button text hovered`,
+          color(`${t}-button-text-color`, color('hover-shade-color', button)),
+          color('hover-shade-color', button),
+        ],
         [
           `${t} button text pressed`,
-          color(`${t}-text-color`, color('active-shade-color', fill)),
-          color('active-shade-color', fill),
+          color(`${t}-button-text-color`, color('active-shade-color', button)),
+          color('active-shade-color', button),
         ],
         [`${t} tint text on tint`, color(`${t}-tint-text-color`, tintBg), tintBg],
         [`${t} text on tint`, color('text-color', tintBg), tintBg],
@@ -241,7 +248,7 @@ for (const theme of ['light', 'dark']) {
     ['well on surface', well, card],
     ['deep well on surface', deepWell, card],
     ['accent on surface', color('accent-color', card), card],
-    ...types.map(t => [`${t} button on surface`, color(`${t}-color`, card), card]),
+    ...types.map(t => [`${t} fill on surface`, color(`${t}-color`, card), card]),
     ...types.map(t => [`${t} tint on surface`, color(`${t}-tint-color`, card), card]),
     ...types.map(t => [`${t} bar on surface`, color(`${t}-bar-color`, card), card]),
     ...types.map(t => [`${t} affix on tint`, color(`${t}-affix-color`, card), color(`${t}-tint-color`, card)]),

@@ -58,6 +58,10 @@
 .dropdown .dropdown-menu.up {
   top: auto;
   bottom: 100%;
+  /* The shadow falls away from the trigger, upward */
+  box-shadow:
+    var(--emphasis-shadow),
+    0 calc(-1 * var(--spacing-lg)) var(--spacing-lg) calc(-1 * var(--spacing-sm)) var(--shadow-color);
   border-radius: var(--border-radius-outer) var(--border-radius-outer) 0 0;
 }
 

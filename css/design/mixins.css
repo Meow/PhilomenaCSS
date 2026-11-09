@@ -126,8 +126,8 @@ $bar-controls: .button, .tag a, .badge a;
  */
 @define-mixin button-color-variation $type {
   .button.button-$(type) {
-    color: var(--$(type)-text-color);
-    background-color: var(--$(type)-color);
+    color: var(--$(type)-button-text-color);
+    background-color: var(--$(type)-button-color);
     --_border-color: var(--$(type)-border-color);
   }
 }
@@ -245,8 +245,8 @@ $bar-controls: .button, .tag a, .badge a;
   }
 
   .card.card-$(type) .button:not(.button-primary, .button-success, .button-danger, .button-warning, .button-special) {
-    color: var(--$(type)-text-color);
-    background-color: var(--$(type)-color);
+    color: var(--$(type)-button-text-color);
+    background-color: var(--$(type)-button-color);
     --_border-color: var(--$(type)-border-color);
   }
 }

@@ -44,5 +44,5 @@
 .header .nav .nav-link:hover,
 .header .nav .nav-link.current {
   color: var(--header-text-color);
-  background-color: var(--hover-shade-color);
+  background-color: var(--bar-hover-shade-color);
 }

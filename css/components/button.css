@@ -3,8 +3,8 @@
   --_shade: transparent;
   position: relative;
   line-height: normal;
-  color: var(--neutral-text-color);
-  background-color: var(--neutral-color);
+  color: var(--neutral-button-text-color);
+  background-color: var(--neutral-button-color);
   /* The feedback shade is an inset shadow over the fill, under the text, so it can be transitioned */
   box-shadow: inset 0 0 0 100em var(--_shade);
   padding: var(--button-padding-vertical) var(--button-padding-horizontal);

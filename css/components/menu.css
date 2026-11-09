@@ -79,13 +79,14 @@ label.navbar-menu-item {
   user-select: none;
 }
 
-/* A row whose control is disabled fades as a whole and does not react to the pointer */
+/* A row whose control is disabled is faded and italic, as a disabled button, and does not react to the pointer */
 /* Add .disabled to the row for browsers without :has(), where only the control fades */
 label.dropdown-item:has(:disabled),
 label.navbar-menu-item:has(:disabled),
 label.dropdown-item.disabled,
 label.navbar-menu-item.disabled {
   pointer-events: none;
+  font-style: italic;
   @mixin faded;
 }
 

@@ -340,7 +340,7 @@ ${dropdown('tags', 'Tags', [['Tag Changes']])}
     <a class="navbar-item navbar-pinned" href="#" title="Notifications"><span class="navbar-icon counter-anchor">${fa('bell')}<span class="counter counter-danger corner">12</span></span></a>
     <a class="navbar-item navbar-pinned" href="#" title="Conversations"><span class="navbar-icon counter-anchor">${fa('envelope')}<span class="counter counter-danger corner">3</span></span></a>
     <div class="navbar-dropdown navbar-pinned open">
-      <a class="navbar-item caret" href="#" aria-haspopup="true" aria-expanded="true"><span class="navbar-icon">${fa('user')}</span><span class="hidden-below-xl">Username</span></a>
+      <a class="navbar-item caret" href="#" aria-haspopup="true" aria-expanded="true"><span class="navbar-icon">${fa('user')}</span><span class="hidden-below-xxl">Username</span></a>
       <div class="navbar-menu end">
 ${(
   [

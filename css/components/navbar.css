@@ -70,7 +70,7 @@
 
 .navbar .navbar-item:hover,
 .navbar .navbar-item.current {
-  --_shade: var(--hover-shade-color);
+  --_shade: var(--bar-hover-shade-color);
   color: var(--header-text-color);
 }
 
@@ -113,9 +113,12 @@
 .navbar .navbar-dropdown:hover > .navbar-item,
 .navbar .navbar-dropdown:focus-within > .navbar-item,
 .navbar .navbar-dropdown.open > .navbar-item {
-  --_shade: transparent;
   color: var(--text-color);
   background-color: var(--surface-color);
+  /* The sides of the menu's border run up along the item */
+  box-shadow:
+    inset var(--border-width) 0 0 var(--tint-color),
+    inset calc(-1 * var(--border-width)) 0 0 var(--tint-color);
 }
 
 .navbar .navbar-menu {

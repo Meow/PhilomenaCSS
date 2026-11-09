@@ -9,7 +9,9 @@
  * The palette follows Philomena's: a few structural colors, and a type-color mixin that derives every role of a
  * semantic color (neutral, primary, success, warning, danger, special) from one hue, so that buttons, badges,
  * alerts, cards, blocks, tables and media boxes all use the same tokens:
- *  --{type}-color / -text-color / -border-color   a button's fill, its text and its border
+ *  --{type}-color / -text-color / -border-color   a strong fill (counters, switches, the current page), its text and
+ *                                                  the border of a control in the color
+ *  --{type}-button-color / -button-text-color      a button's fill and its text
  *  --{type}-tint-color / -tint-text-color          a tinted surface (alerts, badges, table rows) and the text on it
  *  --{type}-bar-color / -bar-text-color            the title bar of a colored card, block, media box or table
  *  --{type}-wash-color                             the body of a colored card
@@ -42,13 +44,17 @@ $_syntax-punctuation: #6b6d78;
 
 /*
  * The roles of a semantic color, per theme. $sat shifts the saturation of every role (the dark theme mutes the
- * success green), $fill is the lightness of the button fill (green is bright, so it sits lower). The lightness
- * values are tuned so that the text roles are 4.5:1+ on their background.
+ * success green), $fill is the lightness of the strong fill (green is bright, so it sits lower). The lightness
+ * values are tuned so that the text roles are 4.5:1+ on their background. A button has its own fill and text: on
+ * the dark theme they are the strong fill, on the light theme a pale tint with dark text, as a pagination, because
+ * a fill dark enough for light text is heavy on a white card.
  */
-@define-mixin type-color-light $type, $color, $sat: 0, $fill: 35% {
+@define-mixin type-color-light $type, $color, $sat: 0, $fill: 41% {
   --$(type)-color: hsl(from $color h calc(s + $sat) $(fill));
-  --$(type)-text-color: hsl(from $color h calc(s + $sat) 88%);
-  --$(type)-border-color: hsl(from $color h calc(s + $sat) calc($(fill) + 18%));
+  --$(type)-text-color: hsl(from $color h calc(s + $sat) 98%);
+  --$(type)-border-color: hsl(from $color h calc(s + $sat) 53%);
+  --$(type)-button-color: hsl(from $color h calc(s + $sat) 90%);
+  --$(type)-button-text-color: hsl(from $color h calc(s + $sat) 18%);
   --$(type)-tint-color: hsl(from $color h calc(s + $sat) 90%);
   --$(type)-tint-text-color: hsl(from $color h calc(s + $sat) 28%);
   --$(type)-bar-color: hsl(from $color h calc(s + $sat) 82%);
@@ -61,6 +67,8 @@ $_syntax-punctuation: #6b6d78;
   --$(type)-color: hsl(from $color h calc(s + $sat) $(fill));
   --$(type)-text-color: hsl(from $color h calc(s + $sat) 88%);
   --$(type)-border-color: hsl(from $color h calc(s + $sat) calc($(fill) + 18%));
+  --$(type)-button-color: hsl(from $color h calc(s + $sat) $(fill));
+  --$(type)-button-text-color: hsl(from $color h calc(s + $sat) 88%);
   --$(type)-tint-color: hsl(from $color h calc(s + $sat) 22%);
   --$(type)-tint-text-color: hsl(from $color h calc(s + $sat) 84%);
   --$(type)-bar-color: hsl(from $color h calc(s + $sat) 30%);
@@ -122,6 +130,7 @@ $_syntax-punctuation: #6b6d78;
   --control-border-color: hsl(from $base-color-light h calc(s - 20) 42%);
   --focus-color: hsl(from $base-color-light h s 39%);
   --hover-shade-color: rgba(0, 0, 0, 0.12);
+  --bar-hover-shade-color: rgba(0, 0, 0, 0.28);
   --active-shade-color: rgba(0, 0, 0, 0.25);
   /* Shadows and the inset emphasis lines of containers */
   --shadow-color: rgba(0, 0, 0, 0.5);
@@ -147,12 +156,13 @@ $_syntax-punctuation: #6b6d78;
   --syntax-key-color: hsl(from $_syntax-key h s 32%);
   --syntax-punctuation-color: hsl(from $_syntax-punctuation h s 37%);
   /* The semantic types and the tag categories */
-  @mixin type-color-light neutral, $base-color-light, -28;
+  /* Each strong fill is as light as its hue allows with light text at 4.5:1: green is bright, red and purple are not */
+  @mixin type-color-light neutral, $base-color-light, -28, 43%;
   @mixin type-color-light primary, $primary-color;
-  @mixin type-color-light success, $success-color, 0, 29%;
+  @mixin type-color-light success, $success-color, 0, 32%;
   @mixin type-color-light warning, $warning-color;
-  @mixin type-color-light danger, $danger-color;
-  @mixin type-color-light special, $special-color;
+  @mixin type-color-light danger, $danger-color, 0, 48%;
+  @mixin type-color-light special, $special-color, 0, 45%;
   @mixin tag-colors light;
 }
 
@@ -186,6 +196,7 @@ $_syntax-punctuation: #6b6d78;
   --control-border-color: hsl(from $base-color-dark h s 59%);
   --focus-color: hsl(from $base-color-dark h calc(s + 15) 61%);
   --hover-shade-color: rgba(0, 0, 0, 0.18);
+  --bar-hover-shade-color: rgba(0, 0, 0, 0.18);
   --active-shade-color: rgba(0, 0, 0, 0.35);
   --shadow-color: rgba(0, 0, 0, 0.5);
   --inset-highlight-color: rgba(255, 255, 255, 0.06);
@@ -284,8 +295,9 @@ $_syntax-punctuation: #6b6d78;
   --popup-wide-max-width: 40em;
   --card-padding: var(--spacing-lg);
   --card-header-padding-vertical: var(--spacing-md);
-  /* The drop shadow of menus: dropdowns, navbar menus, combobox suggestions */
-  --menu-shadow: 0 var(--spacing-sm) var(--spacing-lg) var(--shadow-color);
+  /* The drop shadow of menus (dropdowns, navbar menus, combobox suggestions): it is as far down as it is blurred and
+     pulled in a little, so that none of it falls on the trigger above the menu */
+  --menu-shadow: 0 var(--spacing-lg) var(--spacing-lg) calc(-1 * var(--spacing-sm)) var(--shadow-color);
   --emphasis-shadow: inset 1px 1px 0 var(--inset-highlight-color), inset -1px -1px 0 var(--inset-shadow-color);
   /* The same for a bar that runs from edge to edge of the screen: only its bottom line, the other sides have no edge */
   --edge-shadow: inset 0 -1px 0 var(--inset-shadow-color);
@@ -418,11 +430,5 @@ $_syntax-punctuation: #6b6d78;
 @media (min-width: $breakpoint-xl) {
   :root {
     --input-padding: var(--spacing-md);
-  }
-}
-
-@media (min-width: $breakpoint-xxl) {
-  :root {
-    --navbar-item-padding-horizontal: var(--spacing-xl);
   }
 }
