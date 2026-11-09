@@ -116,7 +116,7 @@
 .navbar .navbar-menu {
   display: none;
   position: absolute;
-  z-index: var(--z-combobox);
+  z-index: var(--z-menu);
   top: 100%;
   inset-inline-start: 0;
   min-inline-size: max(100%, var(--navbar-menu-min-width));

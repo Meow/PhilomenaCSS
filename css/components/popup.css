@@ -16,7 +16,7 @@
     var(--emphasis-shadow),
     0 0 var(--popup-box-shadow) var(--shadow-color);
   padding: var(--content-spacing);
-  z-index: 3;
+  z-index: var(--z-popup);
 }
 
 .popup.allow-overflow {

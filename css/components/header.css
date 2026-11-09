@@ -17,6 +17,11 @@
   box-shadow: var(--emphasis-shadow);
 }
 
+/* A header lays its children out in a row: the brand, then whatever follows, pushed apart */
+.header > .nav {
+  flex-flow: row nowrap;
+}
+
 .header.non-stick {
   position: absolute;
 }
@@ -38,6 +43,7 @@
   align-items: center;
   font-size: var(--header-brand-font-size);
   color: var(--header-brand-color);
+  text-decoration: none;
 }
 
 .header .header-brand .header-brand-text {

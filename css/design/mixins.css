@@ -121,9 +121,9 @@ $bar-controls: .button, .tag a, .badge a;
 }
 
 /*
- * Color variants of the components, from the roles of a type color (see css/design/tokens.css): .button-{type}, .badge-{type},
- * .alert-{type}, .counter-{type}, .pagination-{type}, .card-{type}, .block-{type}, .media-{type} and .table-{type} on
- * the component, and a bare .{type} on table rows and cells and on media overlays.
+ * Color variants of the components, from the roles of a type color (see css/design/tokens.css). The class is always
+ * {component}-{type}: .button-{type}, .badge-{type}, .alert-{type}, .counter-{type}, .pagination-{type}, .card-{type},
+ * .block-{type}, .progress-{type}, .table-{type} (on a table, a row or a cell) and .media-{type} (on a box or an overlay).
  * The types are neutral (the default look), primary, success, warning, danger, special, light and dark.
  */
 @define-mixin button-color-variation $type {
@@ -183,6 +183,13 @@ $bar-controls: .button, .tag a, .badge a;
   }
 }
 
+/* Progress bars: .progress.progress-{type} fills the bar with the type's color */
+@define-mixin progress-color-variation $type {
+  .progress.progress-$(type) .progress-bar {
+    background-color: var(--$(type)-color);
+  }
+}
+
 /* Tag categories: .tag.tag-{category} from the --tag-{category}-* color tokens */
 @define-mixin tag-category-variation $category {
   .tag.tag-$(category) {
@@ -192,7 +199,7 @@ $bar-controls: .button, .tag a, .badge a;
   }
 }
 
-/* Tables: .table.table-{type} colors the header, footer and frame, tr.{type}, th.{type} and td.{type} a row or a cell */
+/* Tables: .table-{type} on the table colors the header, footer and frame, on a tr, th or td that row or cell */
 @define-mixin table-color-variation $type {
   .table.table-$(type) thead th,
   .table.table-$(type) thead td,
@@ -207,17 +214,17 @@ $bar-controls: .button, .tag a, .badge a;
     border-color: var(--$(type)-bar-color);
   }
 
-  .table tr.$(type) > th,
-  .table tr.$(type) > td,
-  .table th.$(type),
-  .table td.$(type) {
+  .table tr.table-$(type) > th,
+  .table tr.table-$(type) > td,
+  .table th.table-$(type),
+  .table td.table-$(type) {
     color: var(--text-color);
     background-color: var(--$(type)-tint-color);
   }
 
-  .table tr.$(type) a,
-  .table th.$(type) a,
-  .table td.$(type) a {
+  .table tr.table-$(type) a,
+  .table th.table-$(type) a,
+  .table td.table-$(type) a {
     color: var(--$(type)-tint-text-color);
   }
 }
@@ -289,10 +296,10 @@ $bar-controls: .button, .tag a, .badge a;
   }
 }
 
-/* Media overlays: .media-box-overlay.{type} takes the type's fill and text */
+/* Media overlays: .media-box-overlay.media-{type} takes the type's fill and text */
 @define-mixin media-overlay-color-variation $type {
-  .media-box .media-box-overlay.$(type),
-  .media-box .media-box-overlays > .$(type) {
+  .media-box .media-box-overlay.media-$(type),
+  .media-box .media-box-overlays > .media-$(type) {
     color: var(--$(type)-text-color);
     background-color: var(--$(type)-color);
   }

@@ -75,16 +75,16 @@
 @mixin each-type table-color-variation;
 
 /* The light and dark types are fixed colors, so their rows and cells bring their own text color */
-.table tr.light > th,
-.table tr.light > td,
-.table th.light,
-.table td.light {
+.table tr.table-light > th,
+.table tr.table-light > td,
+.table th.table-light,
+.table td.table-light {
   color: var(--light-tint-text-color);
 }
 
-.table tr.dark > th,
-.table tr.dark > td,
-.table th.dark,
-.table td.dark {
+.table tr.table-dark > th,
+.table tr.table-dark > td,
+.table th.table-dark,
+.table td.table-dark {
   color: var(--dark-tint-text-color);
 }

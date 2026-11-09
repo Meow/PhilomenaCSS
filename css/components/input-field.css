@@ -28,13 +28,30 @@
   color: var(--placeholder-color);
 }
 
-.input-field:not([type="color"]):invalid {
+/*
+ * Invalid: only once the user has edited the field (:user-invalid), so that an empty required field is not red when
+ * the page loads, or when your script or server marks it with .invalid. Browsers without :user-invalid fall back to
+ * fields that have content.
+ */
+
+.input-field:not([type="color"]).invalid,
+.input-field:not([type="color"]):user-invalid {
   color: var(--danger-tint-text-color);
   background-color: var(--danger-tint-color);
+  border-color: var(--danger-tint-text-color);
 }
 
-.input-field:focus-visible:invalid {
+.input-field.invalid:focus-visible,
+.input-field:user-invalid:focus-visible {
   @mixin focus-ring var(--danger-tint-text-color);
+}
+
+@supports not selector(:user-invalid) {
+  .input-field:not([type="color"]):invalid:not(:placeholder-shown) {
+    color: var(--danger-tint-text-color);
+    background-color: var(--danger-tint-color);
+    border-color: var(--danger-tint-text-color);
+  }
 }
 
 .input-field[type="color"] {

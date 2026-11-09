@@ -101,7 +101,7 @@
 }
 
 /* The reset strips the disclosure marker, so make the toggles look clickable */
-.docs-main summary {
+.docs-main summary:not(.accordion-item-header) {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
@@ -114,15 +114,15 @@
   user-select: none;
 }
 
-.docs-main summary:hover {
+.docs-main summary:not(.accordion-item-header):hover {
   background: var(--tint-faint-color);
 }
 
-.docs-main summary:focus-visible {
+.docs-main summary:not(.accordion-item-header):focus-visible {
   outline: var(--focus-outline) solid var(--focus-color);
 }
 
-.docs-main summary:before {
+.docs-main summary:not(.accordion-item-header):before {
   content: "";
   inline-size: 0.5em;
   block-size: 0.5em;
@@ -132,11 +132,11 @@
   transition: transform 0.15s;
 }
 
-.docs-main details[open] > summary:before {
+.docs-main details[open] > summary:not(.accordion-item-header):before {
   transform: rotate(45deg);
 }
 
-.docs-main details[open] > summary {
+.docs-main details[open] > summary:not(.accordion-item-header) {
   margin-block-end: var(--spacing-md);
 }
 

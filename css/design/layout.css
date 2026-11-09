@@ -64,6 +64,37 @@ h6 {
 }
 
 /*
+ * Scrollbars are thin and in the tints of the theme, on the page and inside everything that scrolls. scrollbar-color
+ * is inherited, so the root is enough; the ::-webkit-scrollbar rules are for browsers that do not have it yet.
+ */
+
+:root {
+  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+}
+
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar {
+    width: var(--scrollbar-size);
+    height: var(--scrollbar-size);
+    background-color: var(--scrollbar-track-color);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    border-radius: var(--scrollbar-size);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: var(--scrollbar-track-color);
+  }
+}
+
+/* Small scrolling boxes inside the components get the thin variant */
+:where(.code-block, .table-wrap, .tag-box, .combobox-suggestions, .collapsible, .burger, .docs-source) {
+  scrollbar-width: thin;
+}
+
+/*
  * The reset removes every outline. Anything focusable gets the focus ring back here, at no specificity, so that the
  * components (and you) can restyle it; elements that are clipped by their container draw it inside themselves.
  */

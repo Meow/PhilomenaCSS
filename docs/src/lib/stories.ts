@@ -302,7 +302,7 @@ const mediaBoxes = (items: [string, number, number, string, string, string][]) =
         ? ''
         : `\n    <div class="media-box-header"><a href="#">${title}</a></div>`;
       const badges = extra.includes('notitle')
-        ? '<span class="media-box-overlays"><span>12 comments</span><span class="primary">safe</span></span><span class="media-box-overlay bottom">★ 34</span>'
+        ? '<span class="media-box-overlays"><span>12 comments</span><span class="media-primary">safe</span></span><span class="media-box-overlay bottom">★ 34</span>'
         : '';
       return `  <figure class="media-box${cls}">${header}
     <a class="media-box-content" href="#"><img src="${picture(w, h, from, to)}" alt="${title}">${badges}</a>
@@ -420,7 +420,7 @@ ${(
   .map(dropdownItem)
   .join('\n')}
       <hr class="dropdown-divider">
-${dropdownItem(['Delete', 'trash', ' danger'])}
+${dropdownItem(['Delete', 'trash', ' dropdown-danger'])}
     </div>
   </div>
   <div class="dropdown manual open">
@@ -645,6 +645,188 @@ ${clampBox('clamp-demo-2', 'A short description', '      <p>Short text is shown 
 ${clampBox('clamp-demo-3', 'Cut at 4rem', `      <p>${lorem} ${lorem} ${lorem} ${lorem} ${lorem} ${lorem}</p>`, '--clamp-max-height: 4rem')}
 </div>`;
 
+// Stories for the older components, after upstream HammerTimeCSS's
+const accordion = `<div class="accordion">
+  <details class="accordion-item" open>
+    <summary class="accordion-item-header">What is this?</summary>
+    <div class="accordion-item-body">
+      <p>${lorem}</p>
+      <p>Paragraphs in the body are spaced, and links use the content link style: <a href="#">a link</a>.</p>
+    </div>
+  </details>
+  <details class="accordion-item">
+    <summary class="accordion-item-header">How do I open it?</summary>
+    <div class="accordion-item-body"><p>These are native details elements, no script is involved.</p></div>
+  </details>
+  <details class="accordion-item">
+    <summary class="accordion-item-header">A third item</summary>
+    <div class="accordion-item-body"><p>${lorem}</p></div>
+  </details>
+</div>`;
+
+const progressBar = (value: number, type = '') =>
+  `<div class="progress${type ? ` progress-${type}` : ''}" role="progressbar" aria-label="${type || 'primary'} progress" aria-valuenow="${value}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: ${value}%"></div></div>`;
+const progress = `<div class="docs-stack">
+${[
+  [25, ''],
+  [40, 'success'],
+  [55, 'warning'],
+  [70, 'danger'],
+  [85, 'special'],
+  [100, 'primary'],
+]
+  .map(([value, type]) => progressBar(value as number, type as string))
+  .join('\n')}
+</div>`;
+
+const inputFields = `<div class="docs-stack">
+<div class="flex flex-wrap gap-md">
+  <input class="input-field" type="text" value="Text input" aria-label="Text input">
+  <input class="input-field" type="text" placeholder="Placeholder" aria-label="Placeholder input">
+  <input class="input-field" type="text" value="Disabled" aria-label="Disabled input" disabled>
+  <input class="input-field" type="color" value="#546c99" aria-label="Colour input">
+</div>
+<div class="flex flex-wrap gap-md">
+  <input class="input-field" type="email" placeholder="Required, empty: not red" aria-label="Required input" required>
+  <input class="input-field invalid" type="text" value="Marked .invalid" aria-label="Invalid input">
+</div>
+<input class="input-field full-width" type="text" value="Full width" aria-label="Full width input">
+<div class="form-input-group">
+  <input class="input-field" type="text" value="An input group" aria-label="Search">
+  ${button('Search', 'button-primary button-size-input')}
+</div>
+<div class="form-control-wrap">
+  <div class="form-control">
+    <label class="form-control-label" for="input-message-demo">With messages</label>
+    <input id="input-message-demo" class="input-field invalid" type="text" value="taken">
+    <span class="form-message form-message-error">That name is taken.</span>
+    <span class="form-message form-message-success">A success message.</span>
+    <span class="form-message form-message-description">A description, with <a href="#">a link</a>.</span>
+  </div>
+</div>
+</div>`;
+
+const copyableText = `<div class="copyable-text">
+  <button type="button" class="button button-primary icon-only" data-copy-text="--surface-color" aria-label="Copy to clipboard" title="Copy to clipboard"><span class="button-content"><span class="button-icon docs-icon-copy">${icon('fontawesome', 'clipboard')}</span><span class="button-icon docs-icon-copied">${icon('fontawesome', 'check')}</span></span></button>
+  <code class="code-span copyable-text-data">--surface-color</code>
+</div>`;
+
+const navs = `<div class="layout-columns">
+  <aside class="layout-side">
+    <nav class="nav" aria-label="Section">
+      <a class="nav-link current" href="#">${icon('fontawesome', 'gear')}Settings</a>
+      <a class="nav-link" href="#">${icon('fontawesome', 'user')}Account</a>
+      <a class="nav-link" href="#">${icon('fontawesome', 'bell')}Notifications</a>
+      <a class="nav-link" href="#">${icon('fontawesome', 'link')}Links</a>
+    </nav>
+  </aside>
+  <div class="layout-main">
+    <nav class="nav horizontal" aria-label="Views">
+      <a class="nav-link current" href="#">Overview</a>
+      <a class="nav-link" href="#">Uploads</a>
+      <a class="nav-link" href="#">Comments</a>
+      <a class="nav-link" href="#">Favourites</a>
+    </nav>
+    <p>A column by default, a row with .horizontal.</p>
+  </div>
+</div>`;
+
+const headers = `<div class="docs-stack">
+<div style="position: relative">
+  <header class="header non-stick" style="position: relative">
+    <a class="header-brand" href="#"><span class="header-brand-text">Brand</span></a>
+    <nav class="nav" aria-label="Header"><a class="nav-link current" href="#">Home</a><a class="nav-link" href="#">About</a><a class="nav-link" href="#">Contact</a></nav>
+  </header>
+</div>
+<div style="position: relative; min-height: 9rem">
+  <input class="burger-toggle" type="checkbox" id="header-burger">
+  <header class="header non-stick" style="position: relative">
+    <a class="header-brand" href="#"><span class="header-brand-text">Brand</span></a>
+    <nav class="navbar" aria-label="Header with a navbar">
+      <label class="navbar-item navbar-burger" for="header-burger"><span class="navbar-icon">${icon('fontawesome', 'bars')}</span>Menu</label>
+      <a class="navbar-item" href="#"><span class="navbar-icon">${icon('fontawesome', 'image')}</span>Images</a>
+      <div class="navbar-dropdown">
+        <a class="navbar-item caret" href="#" aria-haspopup="true"><span class="navbar-icon">${icon('fontawesome', 'tags')}</span>Tags</a>
+        <div class="navbar-menu end">
+          <a class="navbar-menu-item" href="#"><span class="navbar-menu-text">Tag Changes</span></a>
+          <a class="navbar-menu-item" href="#"><span class="navbar-menu-text">Aliases</span></a>
+        </div>
+      </div>
+      <a class="navbar-item navbar-pinned" href="#" title="Notifications"><span class="navbar-icon counter-anchor">${icon('fontawesome', 'bell')}<span class="counter counter-danger corner">2</span></span></a>
+    </nav>
+  </header>
+  ${burgerPanel('header-burger')}
+</div>
+</div>`;
+
+const popups = `<div class="flex flex-wrap gap-lg" style="align-items: flex-start">
+  <div class="popup visible" style="position: relative">
+    <h3>A popup</h3>
+    <p>${lorem}</p>
+    <div class="button-group separated">${button('Confirm', 'button-primary')}${button('Cancel')}</div>
+  </div>
+  <div class="popup wide visible" style="position: relative">
+    <h3>A wide popup</h3>
+    <p>${lorem} ${lorem}</p>
+  </div>
+</div>`;
+
+const loadingIndicators = `<div class="flex flex-center gap-lg">${[1, 2, 4].map(em => loadingIndicator.replace('width="1em" height="1em"', `width="${em}em" height="${em}em"`)).join('')}</div>`;
+
+const cardForms = `<div class="card-forms">
+${['one', 'two']
+  .map(
+    n => `  <section class="card-forms-section card">
+    <header class="card-header"><h3>Section ${n}</h3></header>
+    <div class="form-control-wrap full-width"><div class="form-control"><label class="form-control-label" for="card-forms-${n}">Field</label><input id="card-forms-${n}" class="input-field full-width" type="text"></div></div>
+    <div class="form-control-submit">${button('Save', 'button-primary')}<span class="form-message form-message-description">Not saved yet.</span></div>
+  </section>`,
+  )
+  .join('\n')}
+</div>`;
+
+const utilities = `<div class="docs-stack">
+<div class="flex flex-wrap flex-center gap-md">
+  ${['0', 'xs', 'sm', 'md', 'lg', 'xl'].map(key => `<span class="badge"><span class="badge-content p-${key}">.p-${key}</span></span>`).join('\n  ')}
+</div>
+<div class="flex flex-wrap flex-center gap-md">
+  ${[10, 15, 20].map(step => `<span class="avatar s-${step} fs-${step === 10 ? 10 : 10}" style="font-size: 1rem" title=".s-${step}">${step}</span>`).join('\n  ')}
+  <span class="fs-10">.fs-10</span><span class="fs-15">.fs-15</span><span class="fs-20">.fs-20</span>
+</div>
+<div class="grid-flex gap-md">
+  <div class="grid-flex-item flex-basis-20">${badge('.flex-basis-20')}</div>
+  <div class="grid-flex-item flex-basis-30">${badge('.flex-basis-30', 'badge-primary')}</div>
+  <div class="grid-flex-item flex-basis-40">${badge('.flex-basis-40', 'badge-success')}</div>
+</div>
+<p class="text-center">.text-center, <span class="cursor-help">.cursor-help</span>, <span class="cursor-pointer">.cursor-pointer</span></p>
+<p class="text-right">.text-right</p>
+</div>`;
+
+const buttonLayouts = `<div class="docs-stack">
+<div class="button-group">
+  ${button('Joined', 'button-primary')}${button('group')}${button('of buttons')}
+</div>
+${button('Full width, centered', 'button-primary full-width justify-center')}
+${button('Full width, at the end', 'full-width justify-end')}
+<div style="max-width: 12rem">
+  ${button('A long label that is cut off with an ellipsis', 'full-width')}
+</div>
+<div style="max-width: 12rem">
+  ${button('A long label that is allowed to wrap', 'full-width allow-overflow')}
+</div>
+<div class="form-input-group">
+  <input class="input-field" type="text" value=".button-size-input matches an input" aria-label="Demo">
+  ${button('Go', 'button-primary button-size-input')}
+</div>
+</div>`;
+
+const contentContainer = `<div class="content-container">
+  <div class="content">
+    <p>First block of a .content inside a .content-container, which centers it up to --content-container-max-width.</p>
+    <p>Second block, spaced from the first.</p>
+  </div>
+</div>`;
+
 // Quotes nested `depth` levels deep, numbered from the outside in
 const nestedQuotes = (depth: number): string => {
   let html = '';
@@ -691,6 +873,13 @@ export const stories: Story[] = [
     ],
   },
   {
+    id: 'button-layouts',
+    title: 'Button layouts',
+    description:
+      'A joined .button-group, .full-width buttons with .justify-center and .justify-end, a label that is cut off and one that may wrap (.allow-overflow), and .button-size-input, which matches a button to the input next to it in a .form-input-group.',
+    html: buttonLayouts,
+  },
+  {
     id: 'button-sizes',
     title: 'Badge-sized buttons and groups',
     description:
@@ -708,6 +897,14 @@ export const stories: Story[] = [
     ],
   },
   {
+    id: 'header',
+    title: 'Header',
+    description:
+      'The bar across the top of a site: a .header-brand, then whatever follows, pushed to the other side. It is sticky by default and .non-stick makes it absolute. A .nav in it becomes a row in the header colours; a .navbar fills its height, and collapses to its burger and pinned items below the md breakpoint. This page uses a header as its own.',
+    html: headers,
+    notes: ['The demos keep the header in the flow with an inline <code class="code-span">position: relative</code>.'],
+  },
+  {
     id: 'navbar',
     title: 'Navbar',
     description:
@@ -718,10 +915,17 @@ export const stories: Story[] = [
     ],
   },
   {
+    id: 'nav',
+    title: 'Nav',
+    description:
+      'A list of links for sidebars and section menus: a column by default, a row with .horizontal. A link tints under the pointer and .current is filled like a primary button.',
+    html: navs,
+  },
+  {
     id: 'dropdown',
     title: 'Dropdown',
     description:
-      'A menu under any trigger. It opens while the .dropdown is hovered or has the focus inside, with no script; .open holds it open and .manual turns the hover off, for a click toggle of your own (the second one here). Items can have an icon, .danger colours one, .dropdown-menu.end aligns the menu with the end of its trigger and .up opens it above.',
+      'A menu under any trigger. It opens while the .dropdown is hovered or has the focus inside, with no script; .open holds it open and .manual turns the hover off, for a click toggle of your own (the second one here). Items can have an icon, .dropdown-danger colours one, .dropdown-menu.end aligns the menu with the end of its trigger and .up opens it above.',
     html: dropdowns,
   },
   {
@@ -767,6 +971,16 @@ export const stories: Story[] = [
     html: layoutHelpers,
   },
   {
+    id: 'popup',
+    title: 'Popup',
+    description:
+      'A floating panel in the surface colour with a thick border and a drop shadow. .visible shows it, .wide makes it wider, .allow-overflow lets children escape. It is positioned absolutely, with an anchor where the browser supports it (.has-anchor and --position-anchor-name), and sits above the header and the menus. Below the md breakpoint it is meant to be a modal, and the page stops scrolling while a <dialog class="popup"> is open.',
+    html: popups,
+    notes: [
+      'The demos keep the popups in the flow with an inline <code class="code-span">position: relative</code>; a real one is placed by your script or anchored.',
+    ],
+  },
+  {
     id: 'forms-regular',
     title: 'Forms: regular',
     description:
@@ -775,6 +989,13 @@ export const stories: Story[] = [
     notes: [
       'Icons are slots: the framework ships none. <code class="code-span">.form-checkbox-check-icon</code> and <code class="code-span">.form-select-icon</code> are positioned for a fixed-width icon (about 1.25em wide, 1em tall, such as Font Awesome\'s <code class="code-span">fa-fw</code>), a text glyph will not line up.',
     ],
+  },
+  {
+    id: 'input-field',
+    title: 'Input fields, groups and messages',
+    description:
+      'The bare .input-field outside the form control wrappers, a .form-input-group that joins an input and a button, and .form-message texts under a control. An empty required field is not red: the invalid look appears once the user has edited the field, or when you mark it .invalid.',
+    html: inputFields,
   },
   {
     id: 'combobox',
@@ -802,6 +1023,13 @@ export const stories: Story[] = [
   },
   iconStory('fontawesome'),
   iconStory('lucide'),
+  {
+    id: 'card-forms',
+    title: 'Card forms',
+    description:
+      'Cards laid out in a wrapping row for settings pages: sections take the full width, and half each from the xl breakpoint. .form-control-submit is the row with the submit button and a message.',
+    html: cardForms,
+  },
   {
     id: 'badges',
     title: 'Badges',
@@ -853,6 +1081,27 @@ ${badgeColors.map(color => `  <span class="counter${color ? ` counter-${color}` 
     notes: [
       'The cut works with the clamp: a hidden checkbox (<code class="code-span">.clamp-toggle</code>) right before <code class="code-span">.communication-text.clamp</code>, and the two labels inside the text. Leave them out and the text is never cut. The limit is a height, so any length works: <code class="code-span">--communication-max-height: 200px</code>.',
     ],
+  },
+  {
+    id: 'progress',
+    title: 'Progress',
+    description:
+      'A track in the input material with a bar inside, whose width you set. The bar is primary, .progress-{color} takes the other colours.',
+    html: progress,
+  },
+  {
+    id: 'loading-indicator',
+    title: 'Loading indicator',
+    description:
+      'An animated clock, sized by its width and height and coloured by the text colour. The loading buttons use it.',
+    html: loadingIndicators,
+  },
+  {
+    id: 'copyable-text',
+    title: 'Copyable text',
+    description:
+      'A button joined to a value that selects as a whole. The copying is up to your script; this page wires it up.',
+    html: copyableText,
   },
   {
     id: 'tags',
@@ -918,7 +1167,7 @@ ${tagCategories
     id: 'table-colors',
     title: 'Table colours',
     description:
-      'The standard colours on tables: .table-{color} on the table colours its header, footer and frame, .{color} on a row or a cell colours just that. Links in a coloured row take the highlight colour.',
+      'The standard colours on tables: .table-{color} on the table colours its header, footer and frame, and the same class on a row or a cell colours just that. Links in a coloured row take the highlight colour.',
     html: `<div class="table-wrap">
   <table class="table table-success">
     <thead>
@@ -926,10 +1175,10 @@ ${tagCategories
     </thead>
     <tbody>
       <tr><td>Build</td><td><a href="#">passed</a></td><td class="numeric">12 s</td></tr>
-      <tr class="warning"><td>Lint</td><td><a href="#">3 warnings</a></td><td class="numeric">4 s</td></tr>
-      <tr class="danger"><td>Tests</td><td><a href="#">1 failure</a></td><td class="numeric">48 s</td></tr>
-      <tr class="special"><td>Review</td><td>assistant approved</td><td class="numeric">—</td></tr>
-      <tr><td>Deploy</td><td class="primary">queued</td><td class="numeric light">—</td></tr>
+      <tr class="table-warning"><td>Lint</td><td><a href="#">3 warnings</a></td><td class="numeric">4 s</td></tr>
+      <tr class="table-danger"><td>Tests</td><td><a href="#">1 failure</a></td><td class="numeric">48 s</td></tr>
+      <tr class="table-special"><td>Review</td><td>assistant approved</td><td class="numeric">—</td></tr>
+      <tr><td>Deploy</td><td class="table-primary">queued</td><td class="numeric table-light">—</td></tr>
     </tbody>
     <tfoot>
       <tr><td colspan="2">4 of 5 steps done</td><td class="numeric">64 s</td></tr>
@@ -946,6 +1195,13 @@ ${['primary', 'warning', 'danger', 'special', 'light', 'dark']
 </div>`,
   )
   .join('\n')}`,
+  },
+  {
+    id: 'accordion',
+    title: 'Accordion',
+    description:
+      'A framed column of items, each a header bar with a caret over a padded body. With native <details> elements, as here, it opens and closes without a script; with other elements toggle .open on the item.',
+    html: accordion,
   },
   {
     id: 'collapsible',
@@ -1010,11 +1266,11 @@ ${[
     id: 'media-overlays',
     title: 'Media overlays',
     description:
-      'Overlays as Philomena marks its thumbnails: a .media-box-overlay label across the top of the image (.bottom for the bottom), several stacked in a .media-box-overlays wrapper, .{color} for the palette. A .media-box-veil covers the image with a centered label and .spoilered on the box blurs the image under it; your script removes them to reveal.',
+      'Overlays as Philomena marks its thumbnails: a .media-box-overlay label across the top of the image (.bottom for the bottom), several stacked in a .media-box-overlays wrapper, .media-{color} for the palette. A .media-box-veil covers the image with a centered label and .spoilered on the box blurs the image under it; your script removes them to reveal.',
     html: `<div class="media-list">
   <figure class="media-box">
     <div class="media-box-header"><a href="#">Video</a></div>
-    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#4dabf7', '#1864ab')}" alt="Video"><span class="media-box-overlay primary">WebM</span></a>
+    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#4dabf7', '#1864ab')}" alt="Video"><span class="media-box-overlay media-primary">WebM</span></a>
   </figure>
   <figure class="media-box spoilered">
     <div class="media-box-header"><a href="#">Spoilered</a></div>
@@ -1022,11 +1278,11 @@ ${[
   </figure>
   <figure class="media-box media-danger">
     <div class="media-box-header"><a href="#">Deleted</a></div>
-    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#868e96', '#343a40')}" alt="Deleted"><span class="media-box-overlay danger">Deleted: rule violation</span></a>
+    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#868e96', '#343a40')}" alt="Deleted"><span class="media-box-overlay media-danger">Deleted: rule violation</span></a>
   </figure>
   <figure class="media-box">
     <div class="media-box-header"><a href="#">Stacked</a></div>
-    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#ffd43b', '#e67700')}" alt="Stacked"><span class="media-box-overlays"><span class="warning">Marked duplicate</span><span class="primary">WebM</span><span>1920 × 1080</span></span><span class="media-box-overlay bottom special">★ featured</span></a>
+    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#ffd43b', '#e67700')}" alt="Stacked"><span class="media-box-overlays"><span class="media-warning">Marked duplicate</span><span class="media-primary">WebM</span><span>1920 × 1080</span></span><span class="media-box-overlay media-special bottom">★ featured</span></a>
   </figure>
 </div>`,
   },
@@ -1062,6 +1318,20 @@ ${['primary', 'success', 'warning', 'danger', 'special', 'light', 'dark']
   )
   .join('\n')}
 </div>`,
+  },
+  {
+    id: 'content',
+    title: 'Content container',
+    description:
+      'Centers its content up to a maximum width and spaces the direct children of .content apart. Inside this page the maximum is not reached.',
+    html: contentContainer,
+  },
+  {
+    id: 'utilities',
+    title: 'Utilities',
+    description:
+      'Padding and margin utilities for every step of the spacing scale (.p-{key}, .m-{key} and the per-side forms), size utilities (.s-{step}, .fs-{step}), the older .grid-flex with .flex-basis-{n}, text alignment and cursors. The layout and visibility helpers have their own story.',
+    html: utilities,
   },
   {
     id: 'card',

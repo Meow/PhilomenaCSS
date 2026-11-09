@@ -154,6 +154,9 @@ $_syntax-punctuation: #6b6d78;
   --shadow-color: rgba(0, 0, 0, 0.5);
   --inset-highlight-color: rgba(255, 255, 255, 0.7);
   --inset-shadow-color: rgba(0, 0, 0, 0.08);
+  /* Scrollbars */
+  --scrollbar-thumb-color: hsl(from $base-color-light h calc(s - 20) 62%);
+  --scrollbar-track-color: hsl(from $base-color-light h calc(s - 20) 92%);
   /* The site header, Philomena's dark bar */
   --header-color: hsl(from $base-color-light h s 38%);
   --header-text-color: #ffffff;
@@ -188,16 +191,18 @@ $_syntax-punctuation: #6b6d78;
 }
 
 :root {
+  /* Layering, from the page up: what is in flow, then what floats over it, then what covers the page */
   --z-background: 1;
   --z-default: 2;
   --z-focus: 3;
   --z-input-symbol: 4;
   --z-header: 5;
-  --z-sidebar-overlay: 6;
-  --z-sidebar: 7;
-  --z-combobox: 8;
-  --z-suggestions: 9;
-  --z-suggestions-header: 10;
+  --z-menu: 6;
+  --z-suggestions: 7;
+  --z-suggestions-header: 8;
+  --z-popup: 9;
+  --z-sidebar-overlay: 10;
+  --z-sidebar: 11;
   /* The dark theme's colors, the default; see the light-colors mixin for what each group is */
   --page-bg-color: $page-color-dark;
   --surface-color: $surface-color-dark;
@@ -221,6 +226,8 @@ $_syntax-punctuation: #6b6d78;
   --shadow-color: rgba(0, 0, 0, 0.5);
   --inset-highlight-color: rgba(255, 255, 255, 0.06);
   --inset-shadow-color: rgba(0, 0, 0, 0.45);
+  --scrollbar-thumb-color: hsl(from $base-color-dark h s 40%);
+  --scrollbar-track-color: hsl(from $base-color-dark h calc(s - 5) 13%);
   --header-color: hsl(from $base-color-dark h calc(s + 20) 30%);
   --header-text-color: #ffffff;
   --header-brand-color: hsl(from $base-color-dark h calc(s + 20) 88%);
@@ -395,8 +402,8 @@ $_syntax-punctuation: #6b6d78;
   --tag-box-min-height: 7.5em;
   --tag-box-max-height: 50vh;
   --nav-spacing: var(--spacing-xs);
-  --nav-link-padding-horizontal: var(--spacing-sm);
-  --nav-link-padding-vertical: var(--spacing-xs);
+  --nav-link-padding-horizontal: var(--spacing-md);
+  --nav-link-padding-vertical: var(--spacing-sm);
   /* The navbar: its items, and the items and the icon column of its dropdown menus */
   --navbar-item-padding-vertical: var(--spacing-lg);
   --navbar-item-padding-horizontal: var(--spacing-md);
@@ -421,8 +428,11 @@ $_syntax-punctuation: #6b6d78;
   --slider-thumb-size: 1.25em;
   --layout-side-width: 22rem;
   --layout-narrow-width: 50rem;
-  --faq-body-padding: var(--spacing-md);
-  --faq-body-line-height: var(--text-line-height);
+  --accordion-header-padding-vertical: var(--spacing-md);
+  --accordion-padding: var(--spacing-lg);
+  --accordion-line-height: var(--text-line-height);
+  /* Scrollbars: thin, in the tints of the theme */
+  --scrollbar-size: 0.6rem;
   --size-10: 1em;
   --size-15: 1.5em;
   --size-20: 2em;
@@ -438,14 +448,12 @@ $_syntax-punctuation: #6b6d78;
 @media (min-width: $breakpoint-md) {
   :root {
     --button-padding-vertical: var(--spacing-md);
-    --nav-link-padding-vertical: var(--spacing-sm);
   }
 }
 
 @media (min-width: $breakpoint-lg) {
   :root {
     --button-padding-horizontal: var(--spacing-lg);
-    --nav-link-padding-horizontal: var(--spacing-md);
     --navbar-item-padding-horizontal: var(--spacing-lg);
   }
 }

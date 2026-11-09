@@ -49,8 +49,8 @@ Token reference:
 | `--border-radius-*`                      | The radii: `none` 0, `inner` .15rem for controls inside a block, `outer` .25rem for cards and other blocks, `large` .5rem for badges                                                                                                                                                                                                                                                                                        |
 | `--border-width`, `--border-thick-width` | The border widths: .0625rem for borders and dividers, .125rem for emphasis                                                                                                                                                                                                                                                                                                                                                  |
 | `--base-font-size`, `--*-size`           | Philomena's font sizes: 14px text (every rem is a multiple of it), `--header-font-size` 16px for the header and navbar, `--heading-1-size` 1.75rem down to `--heading-6-size` 1rem. Headings are not bold                                                                                                                                                                                                                   |
-| `--*-line-height`                        | Philomena's line heights: `base` 1.15 for the page, `heading` 1.15, `text` 1.35 for paragraphs, alert text, FAQ bodies and code                                                                                                                                                                                                                                                                                             |
-| `--z-*`                                  | Layering                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `--*-line-height`                        | Philomena's line heights: `base` 1.15 for the page, `heading` 1.15, `text` 1.35 for paragraphs, alert text, accordion bodies and code                                                                                                                                                                                                                                                                                       |
+| `--z-*`                                  | Layering, from the page up: `focus`, `header`, `menu` (dropdowns, navbar menus), `suggestions`, `popup`, then the burger's `sidebar-overlay` and `sidebar`                                                                                                                                                                                                                                                                  |
 | everything else                          | Sizes, typography and other values (`--button-padding-horizontal`). Responsive ones have breakpoint overrides inside the stylesheet                                                                                                                                                                                                                                                                                         |
 
 Names are at most four words.
@@ -157,6 +157,16 @@ The framework is plain CSS, so some structure is on you:
   to the end. The bar is one row and never wraps: below the `md` breakpoint only the `.navbar-burger` item (the
   label that opens a burger menu) and `.navbar-pinned` items stay. If your bar is too long for tablets, hide the text
   of secondary items there with `.hidden-below-lg` or `.hidden-below-xl`.
+- **Color variants** are always `{component}-{type}`: `.button-primary`, `.alert-danger`, `.progress-success`,
+  `.table-warning` (on a table, a row or a cell), `.media-danger` (on a media box or an overlay),
+  `.dropdown-danger` on a dropdown item, and so on.
+- **Invalid inputs.** An `.input-field` turns red once the user has edited it into an invalid state, not while a
+  required field is still empty. Add `.invalid` to mark one from your script or server.
+- **Scrollbars** are thin and tinted for the theme everywhere, through `--scrollbar-thumb-color` and
+  `--scrollbar-track-color`.
+- **Accordion, nav, progress.** `.accordion` frames `.accordion-item`s with an `.accordion-item-header` and an
+  `.accordion-item-body` (use `<details>` and `<summary>` for script-free items). `.nav` is a column of
+  `.nav-link`s, a row with `.horizontal`. `.progress` holds a `.progress-bar` whose width you set.
 - **Alerts.** `.alert` is neutral; `.alert-{type}` tints it, like the variants of every other component.
 - **Dropdowns.** A `.dropdown` wraps any trigger and a `.dropdown-menu` of `.dropdown-item`s. It opens on hover and
   on focus without a script, `.open` holds it open and `.manual` turns the hover off.
