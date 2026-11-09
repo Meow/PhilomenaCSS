@@ -52,11 +52,11 @@ $_syntax-punctuation: #6b6d78;
  * the dark theme they are the strong fill, on the light theme a pale tint with dark text, as a pagination, because
  * a fill dark enough for light text is heavy on a white card.
  */
-@define-mixin type-color-light $type, $color, $sat: 0, $fill: 41% {
+@define-mixin type-color-light $type, $color, $sat: 0, $fill: 41%, $button-sat: 15 {
   --$(type)-color: hsl(from $color h calc(s + $sat) $(fill));
   --$(type)-text-color: hsl(from $color h calc(s + $sat) 98%);
   --$(type)-border-color: hsl(from $color h calc(s + $sat) 53%);
-  --$(type)-button-color: hsl(from $color h calc(s + $sat) 90%);
+  --$(type)-button-color: hsl(from $color h calc(s + $sat + $(button-sat)) 88%);
   --$(type)-button-text-color: hsl(from $color h calc(s + $sat) 18%);
   --$(type)-button-hover-color: hsl(from $color h calc(s + $sat + 20) 38% / 0.2);
   --$(type)-button-active-color: hsl(from $color h calc(s + $sat + 20) 34% / 0.4);
@@ -163,8 +163,9 @@ $_syntax-punctuation: #6b6d78;
   --syntax-key-color: hsl(from $_syntax-key h s 32%);
   --syntax-punctuation-color: hsl(from $_syntax-punctuation h s 37%);
   /* The semantic types and the tag categories */
-  /* Each strong fill is as light as its hue allows with light text at 4.5:1: green is bright, red and purple are not */
-  @mixin type-color-light neutral, $base-color-light, -28, 43%;
+  /* Each strong fill is as light as its hue allows with light text at 4.5:1: green is bright, red and purple are not.
+     Neutral is close to grey and its button is not saturated like the others, so that it differs from primary */
+  @mixin type-color-light neutral, $base-color-light, -48, 43%, 0;
   @mixin type-color-light primary, $primary-color;
   @mixin type-color-light success, $success-color, 0, 32%;
   @mixin type-color-light warning, $warning-color;
@@ -348,7 +349,7 @@ $_syntax-punctuation: #6b6d78;
   --form-checkbox-height: 1em;
   --form-switch-width: 2.5em;
   --form-switch-height: 1.25em;
-  --form-radio-select-icon: 65%;
+  --form-radio-select-icon: 50%;
   --form-select-icon-size: 1em;
   --form-select-icon-padding: var(--spacing-xs);
   --table-cell-padding-vertical: var(--spacing-sm);

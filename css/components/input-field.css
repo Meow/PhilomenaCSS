@@ -47,6 +47,11 @@
   border-color: var(--danger-tint-text-color);
 }
 
+/* An invalid field reacts to the pointer like any other: its red border takes the text color */
+.input-field:not([type="color"]):is(.invalid, :user-invalid):where(:not(:disabled, [readonly])):hover {
+  border-color: var(--text-color);
+}
+
 .input-field.invalid:focus-visible,
 .input-field:user-invalid:focus-visible {
   @mixin focus-ring var(--danger-tint-text-color);
@@ -57,6 +62,10 @@
     color: var(--danger-tint-text-color);
     background-color: var(--danger-tint-color);
     border-color: var(--danger-tint-text-color);
+  }
+
+  .input-field:not([type="color"]):invalid:not(:placeholder-shown):where(:not(:disabled, [readonly])):hover {
+    border-color: var(--text-color);
   }
 }
 

@@ -104,12 +104,21 @@
   pointer-events: none;
 }
 
+/* A checked box is filled with the primary color, like the boxes in menus; the fill also covers the wrap's border */
+.form-control-checkbox .form-checkbox-input-wrap .form-checkbox-input:checked {
+  background-color: var(--primary-color);
+  box-shadow: 0 0 0 var(--border-width) var(--primary-border-color);
+}
+
 .form-control-checkbox .form-checkbox-input-wrap .form-checkbox-input:checked + .form-checkbox-check-icon {
   opacity: 1;
+  color: var(--primary-text-color);
 }
 
 .form-control-checkbox .form-checkbox-label {
   cursor: default;
+  /* Clicking the control in quick succession does not select the label */
+  user-select: none;
 }
 
 /*
@@ -171,6 +180,8 @@
 
 .form-control-switch .form-switch-label {
   cursor: default;
+  /* Clicking the control in quick succession does not select the label */
+  user-select: none;
 }
 
 /* A disabled checkbox or radio fades like every other disabled control (the wrapper .disabled fades the label too) */
@@ -235,12 +246,20 @@
   @mixin focus-ring;
 }
 
+.form-control-radio .form-radio-input-wrap .form-radio-input:checked {
+  border-color: var(--primary-border-color);
+  background-color: var(--primary-color);
+}
+
 .form-control-radio .form-radio-input-wrap .form-radio-input:checked + .form-radio-select-icon {
   opacity: 1;
+  background-color: var(--primary-text-color);
 }
 
 .form-control-radio .form-radio-label {
   cursor: default;
+  /* Clicking the control in quick succession does not select the label */
+  user-select: none;
 }
 
 .form-control-select {
@@ -298,6 +317,12 @@
   cursor: default;
 }
 
+/* A select-only combobox is read-only but still a control, so it reacts to the pointer like the other fields */
+/* stylelint-disable-next-line no-descending-specificity -- the combobox rules stay together */
+.form-control-combobox > .form-select-input[readonly]:where(:not(:disabled)):hover {
+  border-color: var(--text-color);
+}
+
 .combobox-suggestions {
   position: absolute;
   width: 100%;
@@ -307,6 +332,7 @@
   border: var(--border-width) solid var(--control-border-color);
   color: var(--text-color);
   background-color: var(--well-color);
+  transition: border-color 0.1s;
   border-bottom-left-radius: var(--border-radius-inner);
   border-bottom-right-radius: var(--border-radius-inner);
   box-sizing: border-box;
@@ -411,6 +437,11 @@
     font-size: 0.65em;
     padding: var(--spacing-xs) var(--spacing-xs);
   }
+}
+
+/* The open list is one frame with its field, so its border follows the field's when that is hovered */
+.form-control-combobox > .form-select-input:where(:not(:disabled)):hover ~ .combobox-suggestions {
+  border-color: var(--text-color);
 }
 
 /* Items tint under the pointer and when highlighted from the keyboard; the selected one is filled like a primary
