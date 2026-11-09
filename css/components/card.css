@@ -13,12 +13,6 @@
   }
 }
 
-.card.error {
-  /* There are no card-error-* color tokens yet, this is the placeholder color for a missing token */
-  background-color: #ff00ff;
-  color: #ff00ff;
-}
-
 /* The header is a band across the top of the card, separated from the body by the card border */
 .card .card-header {
   margin: calc(-1 * var(--card-padding)) calc(-1 * var(--card-padding)) var(--card-padding);
@@ -47,8 +41,8 @@
 
 @mixin each-type card-color-variation;
 
-/* The bodies of light and dark cards follow the theme, so their links keep the regular link color */
+/* The bodies of light and dark cards follow the theme, so their links take the link color made for tinted surfaces */
 .card.card-light a:where(:not($(content-controls))),
 .card.card-dark a:where(:not($(content-controls))) {
-  color: var(--link-color);
+  color: var(--link-strong-color);
 }

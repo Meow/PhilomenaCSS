@@ -21,7 +21,7 @@ const badge = (text: string, classes = '') =>
 const block = (title: string, body: string) =>
   `<section class="block"><header class="block-header"><span class="block-header-title">${title}</span></header><div class="block-content">${body}</div></section>`;
 
-const alerts = `<div class="alert info">
+const alerts = `<div class="alert">
   <div class="alert-icon">i</div>
   <div class="alert-content">
     <div class="alert-title">Info alert</div>
@@ -669,7 +669,7 @@ export const stories: Story[] = [
     id: 'alerts',
     title: 'Alerts',
     description:
-      'The plain alert (.info is the same), the success, danger, warning and special variants, plus a compact layout with actions.',
+      'The plain alert, the success, danger, warning and special variants, plus a compact layout with actions.',
     html: alerts,
   },
   {
@@ -766,7 +766,6 @@ export const stories: Story[] = [
     html: formFields('regular'),
     notes: [
       'Icons are slots: the framework ships none. <code class="code-span">.form-checkbox-check-icon</code> and <code class="code-span">.form-select-icon</code> are positioned for a fixed-width icon (about 1.25em wide, 1em tall, such as Font Awesome\'s <code class="code-span">fa-fw</code>), a text glyph will not line up.',
-      'Radio: before v0.1.2 any whitespace between <code class="code-span">.form-radio-input-wrap</code> and <code class="code-span">.form-radio-label</code> pushed the label out. From v0.1.2 the control is a flex row and the markup may be formatted freely.',
     ],
   },
   {

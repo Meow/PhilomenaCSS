@@ -4,7 +4,7 @@
   height: var(--progress-bar-height);
   border-radius: calc(var(--progress-bar-height) * 0.5);
   background-color: var(--neutral-color);
-  border: 1px solid var(--neutral-border-color);
+  border: var(--border-width) solid var(--neutral-border-color);
 }
 
 .progress .progress-bar {

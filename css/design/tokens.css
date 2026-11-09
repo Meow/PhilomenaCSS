@@ -26,7 +26,8 @@
  *    syntax colors (most pairs are well above, body text is over 9:1)
  *  - the borders of controls and focus rings are at least 4.5:1 from the surfaces they separate; containers have
  *    subtle borders in the tint of their title bar and sharp inset lines for emphasis instead
- *  - buttons are at least 4.5:1 from the card and their text at least 4.5:1 from them
+ *  - the text of a button is at least 4.5:1 from its fill (the fills themselves sit closer to the card on the dark
+ *    theme, on purpose)
  *  - everything else (the page under the cards, inputs, badges, alerts, code) keeps Philomena's tones
  * The lightness of a derived color is absolute (`hsl(from $color h s 35%)`) so that the ratio holds for other
  * hues as well, give or take a little; the saturation shifts keep the chrome calmer than the base color.
@@ -323,6 +324,8 @@ $_syntax-punctuation: #6b6d78;
   --popup-wide-max-width: 40em;
   --card-padding: var(--spacing-lg);
   --card-header-padding-vertical: var(--spacing-md);
+  /* The drop shadow of menus: dropdowns, navbar menus, combobox suggestions */
+  --menu-shadow: 0 var(--spacing-sm) var(--spacing-lg) var(--shadow-color);
   --emphasis-shadow: inset 1px 1px 0 var(--inset-highlight-color), inset -1px -1px 0 var(--inset-shadow-color);
   --block-header-padding-vertical: var(--spacing-md);
   --block-header-padding-horizontal: var(--spacing-lg);
@@ -426,38 +429,28 @@ $_syntax-punctuation: #6b6d78;
   --size-100: 10em;
 }
 
-@media (max-width: $breakpoint-below-md) {
+@media not all and (min-width: $breakpoint-md) {
   :root {
     --media-box-width: var(--media-box-small-width);
-  }
-}
-
-@media (min-width: $breakpoint-lg) {
-  :root {
-    --button-padding-horizontal: var(--spacing-lg);
   }
 }
 
 @media (min-width: $breakpoint-md) {
   :root {
     --button-padding-vertical: var(--spacing-md);
+    --nav-link-padding-vertical: var(--spacing-sm);
+  }
+}
+
+@media (min-width: $breakpoint-lg) {
+  :root {
+    --button-padding-horizontal: var(--spacing-lg);
+    --nav-link-padding-horizontal: var(--spacing-md);
   }
 }
 
 @media (min-width: $breakpoint-xl) {
   :root {
     --input-padding: var(--spacing-md);
-  }
-}
-
-@media (min-width: $breakpoint-lg) {
-  :root {
-    --nav-link-padding-horizontal: var(--spacing-md);
-  }
-}
-
-@media (min-width: $breakpoint-md) {
-  :root {
-    --nav-link-padding-vertical: var(--spacing-sm);
   }
 }

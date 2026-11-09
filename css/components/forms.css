@@ -20,6 +20,11 @@
   @mixin faded;
 }
 
+/* The wrapper fades everything in it, so the disabled controls inside do not fade a second time */
+.form-control-wrap.disabled > * {
+  --faded-opacity: 1;
+}
+
 .form-control-wrap.full-width {
   width: 100%;
 }
@@ -57,7 +62,6 @@
 
 .form-control-checkbox .form-checkbox-input-wrap input:focus {
   z-index: var(--z-focus);
-  border-color: var(--focus-color);
 }
 
 .form-control-checkbox .form-checkbox-input-wrap input:focus-visible {
@@ -143,6 +147,7 @@
 
 .form-control-switch .form-switch-input:disabled {
   cursor: not-allowed;
+  @mixin faded;
 }
 
 .form-control-switch .form-switch-input:not(:disabled):hover {
@@ -161,6 +166,12 @@
   cursor: default;
 }
 
+/* A disabled checkbox or radio fades like every other disabled control (the wrapper .disabled fades the label too) */
+.form-control-checkbox .form-checkbox-input-wrap:has(:disabled),
+.form-control-radio .form-radio-input-wrap:has(:disabled) {
+  @mixin faded;
+}
+
 .form-control-radio {
   /* Flex centering instead of inline-block + vertical-align, which differ between browsers */
   display: flex;
@@ -173,15 +184,6 @@
   width: var(--form-checkbox-width);
   height: var(--form-checkbox-height);
   flex: 0 0 auto;
-}
-
-.form-control-radio .form-radio-input-wrap:focus {
-  z-index: var(--z-focus);
-  border-color: var(--focus-color);
-}
-
-.form-control-radio .form-radio-input-wrap:focus-visible {
-  @mixin focus-ring;
 }
 
 :root[dir="ltr"] .form-control-radio .form-radio-input-wrap {
@@ -327,7 +329,7 @@
   box-sizing: border-box;
   z-index: var(--z-suggestions);
   margin-top: calc(-1 * var(--border-width));
-  box-shadow: 0 var(--spacing-sm) var(--spacing-lg) var(--shadow-color);
+  box-shadow: var(--menu-shadow);
 }
 
 .combobox-suggestions .combobox-suggestion-header {
@@ -526,13 +528,13 @@
 }
 
 /* prettier-ignore */
-@mixin combined-border-radius .form-input-group:not([dir="rtl"]) > .input-field;
+@mixin combined-border-radius :root[dir="ltr"] .form-input-group > .input-field;
 /* prettier-ignore */
-@mixin combined-border-radius .form-input-group:not([dir="rtl"]) > .form-control-select, > .form-select-input;
+@mixin combined-border-radius :root[dir="ltr"] .form-input-group > .form-control-select, > .form-select-input;
 /* prettier-ignore */
-@mixin combined-border-radius-inverted .form-input-group[dir="rtl"] > .input-field;
+@mixin combined-border-radius-inverted :root[dir="rtl"] .form-input-group > .input-field;
 /* prettier-ignore */
-@mixin combined-border-radius-inverted .form-input-group[dir="rtl"] > .form-control-select, > .form-select-input;
+@mixin combined-border-radius-inverted :root[dir="rtl"] .form-input-group > .form-control-select, > .form-select-input;
 
 .form-message {
   display: block;
@@ -553,6 +555,8 @@
 
 @mixin content-link-style .form-message;
 
+/* .from-control-submit is the misspelt name this class used to have */
+.form-control-submit,
 .from-control-submit {
   display: flex;
   flex-flow: row wrap;
@@ -561,6 +565,7 @@
   gap: var(--form-control-spacing);
 }
 
+.form-control-submit,
 .from-control-submit .form-message {
   margin-top: 0;
 }

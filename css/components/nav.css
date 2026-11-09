@@ -1,5 +1,5 @@
 .nav {
-  z-index: 5;
+  z-index: var(--z-header);
   display: flex;
   flex-flow: column nowrap;
   gap: var(--nav-spacing);

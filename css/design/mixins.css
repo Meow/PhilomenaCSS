@@ -75,6 +75,13 @@ $bar-controls: .button, .tag a, .badge a;
   border-top: var(--border-width) solid var(--tint-color);
 }
 
+/* An element that is as wide as its content instead of filling its row, also as a flex or grid item */
+@define-mixin hug-content {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  align-self: flex-start;
+}
+
 /* Unavailable controls and muted content are faded by the same amount */
 @define-mixin faded {
   opacity: var(--faded-opacity);
@@ -126,9 +133,9 @@ $bar-controls: .button, .tag a, .badge a;
 }
 
 /*
- * Color variants of the components, from the roles of a type color (see css/design/tokens.css): .button-{type},
- * .badge-{type}, .alert.{type}, .table-{type}, .card-{type}, .block-{type}, .media-{type}, .pagination-{type}, .counter-{type} and the
- * overlays' .{type}.
+ * Color variants of the components, from the roles of a type color (see css/design/tokens.css): .button-{type}, .badge-{type},
+ * .counter-{type}, .pagination-{type}, .card-{type}, .block-{type}, .media-{type} and .table-{type} on the component, and a
+ * bare .{type} on alerts, table rows and cells, and media overlays.
  * The types are neutral (the default look), primary, success, warning, danger, special, light and dark.
  */
 @define-mixin button-color-variation $type {
@@ -335,12 +342,12 @@ $bar-controls: .button, .tag a, .badge a;
 
 /* prettier-ignore */
 @define-mixin combined-border-radius-inverted $selector, $sub-selector: {
-  $(selector):first-child $(sub-selector) {
+  $(selector):first-child:not(:last-child)$(sub-selector) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  $(selector):last-child $(sub-selector) {
+  $(selector):last-child:not(:first-child)$(sub-selector) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }

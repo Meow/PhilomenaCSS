@@ -8,7 +8,7 @@
  * Values are substituted when the framework is loaded, so overrides have to come before it.
  *
  * The palette comes from Philomena's light-blue and dark-blue themes and is laid out for contrast: text, labels,
- * borders and buttons are at least 4.5:1 from what they sit on (WCAG 2 ratios), everything else keeps Philomena's
+ * control borders and button text are at least 4.5:1 from what they sit on (WCAG 2 ratios), everything else keeps Philomena's
  * tones. The lightness of every derived color is fixed in css/design/tokens.css, so other hues keep the ratios
  * roughly; verify with `pnpm run check:contrast` after changing a color.
  */
@@ -56,4 +56,3 @@ $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
 $breakpoint-xl: 1200px;
 $breakpoint-xxl: 1600px;
-$breakpoint-below-md: 767px;

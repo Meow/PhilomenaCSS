@@ -32,8 +32,9 @@
   z-index: var(--z-focus);
 }
 
+/* The ring is in the focus color and a little away from the button, so that it shows on every fill */
 .button:focus-visible {
-  @mixin focus-ring var(--_border-color);
+  @mixin focus-ring-offset;
 }
 
 .button:disabled {
@@ -163,9 +164,7 @@
 /* A joined group of badge-sized buttons hugs its buttons instead of filling the row */
 .button-group.button-size-badge:not(.separated) {
   display: inline-flex;
-  inline-size: fit-content;
-  max-inline-size: 100%;
-  align-self: flex-start;
+  @mixin hug-content;
 }
 
 .button-group.button-size-badge:not(.separated) .button {

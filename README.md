@@ -79,7 +79,6 @@ $base-color-dark: #99501e;
 $base-color-light: #e8590c;
 $primary-color: #7a3e9d;
 $breakpoint-md: 800px;
-$breakpoint-below-md: 799px;
 ```
 
 ```css
@@ -137,6 +136,11 @@ The design layer also defines the mixins the framework is built with (`css/desig
 
 The framework is plain CSS, so some structure is on you:
 
+- **What CSS cannot do.** The script-free pieces cover opening and closing only. Hover menus (navbar, dropdown) do
+  not close on Escape and cannot keep `aria-expanded` up to date; the burger menu does not trap the focus or stop the
+  page scrolling behind it; tabs need a script for the selection, arrow keys and `aria-controls`; a clamp's hidden
+  checkbox stays a tab stop when nothing is cut, so leave it out (or disable it) for text you know is short. Add a
+  script where these matter.
 - **Badge-sized buttons.** `.button-size-badge` on a `.button`, or on a `.button-group` to size every button in
   it, gives buttons the size and shape of a badge (`--badge-*` sizes, `--border-radius-large`) for toolbars and
   list rows.

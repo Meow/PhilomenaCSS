@@ -33,9 +33,7 @@
   background-color: var(--surface-color);
   border: var(--border-width) solid var(--tint-color);
   border-radius: var(--border-radius-outer);
-  box-shadow:
-    var(--emphasis-shadow),
-    0 var(--spacing-sm) var(--spacing-lg) var(--shadow-color);
+  box-shadow: var(--emphasis-shadow), var(--menu-shadow);
 }
 
 .dropdown .dropdown-menu.end {

@@ -2,7 +2,7 @@
  * Tables: a framed box with the header row in the input material and thin row dividers. Wrap the table in
  * .table-wrap (add .responsive to scroll it sideways on narrow screens). Modifiers on .table: .striped for zebra
  * rows, .hover to tint the row under the pointer, .table-{color} to color the header and footer. A row or cell takes
- * .{color} on its own. The colors are info, success, warning, danger, special, light and dark.
+ * .{color} on its own. The colors are primary, success, warning, danger, special, light and dark.
  */
 
 .table-wrap {

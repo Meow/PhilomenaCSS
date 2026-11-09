@@ -20,10 +20,7 @@
   display: inline-flex;
   flex-flow: row wrap;
   align-items: stretch;
-  /* The pill hugs its links, also as a flex or grid item */
-  inline-size: fit-content;
-  max-inline-size: 100%;
-  align-self: flex-start;
+  @mixin hug-content;
   color: var(--neutral-tint-text-color);
   background-color: var(--neutral-tint-color);
   border: var(--border-width) solid var(--neutral-border-color);

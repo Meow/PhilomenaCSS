@@ -213,6 +213,12 @@ for (const theme of ['light', 'dark']) {
       [`${t} action filled`, card, color(`tag-${t}-text-color`, card)],
     ]),
     ['comments action filled', card, color('bar-link-color', card)],
+    // links in the bodies of light and dark cards, which follow the theme
+    ...['light', 'dark'].map(t => [
+      `strong link on ${t} wash`,
+      color('link-strong-color', color(`${t}-wash-color`, card)),
+      color(`${t}-wash-color`, card),
+    ]),
     // tags
     ...tags.map(t => [
       `${t} tag text`,

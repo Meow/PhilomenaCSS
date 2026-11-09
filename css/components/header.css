@@ -12,8 +12,6 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--header-spacing-vertical) var(--header-spacing-horizontal);
-  /* There is no header-spacing token, so this has always been 0 */
-  gap: 0;
   box-sizing: border-box;
   border-bottom: var(--border-width) solid var(--tint-color);
   box-shadow: var(--emphasis-shadow);
@@ -23,7 +21,7 @@
   position: absolute;
 }
 
-.header.non-stick ~ * {
+.header.non-stick + * {
   margin-top: var(--header-height);
 }
 
@@ -44,12 +42,5 @@
 
 .header .header-brand .header-brand-text {
   font-weight: bold;
-}
-
-:root[dir="ltr"] .header .header-brand .header-brand-text {
-  margin-left: var(--spacing-sm) !important;
-}
-
-:root[dir="rtl"] .header .header-brand .header-brand-text {
-  margin-right: var(--spacing-sm) !important;
+  margin-inline-start: var(--spacing-sm);
 }

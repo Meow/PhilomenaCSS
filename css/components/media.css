@@ -118,6 +118,14 @@
   pointer-events: none;
 }
 
+/* The boxes are narrow on phones (two to a row), so the actions sit closer together to fit */
+@media not all and (min-width: $breakpoint-md) {
+  .media-box .media-box-header .media-box-action,
+  .media-box .media-box-header .media-box-score {
+    padding-inline: var(--spacing-xs);
+  }
+}
+
 /* The image area is square and the image is fitted inside it, as a thumbnail is; .cover crops it to fill the area */
 .media-box .media-box-content {
   display: block;
@@ -180,11 +188,7 @@
   bottom: var(--media-overlay-inset-vertical);
 }
 
-@mixin media-overlay-color-variation primary;
-@mixin media-overlay-color-variation success;
-@mixin media-overlay-color-variation warning;
-@mixin media-overlay-color-variation danger;
-@mixin media-overlay-color-variation special;
+@mixin each-type media-overlay-color-variation;
 
 /*
  * A veil covers the whole image with a centered label, for spoilered or filtered media. .spoilered on the box also

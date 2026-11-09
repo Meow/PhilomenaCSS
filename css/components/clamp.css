@@ -13,6 +13,10 @@
  * line of text is cut, both are sized from the height of the text, all or nothing; a text that fits, or is over by
  * less than a line, is shown whole. The fade ends in --clamp-bg-color, the surface color unless the text sits on
  * something else. .communication-text uses the same thing.
+ *
+ * The checkbox stays reachable from the keyboard when nothing is cut (CSS cannot tell), and checking it then shows
+ * "Show less". Leave the toggle and labels out, or give the checkbox the disabled attribute, where you know the text
+ * is short.
  */
 
 .clamp-toggle {
@@ -78,7 +82,8 @@
   top: calc(var(--clamp-max-height) - var(--_fade));
   bottom: var(--_line);
   inset-inline: 0;
-  background-image: linear-gradient(to bottom, transparent, var(--clamp-bg-color, var(--surface-color)));
+  /* Opaque a little before its end, so that a line the cut runs through does not show above the label */
+  background-image: linear-gradient(to bottom, transparent, var(--clamp-bg-color, var(--surface-color)) 85%);
   background-repeat: no-repeat;
   background-size: 100% var(--_fade);
   /* 100% here is the height of the fade minus that of the gradient: zero when cut, a line or more below when not */

@@ -64,6 +64,19 @@ h6 {
 }
 
 /*
+ * The reset removes every outline. Anything focusable gets the focus ring back here, at no specificity, so that the
+ * components (and you) can restyle it; elements that are clipped by their container draw it inside themselves.
+ */
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  @mixin focus-ring;
+}
+
+:where(.tag, .media-box, .block-header, .tabs, .communication, .table-wrap) :where(a, button):focus-visible {
+  @mixin focus-ring-inset;
+}
+
+/*
  * Rhythm. Significant blocks that follow each other in normal flow keep a large distance, a run of alerts a medium
  * one, and so do running text and controls: a paragraph or list from what follows it, a group of controls (or a
  * single button) from the text and blocks around it. Only the children of the framework's flow containers are

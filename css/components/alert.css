@@ -52,3 +52,14 @@
 }
 
 @mixin each-type alert-color-variation;
+
+/* The light and dark types are fixed colors, so their text and links follow them and not the theme */
+.alert.light,
+.alert.light a {
+  color: var(--light-tint-text-color);
+}
+
+.alert.dark,
+.alert.dark a {
+  color: var(--dark-tint-text-color);
+}

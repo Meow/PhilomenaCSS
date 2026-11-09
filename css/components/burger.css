@@ -9,11 +9,18 @@
  *     <hr class="burger-divider">
  *   </nav>
  *   <label class="burger-overlay" for="burger"></label>
- * The checkbox has to come before the panel and the overlay, as their sibling. Clicking the overlay closes the menu.
+ * The checkbox has to come before the panel and the overlay, as their sibling, and the label that opens the menu
+ * right after it (it shows the focus of the checkbox). Clicking the overlay closes the menu. Closing on Escape,
+ * keeping the focus inside and stopping the page from scrolling behind it need a script.
  */
 
 .burger-toggle {
   @mixin hidden-toggle;
+}
+
+/* The checkbox is the tab stop of the label after it, which shows its focus */
+.burger-toggle:focus-visible + label {
+  @mixin focus-ring-offset;
 }
 
 .burger {
