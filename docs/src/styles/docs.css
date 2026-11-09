@@ -220,3 +220,8 @@ body.docs-gradient:before {
 .docs-main .card > p + details {
   margin-block-start: var(--spacing-md);
 }
+
+/* The page's own header scrolls away with the page instead of sticking to the top */
+.header.docs-header {
+  position: static;
+}
