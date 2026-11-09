@@ -129,6 +129,8 @@ $bar-controls: .button, .tag a, .badge a;
     color: var(--$(type)-button-text-color);
     background-color: var(--$(type)-button-color);
     --_border-color: var(--$(type)-border-color);
+    --_hover-shade: var(--$(type)-button-hover-color);
+    --_active-shade: var(--$(type)-button-active-color);
   }
 }
 
@@ -248,6 +250,8 @@ $bar-controls: .button, .tag a, .badge a;
     color: var(--$(type)-button-text-color);
     background-color: var(--$(type)-button-color);
     --_border-color: var(--$(type)-border-color);
+    --_hover-shade: var(--$(type)-button-hover-color);
+    --_active-shade: var(--$(type)-button-active-color);
   }
 }
 

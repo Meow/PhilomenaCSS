@@ -1,6 +1,8 @@
 .button {
   --_border-color: var(--neutral-border-color);
   --_shade: transparent;
+  --_hover-shade: var(--neutral-button-hover-color);
+  --_active-shade: var(--neutral-button-active-color);
   position: relative;
   line-height: normal;
   color: var(--neutral-button-text-color);
@@ -52,7 +54,7 @@
 }
 
 .button:not(:disabled):hover {
-  --_shade: var(--hover-shade-color);
+  --_shade: var(--_hover-shade);
 }
 
 .button.icon-only {
@@ -95,7 +97,7 @@
 
 .button:not(:disabled):active,
 .button.pressed {
-  --_shade: var(--active-shade-color);
+  --_shade: var(--_active-shade);
 }
 
 .button.loading {

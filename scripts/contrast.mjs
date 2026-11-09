@@ -188,13 +188,13 @@ for (const theme of ['light', 'dark']) {
         [`${t} button text`, color(`${t}-button-text-color`, button), button],
         [
           `${t} button text hovered`,
-          color(`${t}-button-text-color`, color('hover-shade-color', button)),
-          color('hover-shade-color', button),
+          color(`${t}-button-text-color`, color(`${t}-button-hover-color`, button)),
+          color(`${t}-button-hover-color`, button),
         ],
         [
           `${t} button text pressed`,
-          color(`${t}-button-text-color`, color('active-shade-color', button)),
-          color('active-shade-color', button),
+          color(`${t}-button-text-color`, color(`${t}-button-active-color`, button)),
+          color(`${t}-button-active-color`, button),
         ],
         [`${t} tint text on tint`, color(`${t}-tint-text-color`, tintBg), tintBg],
         [`${t} text on tint`, color('text-color', tintBg), tintBg],

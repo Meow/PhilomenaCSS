@@ -91,7 +91,7 @@ details.dropdown[open] > .dropdown-menu {
 details.dropdown[open] > .button,
 :not(details).dropdown:not(.manual):hover > .button,
 :not(details).dropdown:not(.manual):focus-within > .button {
-  --_shade: var(--active-shade-color);
+  --_shade: var(--_active-shade);
   border-end-start-radius: 0;
   border-end-end-radius: 0;
 }

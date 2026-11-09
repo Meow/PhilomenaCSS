@@ -12,6 +12,9 @@
  *  --{type}-color / -text-color / -border-color   a strong fill (counters, switches, the current page), its text and
  *                                                  the border of a control in the color
  *  --{type}-button-color / -button-text-color      a button's fill and its text
+ *  --{type}-button-hover-color / -active-color     the shade laid over a hovered and a pressed button: black on the
+ *                                                  dark theme, the button's own hue on the light one, so that a pale
+ *                                                  button gets deeper and not grey
  *  --{type}-tint-color / -tint-text-color          a tinted surface (alerts, badges, table rows) and the text on it
  *  --{type}-bar-color / -bar-text-color            the title bar of a colored card, block, media box or table
  *  --{type}-wash-color                             the body of a colored card
@@ -55,6 +58,8 @@ $_syntax-punctuation: #6b6d78;
   --$(type)-border-color: hsl(from $color h calc(s + $sat) 53%);
   --$(type)-button-color: hsl(from $color h calc(s + $sat) 90%);
   --$(type)-button-text-color: hsl(from $color h calc(s + $sat) 18%);
+  --$(type)-button-hover-color: hsl(from $color h calc(s + $sat + 20) 38% / 0.2);
+  --$(type)-button-active-color: hsl(from $color h calc(s + $sat + 20) 34% / 0.4);
   --$(type)-tint-color: hsl(from $color h calc(s + $sat) 90%);
   --$(type)-tint-text-color: hsl(from $color h calc(s + $sat) 28%);
   --$(type)-bar-color: hsl(from $color h calc(s + $sat) 82%);
@@ -69,6 +74,8 @@ $_syntax-punctuation: #6b6d78;
   --$(type)-border-color: hsl(from $color h calc(s + $sat) calc($(fill) + 18%));
   --$(type)-button-color: hsl(from $color h calc(s + $sat) $(fill));
   --$(type)-button-text-color: hsl(from $color h calc(s + $sat) 88%);
+  --$(type)-button-hover-color: rgba(0, 0, 0, 0.18);
+  --$(type)-button-active-color: rgba(0, 0, 0, 0.35);
   --$(type)-tint-color: hsl(from $color h calc(s + $sat) 22%);
   --$(type)-tint-text-color: hsl(from $color h calc(s + $sat) 84%);
   --$(type)-bar-color: hsl(from $color h calc(s + $sat) 30%);
