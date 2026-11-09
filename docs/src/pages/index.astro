@@ -103,33 +103,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </span>
         </button>
       </div>
-      <h3>Background gradient</h3>
-      <p>
-        The gradient is opt-in in the library (import <code class="code-span">css/design/background-gradient.css</code>{' '}
-        after the framework), the published stylesheet does not include it. This toggle only paints it with docs-only
-        CSS from the same <code class="code-span">--gradient-*</code> tokens. The middle is the base color of the theme,
-        the start and end follow it until you pick a color.
-      </p>
-      <div class="docs-toolbar">
-        <div class="form-control-checkbox">
-          <span class="form-checkbox-input-wrap">
-            <input id="gradient-toggle" class="form-checkbox-input" type="checkbox" data-gradient-toggle />
-            <span class="form-checkbox-check-icon" set:html={checkIcon} />
-          </span>
-          <label class="form-checkbox-label" for="gradient-toggle">
-            Show gradient
-          </label>
-        </div>
-        <label for="gradient-start">Start</label>
-        <input id="gradient-start" class="input-field" type="color" data-gradient-color="start" />
-        <label for="gradient-end">End</label>
-        <input id="gradient-end" class="input-field" type="color" data-gradient-color="end" />
-        <button type="button" class="button" data-gradient-reset>
-          <span class="button-content">
-            <span class="button-text">Follow base</span>
-          </span>
-        </button>
-      </div>
       <pre class="code-block docs-source" data-brand-output></pre>
     </section>
 
@@ -290,61 +263,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     // --base-color-dark / --base-color-light playground
     const baseInputs = [...document.querySelectorAll<HTMLInputElement>('[data-base-input]')];
     const output = document.querySelector<HTMLElement>('[data-brand-output]')!;
-    const gradientToggle = document.querySelector<HTMLInputElement>('[data-gradient-toggle]')!;
-    const gradientInputs = [...document.querySelectorAll<HTMLInputElement>('[data-gradient-color]')];
-    const gradientCustom = new Set<string>();
     const defaultBase = new Map(baseInputs.map(input => [input.dataset.baseInput!, input.value]));
     const baseToken = (theme: string) => `--base-color-${theme}`;
     const changedBase = () => baseInputs.filter(input => input.value !== defaultBase.get(input.dataset.baseInput!));
-    const gradientToken = (end: string) => `--gradient-${end}-color`;
-
-    // Resolves a color token (which may be a relative color expression, computed as color(srgb ...)) to #rrggbb
-    // by painting it on a 1px canvas
-    const probe = document.createElement('span');
-    probe.style.display = 'none';
-    document.body.append(probe);
-    const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true })!;
-    const resolveColor = (token: string) => {
-      probe.style.color = `var(${token})`;
-      context.clearRect(0, 0, 1, 1);
-      context.fillStyle = getComputedStyle(probe).color;
-      context.fillRect(0, 0, 1, 1);
-      const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
-      return `#${[r, g, b].map(v => v.toString(16).padStart(2, '0')).join('')}`;
-    };
-    // Keeps the pickers in sync with the derived colors for the ends that follow the base color
-    const syncGradientInputs = () => {
-      gradientInputs.forEach(input => {
-        const end = input.dataset.gradientColor!;
-        if (!gradientCustom.has(end)) {
-          root.style.removeProperty(gradientToken(end));
-          input.value = resolveColor(gradientToken(end));
-        }
-      });
-    };
-
-    const overrides = () => {
-      const declarations: string[] = [];
-      gradientInputs.forEach(input => {
-        const end = input.dataset.gradientColor!;
-        if (gradientCustom.has(end)) declarations.push(`${gradientToken(end)}: ${input.value};`);
-      });
-      return declarations;
-    };
     const apply = () => {
-      gradientInputs.forEach(input => root.style.removeProperty(gradientToken(input.dataset.gradientColor!)));
       baseInputs.forEach(input => {
         const theme = input.dataset.baseInput!;
         if (input.value !== defaultBase.get(theme)) root.style.setProperty(baseToken(theme), input.value);
         else root.style.removeProperty(baseToken(theme));
       });
-      const declarations = overrides();
-      declarations.forEach(line => {
-        const [name, value] = line.slice(0, -1).split(/:\s*/);
-        root.style.setProperty(name, value);
-      });
-      syncGradientInputs();
-      document.body.classList.toggle('docs-gradient', gradientToggle.checked);
       const parts: string[] = [];
       const changed = changedBase();
       if (changed.length) {
@@ -352,30 +279,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           `/* in your overrides file, imported between config.css and framework.css */\n${changed.map(input => `$base-color-${input.dataset.baseInput}: ${input.value};`).join('\n')}`,
         );
       }
-      if (declarations.length) parts.push(`:root {\n  ${declarations.join('\n  ')}\n}`);
-      if (gradientToggle.checked) {
-        parts.push('/* the gradient also needs css/design/background-gradient.css imported after the framework */');
-      }
       output.textContent = parts.length ? parts.join('\n\n') : '/* defaults, nothing overridden */';
     };
     baseInputs.forEach(input => input.addEventListener('input', apply));
-    gradientToggle.addEventListener('change', apply);
-    gradientInputs.forEach(input =>
-      input.addEventListener('input', () => {
-        gradientCustom.add(input.dataset.gradientColor!);
-        apply();
-      }),
-    );
-    document.querySelector('[data-gradient-reset]')?.addEventListener('click', () => {
-      gradientCustom.clear();
-      apply();
-    });
     document.querySelector('[data-brand-reset]')?.addEventListener('click', () => {
       baseInputs.forEach(input => {
         input.value = defaultBase.get(input.dataset.baseInput!)!;
       });
-      gradientCustom.clear();
-      gradientToggle.checked = false;
       apply();
     });
     document

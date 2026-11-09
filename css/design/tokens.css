@@ -33,12 +33,6 @@
  * hues as well, give or take a little; the saturation shifts keep the chrome calmer than the base color.
  */
 
-/* Page background gradient, opt-in (css/design/background-gradient.css): the middle is the base color, the start
-   is a hair off its hue, the end is a desaturated, darker color further around the color wheel */
-$_gradient-start-light: hsl(from $base-color-light calc(h + 2) s l);
-$_gradient-start-dark: hsl(from $base-color-dark calc(h + 2) s l);
-$_gradient-end-light: hsl(from $base-color-light calc(h + 65) max(s - 59, 0) max(l - 13, 0));
-$_gradient-end-dark: hsl(from $base-color-dark calc(h + 65) max(s - 59, 0) max(l - 13, 0));
 /* Syntax highlighting hues, darkened on the light code background and lightened on the dark one */
 $_syntax-command: #7a3e9d;
 $_syntax-flag: #1b6b93;
@@ -141,8 +135,8 @@ $_syntax-punctuation: #6b6d78;
   --tint-faint-color: hsl(from $base-color-light h calc(s - 20) 94%);
   --well-color: hsl(from $base-color-light h calc(s - 20) 96%);
   --well-deep-color: hsl(from $base-color-light h calc(s - 20) 90%);
-  --stripe-color: rgba(0, 0, 0, 0.03);
-  --hover-color: rgba(0, 0, 0, 0.04);
+  --stripe-color: hsl(from $base-color-light h s 50% / 0.1);
+  --hover-color: hsl(from $base-color-light h s 50% / 0.14);
   --bar-link-color: hsl(from $base-color-light h s 30%);
   --accent-color: hsl(from $base-color-light h s 65%);
   /* Controls: the 4.5:1 border of inputs, focus rings, the feedback shades of buttons */
@@ -166,12 +160,9 @@ $_syntax-punctuation: #6b6d78;
   --overlay-text-color: #ffffff;
   --veil-color: rgba(0, 0, 0, 0.6);
   --veil-text-color: #ffffff;
-  /* The washes of the fixed types and the page background gradient */
+  /* The washes of the fixed types */
   --light-wash-color: hsl(0, 0%, 92%);
   --dark-wash-color: hsl(0, 0%, 88%);
-  --gradient-start-color: $_gradient-start-light;
-  --gradient-mid-color: $base-color-light;
-  --gradient-end-color: $_gradient-end-light;
   /* Syntax highlighting */
   --syntax-command-color: hsl(from $_syntax-command h s 37%);
   --syntax-flag-color: hsl(from $_syntax-flag h s 32%);
@@ -192,8 +183,6 @@ $_syntax-punctuation: #6b6d78;
 
 :root {
   /* Layering, from the page up: what is in flow, then what floats over it, then what covers the page */
-  --z-background: 1;
-  --z-default: 2;
   --z-focus: 3;
   --z-input-symbol: 4;
   --z-header: 5;
@@ -215,8 +204,8 @@ $_syntax-punctuation: #6b6d78;
   --tint-faint-color: hsl(from $base-color-dark h calc(s - 5) 19%);
   --well-color: hsl(from $base-color-dark h calc(s - 5) 11%);
   --well-deep-color: hsl(from $base-color-dark h calc(s - 5) 9%);
-  --stripe-color: rgba(255, 255, 255, 0.04);
-  --hover-color: rgba(255, 255, 255, 0.05);
+  --stripe-color: hsl(from $base-color-dark h calc(s + 20) 60% / 0.1);
+  --hover-color: hsl(from $base-color-dark h calc(s + 20) 60% / 0.12);
   --bar-link-color: hsl(from $base-color-dark h calc(s + 20) 78%);
   --accent-color: hsl(from $base-color-dark h calc(s + 10) 55%);
   --control-border-color: hsl(from $base-color-dark h s 59%);
@@ -237,9 +226,6 @@ $_syntax-punctuation: #6b6d78;
   --veil-text-color: #ffffff;
   --light-wash-color: hsl(0, 0%, 20%);
   --dark-wash-color: hsl(0, 0%, 10%);
-  --gradient-start-color: $_gradient-start-dark;
-  --gradient-mid-color: $base-color-dark;
-  --gradient-end-color: $_gradient-end-dark;
   --syntax-command-color: hsl(from $_syntax-command h s 73%);
   --syntax-flag-color: hsl(from $_syntax-flag h s 70%);
   --syntax-string-color: hsl(from $_syntax-string h s 68%);
@@ -284,11 +270,6 @@ $_syntax-punctuation: #6b6d78;
   --base-line-height: 1.15;
   --heading-line-height: 1.15;
   --text-line-height: 1.35;
-  --gradient-opacity: 0.5;
-  --gradient-start-position: 0%;
-  --gradient-mid-position: 50%;
-  --gradient-end-position: 100%;
-  --gradient-angle: 15deg;
   /* The spacing scale: every padding, margin and gap in the framework is one of these steps, and so are the
      .m-{key} and .p-{key} utilities (css/utils/spacing.css) */
   --spacing-0: 0;

@@ -105,7 +105,8 @@
  *     <input id="x" class="form-switch-input" type="checkbox">
  *     <label class="form-switch-label" for="x">Label</label>
  *   </div>
- * The knob is a background image, so the input needs no wrapper or pseudo-element.
+ * The knob is a background image, so the input needs no wrapper or pseudo-element, and .form-switch-input works on
+ * its own wherever a checkbox does, such as at the end of a menu item.
  */
 
 .form-control-switch {
@@ -114,7 +115,7 @@
   gap: var(--form-control-spacing);
 }
 
-.form-control-switch .form-switch-input {
+.form-switch-input {
   --_knob: calc(var(--form-switch-height) - 2 * var(--border-width) - 2 * var(--spacing-xs));
   flex: 0 0 auto;
   box-sizing: border-box;
@@ -134,23 +135,23 @@
   transition-duration: 0.1s;
 }
 
-.form-control-switch .form-switch-input:checked {
+.form-switch-input:checked {
   border-color: var(--success-border-color);
   background-color: var(--success-color);
   background-image: radial-gradient(circle closest-side, var(--success-text-color) 92%, transparent);
   background-position: calc(100% - var(--spacing-xs)) 50%;
 }
 
-.form-control-switch .form-switch-input:focus-visible {
+.form-switch-input:focus-visible {
   @mixin focus-ring-offset;
 }
 
-.form-control-switch .form-switch-input:disabled {
+.form-switch-input:disabled {
   cursor: not-allowed;
   @mixin faded;
 }
 
-.form-control-switch .form-switch-input:not(:disabled):hover {
+.form-switch-input:not(:disabled):hover {
   box-shadow: inset 0 0 0 100em var(--hover-shade-color);
 }
 
@@ -263,14 +264,9 @@
  * handling and the state classes (.suggestions-open, .has-suggestions, .allow-typing, .selected and .highlighted on
  * items) are your script's job.
  *
- * Upstream HammerTimeCSS needs .has-combobox on the flex and grid ancestors of a combobox, because its reset gives
- * every element a z-index. This framework does not, so the class is only kept so that upstream markup works as is.
+ * Upstream HammerTimeCSS needs a .has-combobox class on the ancestors of a combobox, because it gives every element
+ * a z-index, which traps the list under later siblings. Nothing here does that, so the class is not needed.
  */
-
-.form-control-combobox,
-.has-combobox {
-  z-index: unset;
-}
 
 .form-control-combobox.suggestions-open.has-suggestions > .form-select-input {
   border-bottom-left-radius: 0;
@@ -431,6 +427,13 @@
   flex-grow: 1;
 }
 
+/* A button in the group is as tall as the inputs and keeps its width */
+.form-input-group > .button {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
 .form-input-group > .input-field[inputmode="numeric"] {
   line-height: 1em;
 }
@@ -469,6 +472,8 @@
 
 /* prettier-ignore */
 @mixin combined-border-radius .form-input-group > .input-field;
+/* prettier-ignore */
+@mixin combined-border-radius .form-input-group > .button;
 /* prettier-ignore */
 @mixin combined-border-radius .form-input-group > .form-control-select, > .form-select-input;
 

@@ -101,7 +101,7 @@
 }
 
 /* The reset strips the disclosure marker, so make the toggles look clickable */
-.docs-main summary:not(.accordion-item-header) {
+.docs-main summary:not(.accordion-item-header, .button) {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
@@ -114,15 +114,15 @@
   user-select: none;
 }
 
-.docs-main summary:not(.accordion-item-header):hover {
+.docs-main summary:not(.accordion-item-header, .button):hover {
   background: var(--tint-faint-color);
 }
 
-.docs-main summary:not(.accordion-item-header):focus-visible {
+.docs-main summary:not(.accordion-item-header, .button):focus-visible {
   outline: var(--focus-outline) solid var(--focus-color);
 }
 
-.docs-main summary:not(.accordion-item-header):before {
+.docs-main summary:not(.accordion-item-header, .button):before {
   content: "";
   inline-size: 0.5em;
   block-size: 0.5em;
@@ -132,15 +132,15 @@
   transition: transform 0.15s;
 }
 
-.docs-main details[open] > summary:not(.accordion-item-header):before {
+.docs-main details[open] > summary:not(.accordion-item-header, .button):before {
   transform: rotate(45deg);
 }
 
-.docs-main details[open] > summary:not(.accordion-item-header) {
+.docs-main details[open] > summary:not(.accordion-item-header, .button) {
   margin-block-end: var(--spacing-md);
 }
 
-.docs-main details + details {
+.docs-main details:where(:not(.dropdown)) + details:where(:not(.dropdown)) {
   margin-block-start: var(--spacing-md);
 }
 
@@ -188,30 +188,6 @@
 
 .docs-token-table td:first-child .copyable-text-data {
   font-family: var(--mono-font);
-}
-
-/* Docs-only gradient layer driven by the framework's --gradient-* tokens (the library only emits it when css/design/background-gradient.css is imported) */
-body.docs-gradient:before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-background);
-  opacity: var(--gradient-opacity);
-  background-image: linear-gradient(
-    calc(180deg - var(--docs-gradient-angle, var(--gradient-angle))),
-    var(--gradient-start-color) var(--gradient-start-position),
-    var(--gradient-mid-color) var(--gradient-mid-position),
-    var(--gradient-end-color) var(--gradient-end-position)
-  );
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  pointer-events: none;
-}
-
-@media print {
-  body.docs-gradient:before {
-    display: none;
-  }
 }
 
 /* The docs' own controls keep the framework's medium distance from the text around them */

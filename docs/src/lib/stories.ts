@@ -180,7 +180,7 @@ const comboboxItem = (main: string, state = '', addon?: string, mark?: string) =
 };
 
 const combobox = (set: IconSet = 'fontawesome') => `<div class="form-control-group vertical">
-  <div class="form-control-wrap has-combobox">
+  <div class="form-control-wrap">
     <div class="form-control">
       <label class="form-control-label" for="combobox-closed">Closed (select only)</label>
       <div class="form-control-select form-control-combobox full-width">
@@ -189,7 +189,7 @@ const combobox = (set: IconSet = 'fontawesome') => `<div class="form-control-gro
       </div>
     </div>
   </div>
-  <div class="form-control-wrap has-combobox">
+  <div class="form-control-wrap">
     <div class="form-control">
       <label class="form-control-label" for="combobox-open">Open (typing allowed)</label>
       <div class="form-control-select form-control-combobox allow-typing suggestions-open has-suggestions full-width">
@@ -827,6 +827,52 @@ const contentContainer = `<div class="content-container">
   </div>
 </div>`;
 
+// Menus with controls: a dropdown of checkboxes with a switch row (open, so that the menu shows), one of radios, and
+// a navbar menu with a switch and a checkbox at the end of its rows
+const checkItem = (text: string, checked = false, extra = '', name = '') =>
+  `      <label class="dropdown-item"><input class="menu-check-input" type="${name ? 'radio' : 'checkbox'}"${name ? ` name="${name}"` : ''}${checked ? ' checked' : ''}${extra}><span class="menu-check-box"></span>${text}</label>`;
+const menuControls = `<div class="docs-stack">
+<div class="flex flex-wrap gap-md" style="align-items: flex-start; min-height: 21rem">
+  <details class="dropdown" open>
+    <summary class="button"><span class="button-content"><span class="button-text">Ratings</span><span class="counter subtle">2</span></span></summary>
+    <div class="dropdown-menu">
+${checkItem('Safe', true)}
+${checkItem('Suggestive', true)}
+${checkItem('Questionable')}
+${checkItem('Unavailable', false, ' disabled')}
+      <hr class="dropdown-divider">
+      <label class="dropdown-item"><span class="dropdown-icon">${fai('eye-slash')}</span>Hide seen<input class="form-switch-input menu-end" type="checkbox"></label>
+      <label class="dropdown-item"><span class="dropdown-icon">${fai('star')}</span>Favourites only<input class="form-switch-input menu-end" type="checkbox" checked></label>
+      <hr class="dropdown-divider">
+      <div class="dropdown-actions">${button('Clear', 'button-size-badge')}${button('Apply', 'button-primary button-size-badge')}</div>
+    </div>
+  </details>
+  <details class="dropdown">
+    <summary class="button"><span class="button-content"><span class="button-text">Sort by: Score</span></span></summary>
+    <div class="dropdown-menu">
+${checkItem('Newest', false, '', 'check-sort')}
+${checkItem('Score', true, '', 'check-sort')}
+${checkItem('Relevance', false, '', 'check-sort')}
+    </div>
+  </details>
+</div>
+<div style="min-height: 13rem">
+  <nav class="navbar" aria-label="Preferences">
+    <div class="navbar-dropdown navbar-pinned open">
+      <a class="navbar-item caret" href="#" aria-haspopup="true" aria-expanded="true"><span class="navbar-icon">${fai('gear')}</span>Preferences</a>
+      <div class="navbar-menu">
+        <label class="navbar-menu-item"><span class="navbar-menu-icon">${fai('eye')}</span><span class="navbar-menu-text">Dark theme</span><input class="form-switch-input menu-end" type="checkbox" checked></label>
+        <label class="navbar-menu-item"><span class="navbar-menu-icon">${fai('video')}</span><span class="navbar-menu-text">Autoplay videos</span><input class="form-switch-input menu-end" type="checkbox"></label>
+        <hr class="navbar-menu-divider">
+        <label class="navbar-menu-item"><span class="navbar-menu-icon">${fai('image')}</span><span class="navbar-menu-text">Show thumbnails</span><input class="menu-check-input" type="checkbox" checked><span class="menu-check-box menu-end"></span></label>
+        <label class="navbar-menu-item"><span class="navbar-menu-icon">${fai('bell')}</span><span class="navbar-menu-text">Notifications</span><input class="menu-check-input" type="checkbox"><span class="menu-check-box menu-end"></span></label>
+      </div>
+    </div>
+    <a class="navbar-item navbar-pinned" href="#"><span class="navbar-icon">${fai('user')}</span>Account</a>
+  </nav>
+</div>
+</div>`;
+
 // Quotes nested `depth` levels deep, numbered from the outside in
 const nestedQuotes = (depth: number): string => {
   let html = '';
@@ -927,6 +973,16 @@ export const stories: Story[] = [
     description:
       'A menu under any trigger. It opens while the .dropdown is hovered or has the focus inside, with no script; .open holds it open and .manual turns the hover off, for a click toggle of your own (the second one here). Items can have an icon, .dropdown-danger colours one, .dropdown-menu.end aligns the menu with the end of its trigger and .up opens it above.',
     html: dropdowns,
+  },
+  {
+    id: 'menu-controls',
+    title: 'Menus with checkboxes and switches',
+    description:
+      'Menu items that are labels holding a control, so the whole row toggles it, in a dropdown and in a navbar menu. Both styles of checkbox work: the box drawn in CSS (.menu-check-input and .menu-check-box, round for radios) and the switch (.form-switch-input). .menu-end puts the control at the end of the row. The dropdowns are native <details> with the trigger as their <summary>, so they open on click and stay open while you tick boxes, without a script.',
+    html: menuControls,
+    notes: [
+      'The inputs are real ones inside labels, so they submit with a form and work from the keyboard. A <code class="code-span">&lt;details&gt;</code> does not close when you click elsewhere or press Escape, and the count on the trigger is yours to update: add a script for those.',
+    ],
   },
   {
     id: 'burger',

@@ -117,12 +117,6 @@ The lightness of every derived color is fixed, so the ratios hold for other base
 `pnpm run check:contrast` measures every pair in the built stylesheet (`pnpm run build` first) and fails when one is
 below 4.5:1; CI runs it on every pull request.
 
-The page background gradient is opt-in and off by default (the `dist/` stylesheets do not include it). Import
-`css/design/background-gradient.css` after the framework to enable it. Its colors and layout are the
-`gradient-*` tokens (`--gradient-start-color`, `--gradient-angle`, ...). The middle of the gradient is the
-base color of the theme, the start and end follow it too (a hue shift of the base color) unless you override
-`--gradient-start-color` and `--gradient-end-color` per theme.
-
 Single components can be used on their own, after the design layer:
 
 ```css
@@ -170,6 +164,10 @@ The framework is plain CSS, so some structure is on you:
 - **Alerts.** `.alert` is neutral; `.alert-{type}` tints it, like the variants of every other component.
 - **Dropdowns.** A `.dropdown` wraps any trigger and a `.dropdown-menu` of `.dropdown-item`s. It opens on hover and
   on focus without a script, `.open` holds it open and `.manual` turns the hover off.
+- **Menus with controls.** An item of a dropdown or navbar menu can be a `<label>` holding a control: a checkbox or
+  radio drawn in CSS (`.menu-check-input` followed by `.menu-check-box`) or a switch (`.form-switch-input`, which
+  works on its own anywhere). `.menu-end` puts the control at the end of the row. A `<details class="dropdown">`
+  with a `<summary>` trigger opens on click and stays open, and `.dropdown-actions` is a row of buttons in a menu.
 - **Burger menu.** A `.burger` panel slides in from the start side over a `.burger-overlay`. Toggle `.open` on
   both, or put a `.burger-toggle` checkbox before them and use labels as the buttons for a script-free menu.
 - **Tabs.** `.tabs` holds `.tab` links, followed by one `.tab-panel` each. Your script moves `.selected` between
@@ -197,7 +195,7 @@ The framework is plain CSS, so some structure is on you:
 - **Comboboxes.** `.form-control-combobox` on a `.form-control-select` with a text input and a
   `.combobox-suggestions` list is styled only; your script filters, handles the keyboard and sets the state classes
   (`.suggestions-open`, `.has-suggestions`, `.allow-typing`, `.selected` / `.highlighted` on items). Upstream's
-  `.has-combobox` is accepted but not needed here.
+  `.has-combobox` class is not needed: nothing here gives every element a z-index.
 - **Switches.** `<input class="form-switch-input" type="checkbox">` with a `.form-switch-label` in a
   `.form-control-switch` is a checkbox drawn as a sliding toggle, an alternative to the regular checkbox. It needs
   no wrapper or icon.

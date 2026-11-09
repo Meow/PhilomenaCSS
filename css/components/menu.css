@@ -1,0 +1,82 @@
+/*
+ * Controls in menu items. An item of a dropdown or of a navbar menu can be a <label> that holds a control, so that
+ * the whole row toggles it:
+ *  - a checkbox or radio drawn in CSS: <input class="menu-check-input" type="checkbox"> followed by
+ *    <span class="menu-check-box"></span>. The box is square for a checkbox and round for a radio.
+ *  - a switch: <input class="form-switch-input" type="checkbox"> (css/components/forms.css).
+ * .menu-end on the control (the box, or the switch) puts it at the end of the row, after the text; without it the
+ * control sits where it is in the markup, usually in front.
+ */
+
+.menu-check-input {
+  @mixin hidden-toggle;
+}
+
+.menu-check-box {
+  position: relative;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  inline-size: var(--form-checkbox-width);
+  block-size: var(--form-checkbox-height);
+  border: var(--border-width) solid var(--control-border-color);
+  border-radius: var(--border-radius-inner);
+  background-color: var(--well-color);
+}
+
+.menu-check-input[type="radio"] + .menu-check-box {
+  border-radius: 50%;
+}
+
+.menu-check-input:checked + .menu-check-box {
+  border-color: var(--primary-border-color);
+  background-color: var(--primary-color);
+}
+
+/* The check mark: two sides of a small rotated box */
+.menu-check-input:checked + .menu-check-box:after {
+  content: "";
+  position: absolute;
+  inset-block-start: 10%;
+  inset-inline-start: 32%;
+  inline-size: 25%;
+  block-size: 55%;
+  border: solid var(--primary-text-color);
+  border-width: 0 0.15em 0.15em 0;
+  transform: rotate(45deg);
+}
+
+/* The dot of a radio */
+.menu-check-input[type="radio"]:checked + .menu-check-box:after {
+  inset: 25%;
+  inline-size: auto;
+  block-size: auto;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--primary-text-color);
+  transform: none;
+}
+
+.menu-check-input:focus-visible + .menu-check-box {
+  @mixin focus-ring-offset;
+}
+
+.menu-check-input:disabled + .menu-check-box {
+  @mixin faded;
+}
+
+.menu-end {
+  margin-inline-start: auto;
+}
+
+/* In a navbar menu the control is a cell of the row, like the icon and the text */
+.navbar .navbar-menu-item > .menu-end,
+.navbar .navbar-menu-item > .menu-check-box {
+  align-self: center;
+  margin-inline: var(--navbar-menu-padding-horizontal);
+}
+
+/* A label as a menu item does not select its text on a double click */
+label.dropdown-item,
+label.navbar-menu-item {
+  user-select: none;
+}
