@@ -1,0 +1,25 @@
+.table-wrap {
+  width: 100%;
+}
+
+.table-wrap.responsive {
+  max-width: 100%;
+  overflow-y: auto;
+}
+
+.table {
+  width: 100%;
+}
+
+.table th {
+  font-weight: bold;
+}
+
+.table th, .table td {
+  padding: var(--ht-value-table-cell-spacing);
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  border-top: var(--ht-value-table-border-size) solid var(--ht-color-table-border);
+}

@@ -1,0 +1,78 @@
+.input-field {
+  display: block;
+  border: var(--ht-value-input-field-border) solid var(--ht-color-input-field-border-color);
+  border-radius: var(--ht-value-input-field-border-radius);
+  box-shadow: inset 0 var(--ht-value-input-field-box-shadow-inset-y) var(--ht-value-input-field-box-shadow) var(--ht-color-input-field-box-shadow);
+}
+
+body.flat-ui .input-field {
+  box-shadow: none !important;
+}
+
+.input-field.full-width {
+  width: 100%;
+}
+
+.input-field:not([type=color]) {
+  color: var(--ht-color-input-field-color);
+  background-color: var(--ht-color-input-field-bg);
+  padding: var(--ht-value-input-field-padding);
+}
+
+.input-field:not([type=color])::-moz-placeholder {
+  color: var(--ht-color-input-field-placeholder-color);
+}
+
+.input-field:not([type=color])::placeholder {
+  color: var(--ht-color-input-field-placeholder-color);
+}
+
+.input-field:not([type=color]):invalid {
+  color: var(--ht-color-input-field-invalid-color);
+  background-color: var(--ht-color-input-field-invalid-bg);
+}
+
+.input-field[type=color] {
+  /* The reset leaves color inputs without an intrinsic size */
+  width: var(--ht-value-input-field-color-width);
+  height: var(--ht-value-input-field-color-height);
+  cursor: pointer;
+}
+
+.input-field[type=color]::-moz-color-swatch {
+  border: none;
+}
+
+.input-field[type=color]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 0;
+}
+
+.input-field[type=color]::-webkit-color-swatch {
+  border: none;
+}
+
+.input-field:focus {
+  z-index: var(--ht-z-index-focus);
+  border-color: var(--ht-color-input-field-focus-border-color);
+}
+
+.input-field:focus-visible {
+  outline: var(--ht-value-focus-outline) solid var(--ht-color-input-field-focus-border-color);
+}
+
+.input-field:focus-visible:invalid {
+  outline: var(--ht-value-focus-outline) solid var(--ht-color-input-field-invalid-focus-border-color);
+}
+
+.input-field.hide-selection {
+  caret-color: transparent;
+}
+
+.input-field.hide-selection::selection {
+  background-color: transparent;
+}
+
+.input-field[disabled] {
+  opacity: 0.6;
+}

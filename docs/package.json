@@ -8,13 +8,13 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^7.4.5"
+    "astro": "^7.4.7"
   },
   "engines": {
     "node": ">=24"
   },
   "devDependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
-    "lucide-static": "^1.66.0"
+    "lucide-static": "^1.70.0"
   }
 }

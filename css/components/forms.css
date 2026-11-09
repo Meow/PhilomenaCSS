@@ -1,0 +1,460 @@
+.form-control-group {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  gap: var(--ht-value-form-control-spacing);
+  margin-bottom: var(--ht-value-form-control-spacing);
+}
+
+.form-control-group.vertical {
+  flex-flow: column nowrap;
+}
+
+.form-control-wrap {
+  display: block;
+  flex: 1 1 auto;
+}
+
+.form-control-wrap.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.form-control-wrap.full-width {
+  width: 100%;
+}
+
+.form-control {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  gap: var(--ht-value-form-control-spacing);
+}
+
+.form-control.form-control-buttons {
+  flex-direction: row;
+}
+
+.form-control-checkbox {
+  display: flex;
+  gap: var(--ht-value-form-control-spacing);
+}
+
+.form-control-checkbox .form-checkbox-input-wrap {
+  position: relative;
+  display: inline-block;
+  width: var(--ht-value-form-checkbox-width);
+  height: var(--ht-value-form-checkbox-height);
+  border: var(--ht-value-form-checkbox-border) solid var(--ht-color-input-field-border-color);
+  background-color: var(--ht-color-input-field-bg);
+  border-radius: var(--ht-value-form-checkbox-border-radius);
+  align-self: center;
+}
+
+.form-control-checkbox .form-checkbox-input-wrap input {
+  border-radius: inherit;
+}
+
+.form-control-checkbox .form-checkbox-input-wrap input:focus {
+  z-index: var(--ht-z-index-focus);
+  border-color: var(--ht-color-input-field-focus-border-color);
+}
+
+.form-control-checkbox .form-checkbox-input-wrap input:focus-visible {
+  outline: var(--ht-value-focus-outline) solid var(--ht-color-input-field-focus-border-color);
+}
+
+.form-control-checkbox .form-checkbox-input-wrap .form-checkbox-check-icon,
+.form-control-checkbox .form-checkbox-input-wrap .form-checkbox-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.form-control-checkbox .form-checkbox-input-wrap .form-checkbox-input {
+  border: 0;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.form-control-checkbox .form-checkbox-input-wrap .form-checkbox-check-icon {
+  text-align: center;
+  transform: translate(-0.1em, 0.05em);
+  opacity: 0;
+  color: var(--ht-color-input-field-color);
+  transition: opacity 0.1s linear;
+  font-size: 0.8em;
+  pointer-events: none;
+}
+
+.form-control-checkbox .form-checkbox-input-wrap .form-checkbox-input:checked + .form-checkbox-check-icon {
+  opacity: 1;
+}
+
+.form-control-checkbox .form-checkbox-label {
+  cursor: default;
+}
+
+.form-control-radio {
+  /* Flex centering instead of inline-block + vertical-align, which differ between browsers */
+  display: flex;
+  align-items: center;
+}
+
+.form-control-radio .form-radio-input-wrap {
+  position: relative;
+  display: inline-block;
+  width: var(--ht-value-form-checkbox-width);
+  height: var(--ht-value-form-checkbox-height);
+  flex: 0 0 auto;
+}
+
+.form-control-radio .form-radio-input-wrap:focus {
+  z-index: var(--ht-z-index-focus);
+  border-color: var(--ht-color-input-field-focus-border-color);
+}
+
+.form-control-radio .form-radio-input-wrap:focus-visible {
+  outline: var(--ht-value-focus-outline) solid var(--ht-color-input-field-focus-border-color);
+}
+
+:root[dir=ltr] .form-control-radio .form-radio-input-wrap {
+  margin-right: var(--ht-value-form-control-spacing);
+}
+
+:root[dir=rtl] .form-control-radio .form-radio-input-wrap {
+  margin-left: var(--ht-value-form-control-spacing);
+}
+
+.form-control-radio .form-radio-input-wrap .form-radio-input,
+.form-control-radio .form-radio-input-wrap .form-radio-select-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.form-control-radio .form-radio-input-wrap .form-radio-select-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.form-control-radio .form-radio-input-wrap .form-radio-input {
+  border: 0;
+  border: var(--ht-value-form-checkbox-border) solid var(--ht-color-input-field-border-color);
+  background-color: var(--ht-color-input-field-bg);
+  border-radius: 50%;
+}
+
+.form-control-radio .form-radio-input-wrap .form-radio-input:focus {
+  border-color: var(--ht-color-input-field-focus-border-color);
+}
+
+.form-control-radio .form-radio-input-wrap .form-radio-input:focus-visible {
+  outline: var(--ht-value-focus-outline) solid var(--ht-color-input-field-focus-border-color);
+}
+
+.form-control-radio .form-radio-input-wrap .form-radio-select-icon {
+  opacity: 0;
+  background-color: var(--ht-color-input-field-color);
+  transition: opacity 0.1s linear;
+  display: block;
+  width: var(--ht-value-form-radio-select-icon);
+  height: var(--ht-value-form-radio-select-icon);
+  margin: calc((100% - var(--ht-value-form-radio-select-icon)) * 0.5);
+  pointer-events: none;
+}
+
+.form-control-radio .form-radio-input-wrap .form-radio-input:checked + .form-radio-select-icon {
+  opacity: 1;
+}
+
+.form-control-radio .form-radio-label {
+  cursor: default;
+}
+
+.form-control-select {
+  display: inline-block;
+  position: relative;
+}
+
+.form-control-select.full-width {
+  width: 100%;
+}
+
+.form-control-select > .form-select-input {
+  --padding-value: calc(var(--ht-value-input-field-padding) * 2 + var(--ht-value-form-select-icon-padding) * 2 + var(--ht-value-form-select-icon-size));
+}
+
+.form-control-select > .form-select-input:focus-visible {
+  outline: var(--ht-value-focus-outline) solid var(--ht-color-input-field-focus-border-color);
+}
+
+:root[dir=ltr] .form-control-select > .form-select-input {
+  padding-right: var(--padding-value);
+}
+
+:root[dir=rtl] .form-control-select > .form-select-input {
+  padding-left: var(--padding-value);
+}
+
+.form-control-select .form-select-icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--ht-value-form-select-icon-padding);
+  font-size: var(--ht-value-form-select-icon-size);
+}
+
+.form-control-select .form-select-icon:not(.clickable) {
+  pointer-events: none;
+}
+
+:root[dir=ltr] .form-control-select .form-select-icon {
+  right: 0;
+}
+
+:root[dir=rtl] .form-control-select .form-select-icon {
+  left: 0;
+}
+
+.form-control-wrap:has(.form-control-combobox), .form-control-combobox {
+  z-index: unset;
+}
+
+.form-control-combobox.suggestions-open.has-suggestions > .form-select-input {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.form-control-combobox:not(.allow-typing) > .form-select-input {
+  user-select: none;
+  cursor: default;
+}
+
+.combobox-suggestions {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  max-height: 35vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: var(--ht-value-input-field-border) solid var(--ht-color-input-field-border-color);
+  color: var(--ht-color-input-field-color);
+  background-color: var(--ht-color-input-field-bg);
+  border-bottom-left-radius: var(--ht-value-input-field-border-radius);
+  border-bottom-right-radius: var(--ht-value-input-field-border-radius);
+  box-sizing: border-box;
+  z-index: var(--ht-z-index-combobox-suggestions);
+  margin-top: calc(-1 * var(--ht-value-input-field-border));
+}
+
+.combobox-suggestions .combobox-suggestion-header {
+  padding: var(--ht-value-input-field-padding);
+  font-size: 1em;
+  font-weight: bold;
+  color: var(--ht-color-input-field-color);
+  background-color: var(--ht-color-input-field-bg);
+  border-bottom: var(--ht-value-input-field-border) solid var(--ht-color-input-field-border-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+.combobox-suggestions .combobox-suggestion-header.combobox-suggestion-header-overlay {
+  position: sticky;
+  top: 0;
+  z-index: var(--ht-z-index-combobox-suggestions-header);
+}
+
+.combobox-suggestions .combobox-suggestion-item {
+  display: flex;
+  width: 100%;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  padding: var(--ht-value-input-field-padding);
+  gap: var(--ht-value-input-field-padding);
+  cursor: pointer;
+  justify-content: space-between;
+  position: relative;
+  order: 2;
+}
+
+.combobox-suggestions .combobox-suggestion-item:has(mark) {
+  order: 1;
+}
+
+.combobox-suggestions .combobox-suggestion-item mark {
+  font-weight: bold;
+}
+
+.combobox-suggestions .combobox-suggestion-item .combobox-suggestion-item-label {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: inherit;
+  align-items: center;
+}
+
+.combobox-suggestions .combobox-suggestion-item .combobox-suggestion-item-label .combobox-suggestion-item-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.combobox-suggestions .combobox-suggestion-item .combobox-suggestion-item-label .combobox-suggestion-item-text .combobox-suggestion-item-main-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.combobox-suggestions .combobox-suggestion-item .combobox-suggestion-item-label .combobox-suggestion-item-addon {
+  flex: 0 0 auto;
+  font-variant: tabular-nums;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 60%;
+}
+
+:root[dir=ltr] .combobox-suggestions .combobox-suggestion-item .combobox-suggestion-item-label .combobox-suggestion-item-addon {
+  text-align: right;
+}
+
+:root[dir=rtl] .combobox-suggestions .combobox-suggestion-item .combobox-suggestion-item-label .combobox-suggestion-item-addon {
+  text-align: left;
+}
+
+.combobox-suggestions .combobox-suggestion-item.addon-mode-dynamic.label-truncated:hover .combobox-suggestion-item-addon {
+  /* Take the element out of the flex layout while visually hiding it to allow the text to become full-width */
+  position: absolute;
+  transition-property: font-size, padding;
+  transition-duration: 0.1s;
+  transition-timing-function: ease-out;
+  animation: reposition 0.1s ease-out forwards;
+}
+
+@keyframes reposition {
+  0% {
+    top: var(--ht-value-input-field-padding);
+    right: var(--ht-value-input-field-padding);
+  }
+  100% {
+    top: 0;
+    right: 0;
+    font-size: 0.65em;
+    padding: 0.1875em 0.375em;
+  }
+}
+
+:root[dir=ltr] .combobox-suggestions .combobox-suggestion-item.addon-mode-dynamic.label-truncated:hover .combobox-suggestion-item-addon {
+  right: 0;
+}
+
+:root[dir=rtl] .combobox-suggestions .combobox-suggestion-item.addon-mode-dynamic.label-truncated:hover .combobox-suggestion-item-addon {
+  left: 0;
+}
+
+.combobox-suggestions .combobox-suggestion-item.selected {
+  color: var(--ht-color-button-primary-color);
+  background-color: var(--ht-color-button-primary-bg);
+}
+
+.combobox-suggestions .combobox-suggestion-item.selected.highlighted, .combobox-suggestions .combobox-suggestion-item.selected:hover {
+  background-color: var(--ht-color-combobox-highlighted-item-bg);
+}
+
+.combobox-suggestions .combobox-suggestion-item.highlighted {
+  color: var(--ht-color-button-default-color);
+  background-color: var(--ht-color-button-default-bg);
+}
+
+.form-input-group {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: var(--ht-value-form-control-spacing);
+}
+
+.form-input-group > .input-field {
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.form-input-group > .input-field[inputmode=numeric] {
+  line-height: 1em;
+}
+
+.form-input-group > .form-input-group-symbol-wrap {
+  position: relative;
+  transform: translateX(-50%);
+  width: 0;
+  overflow: visible;
+  align-self: stretch;
+  display: block;
+  z-index: var(--ht-z-index-form-input-group-symbol);
+  pointer-events: none;
+}
+
+.form-input-group > .form-input-group-symbol-wrap .form-input-group-symbol {
+  --size: 1em;
+  position: absolute;
+  left: calc(-0.5 * var(--size));
+  height: 100%;
+  width: var(--size);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-input-group > .form-input-group-symbol-wrap .form-input-group-symbol .form-input-group-symbol-inner {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1em;
+  color: var(--ht-color-input-field-color);
+  background-color: var(--ht-color-input-field-bg);
+  border-radius: var(--ht-value-input-field-border-radius);
+}
+
+@mixin combined-border-radius .form-input-group:not([dir=rtl]) > .input-field;
+@mixin combined-border-radius .form-input-group:not([dir=rtl]) > .form-control-select, > .form-select-input;
+@mixin combined-border-radius-inverted .form-input-group[dir=rtl] > .input-field;
+@mixin combined-border-radius-inverted .form-input-group[dir=rtl] > .form-control-select, > .form-select-input;
+
+.form-message {
+  display: block;
+  font-size: 0.875em;
+}
+
+.form-message.form-message-error {
+  color: var(--ht-color-form-message-error);
+}
+
+.form-message.form-message-success {
+  color: var(--ht-color-form-message-success);
+}
+
+.form-message.form-message-description {
+  color: var(--ht-color-muted-text);
+}
+
+@mixin content-link-style .form-message;
+
+.from-control-submit {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--ht-value-form-control-spacing);
+}
+
+.from-control-submit .form-message {
+  margin-top: 0;
+}

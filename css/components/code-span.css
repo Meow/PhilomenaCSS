@@ -1,0 +1,18 @@
+.code-span {
+  padding: var(--ht-value-code-padding-vertical) var(--ht-value-code-padding-horizontal);
+  line-height: var(--ht-value-code-line-height);
+  border-radius: var(--ht-value-code-border-radius);
+  color: var(--ht-color-code-color);
+  background-color: var(--ht-color-code-bg);
+  box-sizing: border-box;
+  border: var(--ht-value-code-border) solid var(--ht-color-code-border);
+  font-family: var(--ht-value-font-family-mono);
+}
+
+.code-span.base-font {
+  font-family: var(--ht-value-font-family-base);
+}
+
+.code-span.small {
+  font-size: var(--ht-value-code-small-font-size);
+}

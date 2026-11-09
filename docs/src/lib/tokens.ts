@@ -16,7 +16,7 @@ export interface TokenGroup {
 const cssPath = resolve(process.cwd(), '../dist/philomena.css');
 
 /**
- * Reads the `--ht-*` custom properties from the compiled stylesheet, which is the compiled form of the Sass token maps.
+ * Reads the `--ht-*` custom properties from the published stylesheet, where every color is already computed.
  * Declarations are indented by exactly one level inside a top-level rule, the first occurrence is the default value
  * (later ones are breakpoint overrides).
  */

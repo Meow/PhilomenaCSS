@@ -1,0 +1,166 @@
+.button {
+  --button-border-color: var(--ht-color-button-default-border-color);
+  position: relative;
+  color: var(--ht-color-button-default-color);
+  background-color: var(--ht-color-button-default-bg);
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, var(--ht-color-button-gradient-shade) 100%);
+  padding: var(--ht-value-button-padding-vertical) var(--ht-value-button-padding-horizontal);
+  border: var(--ht-value-button-border-width) solid var(--button-border-color);
+  border-radius: var(--ht-value-button-border-radius);
+  font-size: var(--ht-value-button-font-size);
+  box-shadow: 0 var(--ht-value-button-shadow-size) 0 var(--button-border-color);
+  will-change: transform;
+  transition-property: transform, box-shadow, opacity;
+  transition-duration: 0.1s;
+  user-select: none;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  display: inline-block;
+  cursor: pointer;
+  transform: translateY(calc(var(--ht-value-button-shadow-size) * -1));
+}
+
+body.flat-ui .button {
+  box-shadow: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.button.button-size-input {
+  padding: var(--ht-value-input-field-padding) !important;
+}
+
+.button.button-size-input.icon-only {
+  font-size: 1.1875em;
+}
+
+@media (prefers-reduced-motion) {
+  .button {
+    transition: none !important;
+  }
+}
+
+.button:focus {
+  z-index: var(--ht-z-index-focus);
+}
+
+.button:focus-visible {
+  outline: var(--ht-value-focus-outline) solid var(--button-border-color);
+}
+
+.button:disabled {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, var(--ht-color-button-gradient-shade) 100%);
+  cursor: not-allowed;
+}
+
+.button:disabled .button-content {
+  opacity: 0.5;
+}
+
+.button.icon-only {
+  padding: var(--ht-value-button-padding-vertical);
+}
+
+.button.visually-hidden {
+  opacity: 0 !important;
+}
+
+.button.justify-start .button-content {
+  justify-content: start;
+}
+
+.button.justify-center .button-content {
+  justify-content: center;
+}
+
+.button.justify-end .button-content {
+  justify-content: end;
+}
+
+.button.full-width {
+  display: block;
+  width: 100%;
+}
+
+.button:not(.allow-overflow) .button-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.button:not(:disabled):active, .button.pressed {
+  transform: translateY(0);
+  box-shadow: 0 0 0 var(--button-border-color);
+}
+
+.button.loading {
+  cursor: wait;
+}
+
+@mixin button-color-variation primary;
+@mixin button-color-variation success;
+@mixin button-color-variation danger;
+@mixin button-color-variation warning;
+@mixin button-color-variation light;
+@mixin button-color-variation dark;
+
+.button .loading-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to right, transparent, var(--button-border-color), transparent);
+}
+
+.button .loading-icon + .button-content {
+  opacity: 0.2;
+}
+
+.button .button-content {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ht-value-button-content-gap);
+  pointer-events: none;
+}
+
+.button .button-content .button-icon {
+  flex: 0 0 auto;
+}
+
+.button .button-content .button-text {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.button-group {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.button-group.separated {
+  flex-wrap: wrap;
+  gap: var(--ht-value-button-group-gap);
+}
+
+.button-group:not(.separated) .button {
+  min-width: 0;
+  flex-grow: 1;
+}
+
+@mixin combined-border-radius :root[dir=ltr] .button-group:not(.separated) .button;
+@mixin combined-border-radius-inverted :root[dir=rtl] .button-group:not(.separated) .button;
+
+.button-group:not(.separated) > :not(.button) {
+  border-radius: var(--ht-value-button-border-radius);
+}
+
+@mixin combined-border-radius :root[dir=ltr] .button-group:not(.separated) > :not(.button);
+@mixin combined-border-radius-inverted :root[dir=rtl] .button-group:not(.separated) > :not(.button);
+
+.button-group:not(.separated) > :not(.button) > .button {
+  border-radius: inherit !important;
+}

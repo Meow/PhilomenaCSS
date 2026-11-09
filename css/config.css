@@ -1,0 +1,22 @@
+/*
+ * Configuration. Load it first, override any of these after it, then load the framework:
+ *
+ *   @import "@philomena/philomena-css/css/config.css";
+ *   $brand-color: #e8590c;
+ *   @import "@philomena/philomena-css/css/framework.css";
+ *
+ * Values are substituted when the framework is loaded, so overrides have to come before it.
+ */
+
+/* Brand and text colors the default palette is derived from */
+$brand-color: #5865f2;
+$text-color-light: #313131;
+$text-color-dark: #C1C2C5;
+
+/* Breakpoints for the responsive tokens and media queries; the -below variants are one pixel less, for max-width */
+$breakpoint-sm: 400px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1600px;
+$breakpoint-below-md: 767px;

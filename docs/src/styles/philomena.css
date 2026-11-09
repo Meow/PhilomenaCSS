@@ -1,0 +1,11 @@
+/*
+ * Docs-only build of the framework. The published stylesheet computes every color at build time, this one keeps
+ * the brand-derived colors as relative color syntax on --ht-brand, so it only works in current browsers.
+ */
+@import "../../../css/config.css";
+@import "./runtime-brand.css";
+@import "../../../css/framework.css";
+
+:root {
+  --ht-brand: $default-brand-color;
+}

@@ -1,0 +1,22 @@
+.accordion {
+  display: flex;
+  flex-flow: column;
+  /* Flex items are as wide as their content by default, which would let a wide code block stretch the page */
+  min-width: 0;
+}
+
+.accordion > .accordion-item {
+  min-width: 0;
+}
+
+.accordion .accordion-item-body {
+  min-width: 0;
+  padding: var(--ht-value-faq-body-padding);
+  line-height: var(--ht-value-faq-body-line-height);
+}
+
+@mixin content-link-style .accordion .accordion-item-body;
+
+.accordion .accordion-item-body > :not(:last-child) {
+  margin-bottom: var(--ht-value-card-spacing);
+}

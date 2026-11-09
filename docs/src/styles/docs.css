@@ -35,7 +35,7 @@
 .docs-copied .docs-icon-copied { display: inline; }
 .docs-token-table td:first-child .copyable-text-data { font-family: var(--ht-value-font-family-mono); }
 
-/* Docs-only gradient layer driven by the framework's --ht-*-bg-gradient-* tokens (the library only emits it with $background-gradient: true) */
+/* Docs-only gradient layer driven by the framework's --ht-*-bg-gradient-* tokens (the library only emits it when css/design/background-gradient.css is imported) */
 body.docs-gradient::before {
   content: "";
   position: fixed;

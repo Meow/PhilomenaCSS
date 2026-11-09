@@ -1,0 +1,60 @@
+@media (max-width: $breakpoint-below-md) {
+  body:has(.popup[open]) {
+    overflow: hidden;
+  }
+}
+
+.popup {
+  position: absolute;
+  max-width: var(--ht-value-popup-max-width);
+  width: 100%;
+  background-color: var(--ht-color-card-bg);
+  color: var(--ht-color-card-color);
+  border: var(--ht-value-popup-border) solid var(--ht-color-popup-border-color);
+  border-radius: var(--ht-value-card-border-radius);
+  box-shadow: 0 0 var(--ht-value-popup-box-shadow) var(--ht-color-popup-border-color);
+  padding: var(--ht-value-content-spacing);
+  z-index: 3;
+}
+
+.popup.allow-overflow {
+  overflow: visible;
+}
+
+@media (min-width: $breakpoint-md) {
+  .popup {
+    top: unset;
+    left: unset;
+    right: unset;
+    bottom: unset;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+  @supports (position-anchor: --test) {
+    .popup {
+      transform: none;
+    }
+    .popup.has-anchor {
+      position-anchor: var(--position-anchor-name);
+      top: anchor(bottom) !important;
+      left: anchor(left) !important;
+    }
+  }
+}
+
+.popup.wide {
+  width: 100%;
+  max-width: var(--ht-value-popup-wide-max-width);
+}
+
+.popup.visible {
+  display: block !important;
+}
+
+.popup::backdrop {
+  backdrop-filter: blur(3px);
+}

@@ -48,8 +48,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <section id="playground" class="card">
-      <header class="card-header"><h2>--ht-brand playground</h2></header>
-      <p>Needs the CSS-only build, which derives the palette from <code class="code-span">--ht-brand</code> at runtime. Edit any custom property below to see it applied live.</p>
+      <header class="card-header"><h2>Brand color playground</h2></header>
+      <p>The published stylesheet computes the palette from <code class="code-span">$brand-color</code> at build time. This page uses a docs-only build that derives it from <code class="code-span">--ht-brand</code> in the browser instead, so you can try colors live. Edit any custom property below to see it applied. The output shows the configuration to build with.</p>
       <div class="docs-toolbar">
         <label for="brand-input">Brand</label>
         <input id="brand-input" class="input-field" type="color" value="#5865f2" data-brand-input>
@@ -62,7 +62,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         ))}
       </div>
       <h3>Background gradient</h3>
-      <p>The gradient is opt-in in the library (<code class="code-span">$background-gradient: true</code> in Sass), the compiled stylesheet does not include it. This toggle only paints it with docs-only CSS from the same <code class="code-span">--ht-color-bg-gradient-*</code> and <code class="code-span">--ht-value-bg-gradient-*</code> tokens. The middle is the brand color, the start and end follow it until you pick a color.</p>
+      <p>The gradient is opt-in in the library (import <code class="code-span">css/design/background-gradient.css</code> after the framework), the published stylesheet does not include it. This toggle only paints it with docs-only CSS from the same <code class="code-span">--ht-color-bg-gradient-*</code> and <code class="code-span">--ht-value-bg-gradient-*</code> tokens. The middle is the brand color, the start and end follow it until you pick a color.</p>
       <div class="docs-toolbar">
         <div class="form-control-checkbox">
           <span class="form-checkbox-input-wrap">
@@ -81,7 +81,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <section id="tokens" class="card">
       <header class="card-header"><h2>Token reference</h2></header>
-      <p>Generated from the compiled Sass token maps. Use the copy button next to a property name to copy it.</p>
+      <p>Read from the published stylesheet, so the colors are the computed defaults. Use the copy button next to a property name to copy it.</p>
       {tokenGroups.map(group => (
         <details>
           <summary>{group.title} ({group.tokens.length})</summary>
@@ -206,7 +206,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     const overrides = () => {
       const declarations: string[] = [];
-      if (brandInput.value !== defaultBrand) declarations.push(`--ht-brand: ${brandInput.value};`);
       tokenInputs.forEach(input => { if (input.value.trim()) declarations.push(`${input.dataset.tokenInput}: ${input.value.trim()};`); });
       gradientInputs.forEach(input => {
         const end = input.dataset.gradientColor!;
@@ -215,15 +214,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       return declarations;
     };
     const apply = () => {
-      root.style.removeProperty('--ht-brand');
       tokenInputs.forEach(input => root.style.removeProperty(input.dataset.tokenInput!));
       gradientInputs.forEach(input => root.style.removeProperty(gradientToken(input.dataset.gradientColor!)));
+      if (brandInput.value !== defaultBrand) root.style.setProperty('--ht-brand', brandInput.value); else root.style.removeProperty('--ht-brand');
       const declarations = overrides();
       declarations.forEach(line => { const [name, value] = line.slice(0, -1).split(/:\s*/); root.style.setProperty(name, value); });
       syncGradientInputs();
       document.body.classList.toggle('docs-gradient', gradientToggle.checked);
-      const notes = gradientToggle.checked ? '\n/* the gradient also needs $background-gradient: true in Sass */' : '';
-      output.textContent = (declarations.length ? `:root {\n  ${declarations.join('\n  ')}\n}` : '/* defaults, nothing overridden */') + notes;
+      const parts: string[] = [];
+      if (brandInput.value !== defaultBrand) parts.push(`/* in your overrides file, imported between config.css and framework.css */\n$brand-color: ${brandInput.value};`);
+      if (declarations.length) parts.push(`:root {\n  ${declarations.join('\n  ')}\n}`);
+      if (gradientToggle.checked) parts.push('/* the gradient also needs css/design/background-gradient.css imported after the framework */');
+      output.textContent = parts.length ? parts.join('\n\n') : '/* defaults, nothing overridden */';
     };
     brandInput.addEventListener('input', apply);
     tokenInputs.forEach(input => input.addEventListener('input', apply));

@@ -1,0 +1,36 @@
+.collapsible {
+  display: flex;
+  flex-flow: column;
+  overflow: hidden;
+  border-radius: var(--ht-value-collapsible-border-radius);
+  background-color: var(--ht-color-collapsible-bg);
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.collapsible.animate {
+  transition: min-height, height, margin;
+  transition-duration: 0.2s;
+  transition-timing-function: linear;
+}
+
+.collapsible:not(.visible) {
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+.collapsible.visible {
+  margin: var(--ht-value-collapsible-padding) 0;
+}
+
+.collapsible.visible.limited-height {
+  overflow: auto !important;
+}
+
+.collapsible .collapsible-inner {
+  padding: var(--ht-value-collapsible-padding);
+}
+
+.collapsible .collapsible-inner > :not(:last-child) {
+  margin-bottom: var(--ht-value-collapsible-padding);
+}

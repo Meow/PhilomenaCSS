@@ -1,0 +1,119 @@
+/*
+ * Mixins shared by the components (postcss-mixins). They are called at the top level with the full selector,
+ * because the sources are written without nesting.
+ */
+
+/* Links inside $selector */
+@define-mixin content-link-style $selector {
+  $(selector) a {
+    color: var(--ht-color-content-link);
+    text-decoration: underline;
+  }
+}
+
+/* Logical margins and paddings, for left-to-right and right-to-left pages */
+@define-mixin margin-start $selector, $size {
+  :root[dir=ltr] $(selector) {
+    margin-left: $(size) !important;
+  }
+  :root[dir=rtl] $(selector) {
+    margin-right: $(size) !important;
+  }
+}
+
+@define-mixin margin-end $selector, $size {
+  :root[dir=ltr] $(selector) {
+    margin-right: $(size) !important;
+  }
+  :root[dir=rtl] $(selector) {
+    margin-left: $(size) !important;
+  }
+}
+
+@define-mixin padding-start $selector, $size {
+  :root[dir=ltr] $(selector) {
+    padding-left: $(size) !important;
+  }
+  :root[dir=rtl] $(selector) {
+    padding-right: $(size) !important;
+  }
+}
+
+@define-mixin padding-end $selector, $size {
+  :root[dir=ltr] $(selector) {
+    padding-right: $(size) !important;
+  }
+  :root[dir=rtl] $(selector) {
+    padding-left: $(size) !important;
+  }
+}
+
+/* Color variants: .button.button-{color} and .badge.badge-{color}, from the matching color tokens */
+@define-mixin button-color-variation $color {
+  .button.button-$(color) {
+    color: var(--ht-color-button-$(color)-color);
+    background-color: var(--ht-color-button-$(color)-bg);
+    --button-border-color: var(--ht-color-button-$(color)-border-color);
+  }
+}
+
+@define-mixin badge-color-variation $color {
+  .badge.badge-$(color) {
+    color: var(--ht-color-badge-$(color)-color);
+    background-color: var(--ht-color-badge-$(color)-bg);
+    border-color: var(--ht-color-badge-$(color)-bg);
+  }
+}
+
+/*
+ * Joins a row of elements into one: only the outer corners stay rounded and the borders between them collapse.
+ * $selector matches the elements in the row, the optional $sub-selector targets a part of each element instead
+ * (for example `> .form-select-input`). The -inverted variant is the same for right-to-left rows.
+ */
+@define-mixin combined-border-radius $selector, $sub-selector: {
+  $(selector):first-child:not(:last-child)$(sub-selector) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  $(selector):last-child:not(:first-child)$(sub-selector) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  $(selector):not(:first-child):not(:last-child)$(sub-selector) {
+    border-radius: 0;
+  }
+
+  $(selector):not(:first-child)$(sub-selector) {
+    border-left: 0 !important;
+  }
+
+  $(selector):not(:last-child)$(sub-selector) {
+    border-right: 0 !important;
+  }
+}
+
+@define-mixin combined-border-radius-inverted $selector, $sub-selector: {
+  $(selector):first-child $(sub-selector) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  $(selector):last-child $(sub-selector) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  $(selector):not(:first-child):not(:last-child)$(sub-selector) {
+    border-radius: 0;
+  }
+
+  $(selector):not(:first-child)$(sub-selector) {
+    border-right: 0 !important;
+  }
+
+  $(selector):not(:last-child)$(sub-selector) {
+    border-left: 0 !important;
+  }
+}

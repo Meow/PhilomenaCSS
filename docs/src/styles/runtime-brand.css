@@ -1,0 +1,3 @@
+/* Docs-only: derive the palette from --ht-brand in the browser, so the playground can recolor it live */
+$default-brand-color: $brand-color;
+$brand-color: var(--ht-brand);
