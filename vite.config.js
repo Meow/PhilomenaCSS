@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
 
-// Browsers from September 2020: every relative color has to be computed at build time, and nothing newer than
+// Browsers from March 2022 (Safari 15.4 is the floor: :focus-visible, aspect-ratio, flex gap, logical shorthands).
+// Every relative color is computed at build time by the PostCSS plugin, and nothing newer than
 // that can be left for the browser to work out
-export const cssTarget = ['chrome85', 'edge85', 'firefox81', 'safari14', 'ios14', 'opera71'];
+export const cssTarget = ['chrome100', 'edge100', 'firefox98', 'safari15.4', 'ios15.4'];
 
 // `vite build` builds dist/philomena.css, `vite build --mode min` the minified dist/philomena.min.css
 export default defineConfig(({ mode }) => {

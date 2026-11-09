@@ -95,47 +95,35 @@ $bar-controls: .button, .tag a, .badge a;
   }
 }
 
-/* Logical margins and paddings, for left-to-right and right-to-left pages */
+/* Margins and paddings at the start and the end of the line, as utilities (they are !important) */
 @define-mixin margin-start $selector, $size {
-  :root[dir="ltr"] $(selector) {
-    margin-left: $(size) !important;
-  }
-  :root[dir="rtl"] $(selector) {
-    margin-right: $(size) !important;
+  $(selector) {
+    margin-inline-start: $(size) !important;
   }
 }
 
 @define-mixin margin-end $selector, $size {
-  :root[dir="ltr"] $(selector) {
-    margin-right: $(size) !important;
-  }
-  :root[dir="rtl"] $(selector) {
-    margin-left: $(size) !important;
+  $(selector) {
+    margin-inline-end: $(size) !important;
   }
 }
 
 @define-mixin padding-start $selector, $size {
-  :root[dir="ltr"] $(selector) {
-    padding-left: $(size) !important;
-  }
-  :root[dir="rtl"] $(selector) {
-    padding-right: $(size) !important;
+  $(selector) {
+    padding-inline-start: $(size) !important;
   }
 }
 
 @define-mixin padding-end $selector, $size {
-  :root[dir="ltr"] $(selector) {
-    padding-right: $(size) !important;
-  }
-  :root[dir="rtl"] $(selector) {
-    padding-left: $(size) !important;
+  $(selector) {
+    padding-inline-end: $(size) !important;
   }
 }
 
 /*
  * Color variants of the components, from the roles of a type color (see css/design/tokens.css): .button-{type}, .badge-{type},
- * .counter-{type}, .pagination-{type}, .card-{type}, .block-{type}, .media-{type} and .table-{type} on the component, and a
- * bare .{type} on alerts, table rows and cells, and media overlays.
+ * .alert-{type}, .counter-{type}, .pagination-{type}, .card-{type}, .block-{type}, .media-{type} and .table-{type} on
+ * the component, and a bare .{type} on table rows and cells and on media overlays.
  * The types are neutral (the default look), primary, success, warning, danger, special, light and dark.
  */
 @define-mixin button-color-variation $type {
@@ -147,13 +135,13 @@ $bar-controls: .button, .tag a, .badge a;
 }
 
 @define-mixin alert-color-variation $type {
-  .alert.$(type) {
+  .alert.alert-$(type) {
     background-color: var(--$(type)-tint-color);
     border-color: var(--$(type)-tint-color);
   }
 
-  .alert.$(type) .alert-title,
-  .alert.$(type) .alert-icon {
+  .alert.alert-$(type) .alert-title,
+  .alert.alert-$(type) .alert-icon {
     color: var(--$(type)-tint-text-color);
   }
 }
@@ -313,7 +301,7 @@ $bar-controls: .button, .tag a, .badge a;
 /*
  * Joins a row of elements into one: only the outer corners stay rounded and the borders between them collapse.
  * $selector matches the elements in the row, the optional $sub-selector targets a part of each element instead
- * (for example `> .form-select-input`). The -inverted variant is the same for right-to-left rows.
+ * (for example `> .form-select-input`).
  */
 /* prettier-ignore */
 @define-mixin combined-border-radius $selector, $sub-selector: {
@@ -337,30 +325,5 @@ $bar-controls: .button, .tag a, .badge a;
 
   $(selector):not(:last-child)$(sub-selector) {
     border-right: 0 !important;
-  }
-}
-
-/* prettier-ignore */
-@define-mixin combined-border-radius-inverted $selector, $sub-selector: {
-  $(selector):first-child:not(:last-child)$(sub-selector) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  $(selector):last-child:not(:first-child)$(sub-selector) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  $(selector):not(:first-child):not(:last-child)$(sub-selector) {
-    border-radius: 0;
-  }
-
-  $(selector):not(:first-child)$(sub-selector) {
-    border-right: 0 !important;
-  }
-
-  $(selector):not(:last-child)$(sub-selector) {
-    border-left: 0 !important;
   }
 }

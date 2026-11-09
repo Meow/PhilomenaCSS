@@ -34,7 +34,3 @@ body:before {
     display: none !important;
   }
 }
-
-:root[dir="rtl"] body {
-  --bg-gradient-angle: calc(-1 * var(--gradient-angle));
-}

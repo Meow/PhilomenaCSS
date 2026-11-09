@@ -399,7 +399,7 @@ $_syntax-punctuation: #6b6d78;
   --nav-link-padding-vertical: var(--spacing-xs);
   /* The navbar: its items, and the items and the icon column of its dropdown menus */
   --navbar-item-padding-vertical: var(--spacing-lg);
-  --navbar-item-padding-horizontal: var(--spacing-xl);
+  --navbar-item-padding-horizontal: var(--spacing-md);
   --navbar-menu-min-width: 12rem;
   --navbar-menu-padding-vertical: var(--spacing-md);
   --navbar-menu-padding-horizontal: var(--spacing-lg);
@@ -446,11 +446,18 @@ $_syntax-punctuation: #6b6d78;
   :root {
     --button-padding-horizontal: var(--spacing-lg);
     --nav-link-padding-horizontal: var(--spacing-md);
+    --navbar-item-padding-horizontal: var(--spacing-lg);
   }
 }
 
 @media (min-width: $breakpoint-xl) {
   :root {
     --input-padding: var(--spacing-md);
+  }
+}
+
+@media (min-width: $breakpoint-xxl) {
+  :root {
+    --navbar-item-padding-horizontal: var(--spacing-xl);
   }
 }

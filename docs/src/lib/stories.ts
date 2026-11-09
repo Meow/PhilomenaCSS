@@ -21,35 +21,35 @@ const badge = (text: string, classes = '') =>
 const block = (title: string, body: string) =>
   `<section class="block"><header class="block-header"><span class="block-header-title">${title}</span></header><div class="block-content">${body}</div></section>`;
 
-const alerts = `<div class="alert">
+const alerts = `<div class="alert alert-primary">
   <div class="alert-icon">i</div>
   <div class="alert-content">
-    <div class="alert-title">Info alert</div>
+    <div class="alert-title">Primary alert</div>
     <div class="alert-text">${lorem}</div>
   </div>
 </div>
-<div class="alert warning">
+<div class="alert alert-warning">
   <div class="alert-icon">!</div>
   <div class="alert-content">
     <div class="alert-title">Warning alert</div>
     <div class="alert-text">${lorem}</div>
   </div>
 </div>
-<div class="alert success">
+<div class="alert alert-success">
   <div class="alert-icon">✓</div>
   <div class="alert-content">
     <div class="alert-title">Success alert</div>
     <div class="alert-text">${lorem}</div>
   </div>
 </div>
-<div class="alert danger">
+<div class="alert alert-danger">
   <div class="alert-icon">×</div>
   <div class="alert-content">
     <div class="alert-title">Danger alert</div>
     <div class="alert-text">${lorem}</div>
   </div>
 </div>
-<div class="alert special">
+<div class="alert alert-special">
   <div class="alert-icon">★</div>
   <div class="alert-content">
     <div class="alert-title">Special alert</div>
@@ -62,7 +62,7 @@ const alerts = `<div class="alert">
     <div class="alert-text">${lorem}</div>
   </div>
 </div>
-<div class="alert compact info">
+<div class="alert alert-primary compact">
   <div class="alert-content">
     <div class="alert-title">Compact alert title</div>
     <div class="alert-text">Compact alert text</div>
@@ -354,7 +354,9 @@ ${entries.map(entry).join('\n')}
       </div>
     </div>`;
   return `<div style="min-height: 34rem">
+  <input class="burger-toggle" type="checkbox" id="navbar-burger">
   <nav class="navbar" aria-label="Site">
+    <label class="navbar-item navbar-burger" for="navbar-burger"><span class="navbar-icon">${fa('bars')}</span>Menu</label>
 ${dropdown('image', 'Images', [['Random']])}
 ${dropdown('activity', 'Activity', [['Comments']])}
 ${dropdown('comments', 'Forums', [
@@ -365,14 +367,14 @@ ${dropdown('comments', 'Forums', [
   ['Post Search', 'search'],
 ])}
 ${dropdown('tags', 'Tags', [['Tag Changes']])}
-    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('video')}</span>Livestreams ${badge('3 live', 'badge-danger')}</a>
-    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('images')}</span>Galleries</a>
-    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('palette')}</span>Commissions</a>
+    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('video')}</span><span class="hidden-below-xl">Livestreams</span> ${badge('3 live', 'badge-danger')}</a>
+    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('images')}</span><span class="hidden-below-xl">Galleries</span></a>
+    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('palette')}</span><span class="hidden-below-xl">Commissions</span></a>
     <span class="navbar-spacer"></span>
-    <a class="navbar-item" href="#" title="Notifications"><span class="navbar-icon counter-anchor">${fa('bell')}<span class="counter counter-danger corner">12</span></span></a>
-    <a class="navbar-item" href="#" title="Conversations"><span class="navbar-icon counter-anchor">${fa('envelope')}<span class="counter counter-danger corner">3</span></span></a>
-    <div class="navbar-dropdown open">
-      <a class="navbar-item caret" href="#" aria-haspopup="true" aria-expanded="true"><span class="navbar-icon">${fa('user')}</span>Username</a>
+    <a class="navbar-item navbar-pinned" href="#" title="Notifications"><span class="navbar-icon counter-anchor">${fa('bell')}<span class="counter counter-danger corner">12</span></span></a>
+    <a class="navbar-item navbar-pinned" href="#" title="Conversations"><span class="navbar-icon counter-anchor">${fa('envelope')}<span class="counter counter-danger corner">3</span></span></a>
+    <div class="navbar-dropdown navbar-pinned open">
+      <a class="navbar-item caret" href="#" aria-haspopup="true" aria-expanded="true"><span class="navbar-icon">${fa('user')}</span><span class="hidden-below-xl">Username</span></a>
       <div class="navbar-menu end">
 ${(
   [
@@ -396,6 +398,7 @@ ${entry(['Logout', 'sign-out'])}
       </div>
     </div>
   </nav>
+  ${burgerPanel('navbar-burger')}
 </div>`;
 })();
 
@@ -437,12 +440,12 @@ ${dropdownItem(['Delete', 'trash', ' danger'])}
   </div>
 </div>`;
 
-const burger = `<input class="burger-toggle" type="checkbox" id="burger-demo">
-<label class="button" for="burger-demo"><span class="button-content"><span class="button-icon">${fai('bars')}</span><span class="button-text">Open the menu</span></span></label>
-<nav class="burger" aria-label="Burger menu">
-  <div class="burger-header">Menu <label class="burger-close" for="burger-demo" aria-label="Close">×</label></div>
-${(
-  [
+// The panel and overlay of a burger menu toggled by the checkbox with the given id (a hoisted function: the navbar
+// story above uses it too)
+function burgerPanel(id: string) {
+  const item = ([text, name]: [string, FaName]) =>
+    `  <a class="burger-item" href="#"><span class="burger-icon">${icon('fontawesome', name)}</span>${text}</a>`;
+  const links: [string, FaName][] = [
     ['Images', 'image'],
     ['Activity', 'activity'],
     ['Forums', 'comments'],
@@ -450,15 +453,20 @@ ${(
     ['Livestreams', 'video'],
     ['Galleries', 'images'],
     ['Commissions', 'palette'],
-  ] as [string, FaName][]
-)
-  .map(([text, name]) => `  <a class="burger-item" href="#"><span class="burger-icon">${fai(name)}</span>${text}</a>`)
-  .join('\n')}
+  ];
+  return `<nav class="burger" aria-label="Menu">
+  <div class="burger-header">Menu <label class="burger-close" for="${id}" aria-label="Close">×</label></div>
+${links.map(item).join('\n')}
   <hr class="burger-divider">
-  <a class="burger-item" href="#"><span class="burger-icon">${fai('gear')}</span>Settings</a>
-  <a class="burger-item" href="#"><span class="burger-icon">${fai('sign-out')}</span>Logout</a>
+${item(['Settings', 'gear'])}
+${item(['Logout', 'sign-out'])}
 </nav>
-<label class="burger-overlay" for="burger-demo"></label>`;
+<label class="burger-overlay" for="${id}"></label>`;
+}
+
+const burger = `<input class="burger-toggle" type="checkbox" id="burger-demo">
+<label class="button" for="burger-demo"><span class="button-content"><span class="button-icon">${fai('bars')}</span><span class="button-text">Open the menu</span></span></label>
+${burgerPanel('burger-demo')}`;
 
 const tabs = `<div class="docs-stack">
 <div>
@@ -669,7 +677,7 @@ export const stories: Story[] = [
     id: 'alerts',
     title: 'Alerts',
     description:
-      'The plain alert, the success, danger, warning and special variants, plus a compact layout with actions.',
+      'An alert is neutral without a colour; .alert-{color} tints it and colours its title and icon. Here: primary, warning, success, danger and special, a plain one, and a compact layout with actions.',
     html: alerts,
   },
   {
@@ -703,7 +711,7 @@ export const stories: Story[] = [
     id: 'navbar',
     title: 'Navbar',
     description:
-      "A navigation bar in the header colours with dropdown menus, here with Philomena's navigation: the site links with their menus, then (after a .navbar-spacer) notifications with a corner .counter, conversations and the user menu. Menus open while their .navbar-dropdown is hovered or has the focus inside, no script is needed; .open holds one open (as on the user menu here) for touch screens or a click toggle of your own. Menu items can have an icon column; an empty .navbar-menu-icon keeps a row without an icon aligned.",
+      "A navigation bar in the header colours with dropdown menus, here with Philomena's navigation: the site links with their menus, then (after a .navbar-spacer) notifications with a corner .counter, conversations and the user menu. Menus open while their .navbar-dropdown is hovered or has the focus inside, no script is needed; .open holds one open (as on the user menu here). The bar is one row and never wraps: below the md breakpoint only the .navbar-burger item and the .navbar-pinned ones stay, and the burger opens a burger menu with the links; below xl the less important items here drop their text (.hidden-below-xl). Resize the window to see it.",
     html: navbar,
     notes: [
       'The bar works on its own or inside a <code class="code-span">.header</code>, where it fills the height. <code class="code-span">.navbar-menu.end</code> aligns a menu with the end of its item, for items near the end of the bar.',

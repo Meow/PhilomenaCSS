@@ -45,10 +45,6 @@
     visibility 0s 0.2s;
 }
 
-:root[dir="rtl"] .burger {
-  transform: translateX(100%);
-}
-
 .burger.open,
 .burger-toggle:checked ~ .burger {
   visibility: visible;

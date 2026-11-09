@@ -76,11 +76,3 @@
   @mixin faded;
   cursor: not-allowed;
 }
-
-:root[dir="rtl"] .slider {
-  --_track: linear-gradient(
-    to left,
-    var(--primary-color) var(--slider-fill),
-    var(--well-deep-color) var(--slider-fill)
-  );
-}

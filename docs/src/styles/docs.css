@@ -40,11 +40,6 @@
   line-height: 1;
 }
 
-:root[dir="rtl"] .docs-preview:before {
-  left: auto;
-  right: var(--card-padding);
-}
-
 /* Room for the open suggestion lists of the combobox demos, which overlay what follows them */
 #combobox .docs-preview {
   padding-block-end: 16rem;
@@ -141,14 +136,6 @@
   transform: rotate(45deg);
 }
 
-:root[dir="rtl"] .docs-main summary:before {
-  transform: rotate(135deg);
-}
-
-:root[dir="rtl"] .docs-main details[open] > summary:before {
-  transform: rotate(45deg);
-}
-
 .docs-main details[open] > summary {
   margin-block-end: var(--spacing-md);
 }
@@ -219,10 +206,6 @@ body.docs-gradient:before {
   background-repeat: no-repeat;
   background-attachment: fixed;
   pointer-events: none;
-}
-
-:root[dir="rtl"] body.docs-gradient {
-  --docs-gradient-angle: calc(-1 * var(--gradient-angle));
 }
 
 @media print {

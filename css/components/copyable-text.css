@@ -11,9 +11,7 @@
 }
 
 /* prettier-ignore */
-@mixin combined-border-radius :root[dir="ltr"] .copyable-text > *;
-/* prettier-ignore */
-@mixin combined-border-radius-inverted :root[dir="rtl"] .copyable-text > *;
+@mixin combined-border-radius .copyable-text > *;
 
 .copyable-text > * > .button {
   border-radius: inherit !important;

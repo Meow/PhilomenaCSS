@@ -1,26 +1,35 @@
 /*
- * A navigation bar with dropdown menus, in the header's colors and font size. Items are links in the tinted color of the header brand, white under the pointer, with an optional icon,
- * divided by thin lines; a .navbar-dropdown wraps an item and its .navbar-menu, which opens while the dropdown is
- * hovered, has the focus inside, or has .open (set it from your script for touch screens). Menu items have an icon
- * column in a darker strip, which fills with the button color under the pointer. Markup:
+ * A navigation bar with dropdown menus, in the header's colors and font size. Items are links in the tinted color of
+ * the header brand, white under the pointer, with an optional icon, divided by thin lines; a .navbar-dropdown wraps
+ * an item and its .navbar-menu, which opens while the dropdown is hovered, has the focus inside, or has .open (set it
+ * from your script for touch screens). Menu items have an icon column in a darker strip, which fills with the button
+ * color under the pointer. Markup:
  *   <nav class="navbar">
+ *     <label class="navbar-item navbar-burger" for="burger">☰ Menu</label>
  *     <a class="navbar-item" href="…"><span class="navbar-icon">…</span>Groups</a>
  *     <div class="navbar-dropdown">
  *       <a class="navbar-item caret" href="…" aria-haspopup="true">Help</a>
  *       <div class="navbar-menu">
  *         <a class="navbar-menu-item" href="…"><span class="navbar-menu-icon">…</span><span class="navbar-menu-text">FAQ</span></a>
  *         <hr class="navbar-menu-divider">
- *         …
  *       </div>
  *     </div>
+ *     <span class="navbar-spacer"></span>
+ *     <a class="navbar-item navbar-pinned" href="…">…</a>
  *   </nav>
  * .navbar-menu.end aligns a menu with the end of its item, a .navbar-spacer pushes the items after it to the end of
- * the bar. Counts next to items and on icons are .counter elements (css/components/counter.css). The bar works on its own or inside a .header.
+ * the bar. Counts next to items and on icons are .counter elements (css/components/counter.css). The bar works on
+ * its own or inside a .header.
+ *
+ * The bar is one row and never wraps. Below the md breakpoint its items are hidden, except the .navbar-burger (the
+ * label or button that opens a burger menu with the same links, css/components/burger.css, which only shows there)
+ * and the items you mark .navbar-pinned. Narrower screens put the items closer together; hide the text of the less
+ * important ones there (.hidden-below-lg or .hidden-below-xl on a span) if your bar is too long for them.
  */
 
 .navbar {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   align-items: stretch;
   color: var(--header-text-color);
   background-color: var(--header-color);
@@ -31,7 +40,6 @@
 /* Inside a header the bar fills its height and the header draws the frame */
 .header .navbar {
   align-self: stretch;
-  flex-wrap: nowrap;
   margin-block: calc(-1 * var(--header-spacing-vertical));
   border-bottom: 0;
   box-shadow: none;
@@ -112,6 +120,8 @@
   top: 100%;
   inset-inline-start: 0;
   min-inline-size: max(100%, var(--navbar-menu-min-width));
+  /* Never wider than the screen, wherever its item sits */
+  max-inline-size: 100vw;
   flex-flow: column;
   color: var(--text-color);
   background-color: var(--surface-color);
@@ -185,33 +195,17 @@
   @mixin focus-ring-inset;
 }
 
-/*
- * On narrow screens the bar wraps: the items share each row evenly with less room around them, and a menu opens
- * under the whole bar at its full width instead of under its item, where it would run off the screen.
- */
+/* The burger item only shows below the md breakpoint, where it replaces everything that is not pinned */
+.navbar .navbar-burger {
+  display: none;
+}
+
 @media not all and (min-width: $breakpoint-md) {
-  .navbar {
-    position: relative;
-  }
-
-  .navbar .navbar-item {
-    flex: 1 1 auto;
-    justify-content: center;
-    padding: var(--spacing-md) var(--spacing-lg);
-  }
-
-  .navbar .navbar-dropdown {
-    position: static;
-    flex: 1 1 auto;
-  }
-
-  .navbar .navbar-spacer {
+  .navbar > :not(.navbar-burger, .navbar-pinned, .navbar-spacer) {
     display: none;
   }
 
-  .navbar .navbar-menu,
-  .navbar .navbar-menu.end {
-    inset-inline: 0;
-    min-inline-size: 0;
+  .navbar .navbar-burger {
+    display: flex;
   }
 }

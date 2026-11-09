@@ -35,10 +35,6 @@
   transform: rotate(90deg);
 }
 
-:root[dir="rtl"] .toggle-box:checked + .toggle-box-label:before {
-  transform: rotate(-90deg);
-}
-
 .toggle-box:focus-visible + .toggle-box-label {
   @mixin focus-ring-offset;
 }

@@ -12,8 +12,11 @@ Use the compiled stylesheet:
 <link rel="stylesheet" href="node_modules/@philomena/philomena-css/dist/philomena.css" />
 ```
 
-`dist/philomena.css` (and `.min.css`) works in browsers from September 2020 onwards: every color is computed at
-build time. Everything is still controlled with custom properties, so single tokens can be overridden in plain CSS:
+`dist/philomena.css` (and `.min.css`) works in browsers from March 2022 onwards (Safari 15.4, Chrome and Edge 100,
+Firefox 98). Every color is computed at build time, so relative color syntax is not needed in the browser. A few
+enhancements use `:has()` and are simply absent where it is missing (Firefox before 121): the one-row pagination on
+narrow screens, the fading of a disabled checkbox or radio without a `.disabled` wrapper, the frame color of a
+colored table and the scroll lock behind an open popup. Everything is still controlled with custom properties, so single tokens can be overridden in plain CSS:
 
 ```css
 :root {
@@ -53,8 +56,8 @@ Token reference:
 Names are at most four words.
 
 Themes are switched with `data-theme="dark|light"` on `:root` (defaults to `prefers-color-scheme`, dark when the
-browser states no preference), RTL with
-`dir="rtl"`. To change a responsive value at one breakpoint, override the property inside your own `@media` rule.
+browser states no preference). The framework is written for left-to-right pages; right-to-left layouts are not
+supported. To change a responsive value at one breakpoint, override the property inside your own `@media` rule.
 
 ### Building from the sources (PostCSS)
 
@@ -150,8 +153,11 @@ The framework is plain CSS, so some structure is on you:
 - **Navbar.** `<nav class="navbar">` holds `.navbar-item` links (with an optional `.navbar-icon`). Wrap an item
   and a `.navbar-menu` in a `.navbar-dropdown` for a menu of `.navbar-menu-item`s (a `.navbar-menu-icon` and a
   `.navbar-menu-text` each, `<hr class="navbar-menu-divider">` between groups). Menus open on hover and on focus
-  without a script; toggle `.open` on the dropdown for touch screens. A `.navbar-spacer` pushes the items after it to the end
-  of the bar.
+  without a script; toggle `.open` on the dropdown for touch screens. A `.navbar-spacer` pushes the items after it
+  to the end. The bar is one row and never wraps: below the `md` breakpoint only the `.navbar-burger` item (the
+  label that opens a burger menu) and `.navbar-pinned` items stay. If your bar is too long for tablets, hide the text
+  of secondary items there with `.hidden-below-lg` or `.hidden-below-xl`.
+- **Alerts.** `.alert` is neutral; `.alert-{type}` tints it, like the variants of every other component.
 - **Dropdowns.** A `.dropdown` wraps any trigger and a `.dropdown-menu` of `.dropdown-item`s. It opens on hover and
   on focus without a script, `.open` holds it open and `.manual` turns the hover off.
 - **Burger menu.** A `.burger` panel slides in from the start side over a `.burger-overlay`. Toggle `.open` on

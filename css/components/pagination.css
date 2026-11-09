@@ -82,32 +82,34 @@
 
 /*
  * Narrow screens, as on Philomena: one row with the first, previous, next and last links around the current page.
- * The other page numbers and the gaps are left out, so that the pill never wraps.
+ * The other page numbers and the gaps are left out, so that the pill never wraps. This only happens when the
+ * pagination has step links (ones with a .pagination-icon), and it takes :has(): browsers without it keep every
+ * link and let the pill wrap.
  */
 @media not all and (min-width: $breakpoint-md) {
-  .pagination {
+  .pagination:has(.pagination-icon) {
     flex-wrap: nowrap;
   }
 
-  .pagination .pagination-gap,
-  .pagination a.pagination-link:not(:has(.pagination-icon)) {
+  .pagination:has(.pagination-icon) .pagination-gap,
+  .pagination:has(.pagination-icon) a.pagination-link:not(:has(.pagination-icon)) {
     display: none;
   }
 
   /* Less room around the links, so that all five fit a phone; the pill shrinks its links before it would overflow */
-  .pagination .pagination-link {
+  .pagination:has(.pagination-icon) .pagination-link {
     flex: 0 1 auto;
     min-inline-size: 0;
     padding-inline: var(--spacing-sm);
     gap: 0;
   }
 
-  .pagination .pagination-link.current {
+  .pagination:has(.pagination-icon) .pagination-link.current {
     flex: 0 0 auto;
     padding-inline: var(--spacing-md);
   }
 
-  .pagination .pagination-icon {
+  .pagination:has(.pagination-icon) .pagination-icon {
     inline-size: 1em;
   }
 }

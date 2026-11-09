@@ -40,18 +40,8 @@
   padding-right: 0;
 }
 
-:root[dir="rtl"] .tag .tag-icon {
-  padding-right: var(--tag-padding-horizontal);
-  padding-left: 0;
-}
-
 .tag .tag-icon + .tag-name {
   padding-left: 0;
-}
-
-:root[dir="rtl"] .tag .tag-icon + .tag-name {
-  padding-left: var(--tag-padding-horizontal);
-  padding-right: 0;
 }
 
 .tag .tag-count {

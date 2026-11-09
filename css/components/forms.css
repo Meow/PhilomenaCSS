@@ -154,14 +154,6 @@
   box-shadow: inset 0 0 0 100em var(--hover-shade-color);
 }
 
-:root[dir="rtl"] .form-control-switch .form-switch-input {
-  background-position: calc(100% - var(--spacing-xs)) 50%;
-}
-
-:root[dir="rtl"] .form-control-switch .form-switch-input:checked {
-  background-position: var(--spacing-xs) 50%;
-}
-
 .form-control-switch .form-switch-label {
   cursor: default;
 }
@@ -184,14 +176,7 @@
   width: var(--form-checkbox-width);
   height: var(--form-checkbox-height);
   flex: 0 0 auto;
-}
-
-:root[dir="ltr"] .form-control-radio .form-radio-input-wrap {
   margin-right: var(--form-control-spacing);
-}
-
-:root[dir="rtl"] .form-control-radio .form-radio-input-wrap {
-  margin-left: var(--form-control-spacing);
 }
 
 .form-control-radio .form-radio-input-wrap .form-radio-input,
@@ -206,6 +191,14 @@
   position: absolute;
   top: 0;
   left: 0;
+  opacity: 0;
+  background-color: var(--text-color);
+  transition: opacity 0.1s linear;
+  display: block;
+  width: var(--form-radio-select-icon);
+  height: var(--form-radio-select-icon);
+  margin: calc((100% - var(--form-radio-select-icon)) * 0.5);
+  pointer-events: none;
 }
 
 .form-control-radio .form-radio-input-wrap .form-radio-input {
@@ -220,17 +213,6 @@
 
 .form-control-radio .form-radio-input-wrap .form-radio-input:focus-visible {
   @mixin focus-ring;
-}
-
-.form-control-radio .form-radio-input-wrap .form-radio-select-icon {
-  opacity: 0;
-  background-color: var(--text-color);
-  transition: opacity 0.1s linear;
-  display: block;
-  width: var(--form-radio-select-icon);
-  height: var(--form-radio-select-icon);
-  margin: calc((100% - var(--form-radio-select-icon)) * 0.5);
-  pointer-events: none;
 }
 
 .form-control-radio .form-radio-input-wrap .form-radio-input:checked + .form-radio-select-icon {
@@ -252,18 +234,11 @@
 
 .form-control-select > .form-select-input {
   --padding-value: calc(var(--input-padding) * 2 + var(--form-select-icon-padding) * 2 + var(--form-select-icon-size));
+  padding-right: var(--padding-value);
 }
 
 .form-control-select > .form-select-input:focus-visible {
   @mixin focus-ring;
-}
-
-:root[dir="ltr"] .form-control-select > .form-select-input {
-  padding-right: var(--padding-value);
-}
-
-:root[dir="rtl"] .form-control-select > .form-select-input {
-  padding-left: var(--padding-value);
 }
 
 .form-control-select .form-select-icon {
@@ -276,18 +251,11 @@
   justify-content: center;
   padding: 0 var(--form-select-icon-padding);
   font-size: var(--form-select-icon-size);
+  right: 0;
 }
 
 .form-control-select .form-select-icon:not(.clickable) {
   pointer-events: none;
-}
-
-:root[dir="ltr"] .form-control-select .form-select-icon {
-  right: 0;
-}
-
-:root[dir="rtl"] .form-control-select .form-select-icon {
-  left: 0;
 }
 
 /*
@@ -401,22 +369,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 60%;
-}
-
-:root[dir="ltr"]
-  .combobox-suggestions
-  .combobox-suggestion-item
-  .combobox-suggestion-item-label
-  .combobox-suggestion-item-addon {
   text-align: right;
-}
-
-:root[dir="rtl"]
-  .combobox-suggestions
-  .combobox-suggestion-item
-  .combobox-suggestion-item-label
-  .combobox-suggestion-item-addon {
-  text-align: left;
 }
 
 .combobox-suggestions
@@ -428,6 +381,7 @@
   transition-duration: 0.1s;
   transition-timing-function: ease-out;
   animation: reposition 0.1s ease-out forwards;
+  right: 0;
 }
 
 @keyframes reposition {
@@ -442,20 +396,6 @@
     font-size: 0.65em;
     padding: var(--spacing-xs) var(--spacing-xs);
   }
-}
-
-:root[dir="ltr"]
-  .combobox-suggestions
-  .combobox-suggestion-item.addon-mode-dynamic.label-truncated:hover
-  .combobox-suggestion-item-addon {
-  right: 0;
-}
-
-:root[dir="rtl"]
-  .combobox-suggestions
-  .combobox-suggestion-item.addon-mode-dynamic.label-truncated:hover
-  .combobox-suggestion-item-addon {
-  left: 0;
 }
 
 /* Items tint under the pointer and when highlighted from the keyboard; the selected one is filled like a primary
@@ -528,13 +468,9 @@
 }
 
 /* prettier-ignore */
-@mixin combined-border-radius :root[dir="ltr"] .form-input-group > .input-field;
+@mixin combined-border-radius .form-input-group > .input-field;
 /* prettier-ignore */
-@mixin combined-border-radius :root[dir="ltr"] .form-input-group > .form-control-select, > .form-select-input;
-/* prettier-ignore */
-@mixin combined-border-radius-inverted :root[dir="rtl"] .form-input-group > .input-field;
-/* prettier-ignore */
-@mixin combined-border-radius-inverted :root[dir="rtl"] .form-input-group > .form-control-select, > .form-select-input;
+@mixin combined-border-radius .form-input-group > .form-control-select, > .form-select-input;
 
 .form-message {
   display: block;

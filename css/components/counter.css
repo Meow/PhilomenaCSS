@@ -46,7 +46,3 @@
   padding: var(--spacing-xs);
   font-size: var(--counter-corner-font-size);
 }
-
-:root[dir="rtl"] .counter-anchor > .counter.corner {
-  transform: translate(-50%, -50%);
-}

@@ -172,18 +172,14 @@
 }
 
 /* prettier-ignore */
-@mixin combined-border-radius :root[dir="ltr"] .button-group:not(.separated) .button;
-/* prettier-ignore */
-@mixin combined-border-radius-inverted :root[dir="rtl"] .button-group:not(.separated) .button;
+@mixin combined-border-radius .button-group:not(.separated) .button;
 
 .button-group:not(.separated) > :not(.button) {
   border-radius: var(--border-radius-inner);
 }
 
 /* prettier-ignore */
-@mixin combined-border-radius :root[dir="ltr"] .button-group:not(.separated) > :not(.button);
-/* prettier-ignore */
-@mixin combined-border-radius-inverted :root[dir="rtl"] .button-group:not(.separated) > :not(.button);
+@mixin combined-border-radius .button-group:not(.separated) > :not(.button);
 
 .button-group:not(.separated) > :not(.button) > .button {
   border-radius: inherit !important;

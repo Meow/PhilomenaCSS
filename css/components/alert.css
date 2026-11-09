@@ -1,3 +1,8 @@
+/*
+ * An alert: a tinted box with an optional icon, title, text and actions. Without a color it is neutral, like every
+ * other component; .alert-{type} tints it and colors its title and icon. .compact halves the spacing.
+ */
+
 .alert {
   --spacing: var(--alert-spacing);
   display: flex;
@@ -6,8 +11,8 @@
   padding: var(--spacing);
   border-radius: var(--border-radius-outer);
   color: var(--text-color);
-  background-color: var(--primary-tint-color);
-  border: var(--border-width) solid var(--primary-tint-color);
+  background-color: var(--neutral-tint-color);
+  border: var(--border-width) solid var(--neutral-tint-color);
   box-shadow: var(--emphasis-shadow);
 }
 
@@ -54,12 +59,12 @@
 @mixin each-type alert-color-variation;
 
 /* The light and dark types are fixed colors, so their text and links follow them and not the theme */
-.alert.light,
-.alert.light a {
+.alert.alert-light,
+.alert.alert-light a {
   color: var(--light-tint-text-color);
 }
 
-.alert.dark,
-.alert.dark a {
+.alert.alert-dark,
+.alert.alert-dark a {
   color: var(--dark-tint-text-color);
 }
