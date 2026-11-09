@@ -249,19 +249,15 @@ pull request.
 
 ## Releases
 
-Releases are automatic. Commits to `main` follow [Conventional Commits](https://www.conventionalcommits.org/)
-(enforced by commitlint, locally through a Husky hook and in CI). On every push to `main` the next
-[semantic version](https://semver.org/) is computed from the commits since the last tag:
+Releases are published by hand. Commits follow [Conventional Commits](https://www.conventionalcommits.org/), which
+CI checks, and the version follows semver; before 1.0.0 a breaking change bumps the minor version.
 
-| Commit                                    | Release |
-| ----------------------------------------- | ------- |
-| `fix:`                                    | patch   |
-| `feat:`                                   | minor   |
-| `feat!:` / `BREAKING CHANGE:`             | major   |
-| `docs:`, `chore:`, `ci:`, `refactor:` ... | none    |
-
-The package is built and published to npm, then the `vX.Y.Z` tag and a GitHub release with the changelog are created.
-`package.json` always says `0.0.0`, the version only lives in the tag.
+```sh
+npm version 0.3.0 --no-git-tag-version   # set the version in package.json, commit it
+pnpm run build && pnpm run check:contrast
+npm publish --access public
+git tag -a v0.3.0 -m v0.3.0 && git push origin main v0.3.0
+```
 
 ## License
 
