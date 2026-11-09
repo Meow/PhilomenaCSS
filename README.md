@@ -1,6 +1,6 @@
-# @went.tf/hammertime-css
+# @philomena/philomena-css
 
-The design of [HammerTime](https://hammertime.cyou) as an extensible, **HTML/CSS-only** framework.
+The design of [Philomena](https://philomena.dev) as an extensible, **HTML/CSS-only** framework.
 No JavaScript components are included, the stateful components only ship the styling hooks
 (`.visible`, `[open]`, `.is-open`, ...) that your own markup or script toggles.
 
@@ -8,18 +8,18 @@ No JavaScript components are included, the stateful components only ship the sty
 
 ```scss
 // Plain build with the defaults
-@use '@went.tf/hammertime-css';
+@use '@philomena/philomena-css';
 ```
 
-Or use the compiled `dist/hammertime.css`.
+Or use the compiled `dist/philomena.css`.
 
 ### CSS only (no Sass)
 
-`dist/hammertime.css` (and `.min.css`) is the CSS-only build. Everything is controlled with custom properties,
+`dist/philomena.css` (and `.min.css`) is the CSS-only build. Everything is controlled with custom properties,
 including the brand-derived palette, which is computed at runtime from a single variable:
 
 ```html
-<link rel="stylesheet" href="@went.tf/hammertime-css/dist/hammertime.css">
+<link rel="stylesheet" href="@philomena/philomena-css/dist/philomena.css">
 <style>
   :root {
     --ht-brand: #e8590c;                       /* re-themes header, cards, inputs, primary buttons, links, ... */
@@ -31,7 +31,7 @@ including the brand-derived palette, which is computed at runtime from a single 
 ```
 
 This build needs CSS relative color syntax (Chrome 119+, Safari 16.4+, Firefox 128+). Browsers without it
-should use `dist/hammertime.static.css` (or the Sass build), where the palette is derived at compile time:
+should use `dist/philomena.static.css` (or the Sass build), where the palette is derived at compile time:
 the same tokens are still individually overridable, only `--ht-brand` does not exist there.
 
 Token reference:
@@ -53,7 +53,7 @@ the property inside your own `@media` rule. To retheme the alias `--ht-color-*` 
 Configure the framework **before anything else loads it**:
 
 ```scss
-@use '@went.tf/hammertime-css' with (
+@use '@philomena/philomena-css' with (
   $brand-color: #e8590c,
   // add or replace tokens, emitted as --ht-value-*, --ht-color-* and --ht-z-index-*
   $extend-values: (button-border-radius: .5rem),
@@ -71,11 +71,11 @@ Everything else is a CSS custom property, so it can also be changed at runtime
 (`--ht-value-*`, `--ht-color-*-light`/`-dark`). Themes are switched with `data-theme="light|dark"` on `:root`
 (defaults to `prefers-color-scheme`), RTL with `dir="rtl"`.
 
-Single components can be used on their own, after configuring `@went.tf/hammertime-css/design`:
+Single components can be used on their own, after configuring `@philomena/philomena-css/design`:
 
 ```scss
-@use '@went.tf/hammertime-css/design' with ($brand-color: #e8590c);
-@use '@went.tf/hammertime-css/components/button';
+@use '@philomena/philomena-css/design' with ($brand-color: #e8590c);
+@use '@philomena/philomena-css/components/button';
 ```
 
 ## Markup notes
@@ -92,11 +92,11 @@ The framework is plain CSS, so some structure is on you:
 - **`<summary>` has no marker.** The CSS reset removes the disclosure marker, so give `<details>` toggles their own
   affordance (chevron, border, pointer cursor).
 
-See the [documentation site](https://wentthefox.github.io/HammerTimeCSS/) for rendered examples.
+See the [documentation site](https://meow.github.io/PhilomenaCSS/) for rendered examples.
 
 ## Status
 
-Extracted from the HammerTime app, work in progress. Documentation and live demo: <https://wentthefox.github.io/HammerTimeCSS/> (source in [`docs/`](docs), an Astro site that is not part of the npm package).
+Based on [HammerTimeCSS](https://github.com/WentTheFox/HammerTimeCSS) and adapted for use in the [Philomena](https://github.com/philomena-dev/philomena) project, work in progress. Documentation and live demo: <https://meow.github.io/PhilomenaCSS/> (source in [`docs/`](docs), an Astro site that is not part of the npm package).
 
 ## Releases
 

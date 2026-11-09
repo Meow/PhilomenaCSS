@@ -13,7 +13,7 @@ export interface TokenGroup {
 }
 
 // The build runs from docs/, the stylesheet is built into the repository root's dist/
-const cssPath = resolve(process.cwd(), '../dist/hammertime.css');
+const cssPath = resolve(process.cwd(), '../dist/philomena.css');
 
 /**
  * Reads the `--ht-*` custom properties from the compiled stylesheet, which is the compiled form of the Sass token maps.

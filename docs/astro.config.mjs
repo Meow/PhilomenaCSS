@@ -1,9 +1,9 @@
 import { defineConfig } from 'astro/config';
 
-// Project page: https://wentthefox.github.io/HammerTimeCSS/
+// Project page: https://meow.github.io/PhilomenaCSS/
 export default defineConfig({
-  site: 'https://wentthefox.github.io',
-  base: '/HammerTimeCSS',
+  site: 'https://meow.github.io',
+  base: '/PhilomenaCSS',
   trailingSlash: 'ignore',
   // Compression removes the newline whitespace between text and inline elements, gluing words together
   compressHTML: false,

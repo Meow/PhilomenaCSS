@@ -1,7 +1,7 @@
 {
-  "name": "@went.tf/hammertime-css",
-  "version": "0.0.0",
-  "description": "HTML/CSS-only design framework extracted from HammerTime, customizable through Sass variables",
+  "name": "@philomena/philomena-css",
+  "version": "0.1.0",
+  "description": "HTML/CSS-only design framework based on HammerTimeCSS and adapted for Philomena, customizable through Sass variables",
   "keywords": [
     "css",
     "scss",
@@ -12,24 +12,24 @@
     "rtl",
     "no-js"
   ],
-  "homepage": "https://github.com/WentTheFox/HammerTimeCSS#readme",
+  "homepage": "https://github.com/Meow/PhilomenaCSS#readme",
   "bugs": {
-    "url": "https://github.com/WentTheFox/HammerTimeCSS/issues"
+    "url": "https://github.com/Meow/PhilomenaCSS/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WentTheFox/HammerTimeCSS.git"
+    "url": "git+https://github.com/Meow/PhilomenaCSS.git"
   },
   "license": "MIT",
   "author": "WentTheFox",
   "type": "module",
   "sass": "scss/_index.scss",
-  "style": "dist/hammertime.css",
+  "style": "dist/philomena.css",
   "exports": {
     ".": {
       "sass": "./scss/_index.scss",
-      "style": "./dist/hammertime.css",
-      "default": "./dist/hammertime.css"
+      "style": "./dist/philomena.css",
+      "default": "./dist/philomena.css"
     },
     "./design": {
       "sass": "./scss/design/_index.scss"
@@ -52,8 +52,8 @@
   ],
   "scripts": {
     "build": "pnpm build:css && pnpm build:static",
-    "build:css": "sass --load-path=node_modules --no-source-map scss/builds/css.scss dist/hammertime.css && sass --load-path=node_modules --no-source-map --style=compressed scss/builds/css.scss dist/hammertime.min.css",
-    "build:static": "sass --load-path=node_modules --no-source-map scss/builds/static.scss dist/hammertime.static.css && sass --load-path=node_modules --no-source-map --style=compressed scss/builds/static.scss dist/hammertime.static.min.css",
+    "build:css": "sass --load-path=node_modules --no-source-map scss/builds/css.scss dist/philomena.css && sass --load-path=node_modules --no-source-map --style=compressed scss/builds/css.scss dist/philomena.min.css",
+    "build:static": "sass --load-path=node_modules --no-source-map scss/builds/static.scss dist/philomena.static.css && sass --load-path=node_modules --no-source-map --style=compressed scss/builds/static.scss dist/philomena.static.min.css",
     "commitlint": "commitlint --edit",
     "prepare": "husky"
   },
@@ -61,10 +61,10 @@
     "the-new-css-reset": "^1.11.3"
   },
   "devDependencies": {
-    "sass": "^1.105.1",
     "@commitlint/cli": "^21.2.0",
     "@commitlint/config-conventional": "^21.2.0",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "sass": "^1.105.1"
   },
   "engines": {
     "node": ">=24"
