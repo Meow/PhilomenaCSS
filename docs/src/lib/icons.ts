@@ -10,7 +10,44 @@ import * as fontAwesome from '@fortawesome/free-solid-svg-icons';
  * - Lucide: https://lucide.dev, ISC license
  */
 export type IconSet = 'fontawesome' | 'lucide';
-export type IconName = 'check' | 'chevron-down' | 'clipboard' | 'spinner';
+export type IconName =
+  | 'check'
+  | 'chevron-down'
+  | 'clipboard'
+  | 'spinner'
+  | 'star'
+  | 'arrow-up'
+  | 'arrow-down'
+  | 'comments'
+  | 'eye-slash'
+  | 'users'
+  | 'gear'
+  | 'question'
+  | 'exclamation'
+  | 'tags'
+  | 'pen'
+  | 'eye'
+  | 'code'
+  | 'gavel'
+  | 'book'
+  | 'image'
+  | 'upload'
+  | 'pen-square'
+  | 'link'
+  | 'envelope'
+  | 'user'
+  | 'sign-out'
+  | 'search'
+  | 'bell'
+  | 'activity'
+  | 'video'
+  | 'images'
+  | 'palette'
+  | 'bars'
+  | 'trash'
+  | 'flag'
+  | 'quote'
+  | 'reply';
 
 export const iconSetLabels: Record<IconSet, string> = {
   fontawesome: 'Font Awesome Free',
@@ -18,15 +55,61 @@ export const iconSetLabels: Record<IconSet, string> = {
 };
 
 const faIcons: Record<IconName, { icon: [number, number, unknown, unknown, string] }> = {
-  'check': fontAwesome.faCheck as never,
+  check: fontAwesome.faCheck as never,
   'chevron-down': fontAwesome.faChevronDown as never,
-  'clipboard': fontAwesome.faClipboard as never,
-  'spinner': fontAwesome.faSpinner as never,
+  clipboard: fontAwesome.faClipboard as never,
+  spinner: fontAwesome.faSpinner as never,
+  star: fontAwesome.faStar as never,
+  'arrow-up': fontAwesome.faArrowUp as never,
+  'arrow-down': fontAwesome.faArrowDown as never,
+  comments: fontAwesome.faComments as never,
+  'eye-slash': fontAwesome.faEyeSlash as never,
+  users: fontAwesome.faUsers as never,
+  gear: fontAwesome.faGear as never,
+  question: fontAwesome.faCircleQuestion as never,
+  exclamation: fontAwesome.faCircleExclamation as never,
+  tags: fontAwesome.faTags as never,
+  pen: fontAwesome.faPen as never,
+  eye: fontAwesome.faEye as never,
+  code: fontAwesome.faCode as never,
+  gavel: fontAwesome.faGavel as never,
+  book: fontAwesome.faBook as never,
+  image: fontAwesome.faImage as never,
+  upload: fontAwesome.faUpload as never,
+  'pen-square': fontAwesome.faSquarePen as never,
+  link: fontAwesome.faLink as never,
+  envelope: fontAwesome.faEnvelope as never,
+  user: fontAwesome.faUser as never,
+  'sign-out': fontAwesome.faRightFromBracket as never,
+  search: fontAwesome.faMagnifyingGlass as never,
+  bell: fontAwesome.faBell as never,
+  activity: fontAwesome.faChartLine as never,
+  video: fontAwesome.faVideo as never,
+  images: fontAwesome.faImages as never,
+  palette: fontAwesome.faPalette as never,
+  bars: fontAwesome.faBars as never,
+  trash: fontAwesome.faTrash as never,
+  flag: fontAwesome.faFlag as never,
+  quote: fontAwesome.faQuoteRight as never,
+  reply: fontAwesome.faReply as never,
 };
 
 // The build runs from docs/
 // Lucide has no 'spinner', its equivalent is 'loader-circle'
-const lucideFiles: Partial<Record<IconName, string>> = { spinner: 'loader-circle' };
+const lucideFiles: Partial<Record<IconName, string>> = {
+  spinner: 'loader-circle',
+  comments: 'messages-square',
+  'eye-slash': 'eye-off',
+  gear: 'settings',
+  question: 'circle-help',
+  exclamation: 'circle-alert',
+  pen: 'pencil',
+  'pen-square': 'square-pen',
+  envelope: 'mail',
+  'sign-out': 'log-out',
+  bars: 'menu',
+  trash: 'trash-2',
+};
 const lucideDir = resolve(process.cwd(), 'node_modules/lucide-static/icons');
 
 /** Returns an inline `<svg>` sized to the text, `fixedWidth` mirrors Font Awesome's fa-fw */

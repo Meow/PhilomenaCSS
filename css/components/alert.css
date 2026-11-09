@@ -1,16 +1,18 @@
 .alert {
-  --spacing: var(--ht-value-alert-spacing);
+  --spacing: var(--alert-spacing);
   display: flex;
   flex-flow: row nowrap;
   gap: var(--spacing);
   padding: var(--spacing);
-  border-radius: var(--ht-value-alert-border-radius);
-  background-color: var(--ht-color-alert-bg);
-  color: var(--ht-color-alert-color);
+  border-radius: var(--border-radius-outer);
+  color: var(--text-color);
+  background-color: var(--primary-tint-color);
+  border: var(--border-width) solid var(--primary-tint-color);
+  box-shadow: var(--emphasis-shadow);
 }
 
 .alert.compact {
-  --spacing: calc(var(--ht-value-alert-spacing) * 0.5);
+  --spacing: calc(var(--alert-spacing) * 0.5);
 }
 
 .alert .alert-icon:empty {
@@ -20,7 +22,7 @@
 .alert .alert-content {
   flex-grow: 1;
   flex-basis: 100%;
-  font-size: 0.875rem;
+  line-height: var(--text-line-height);
 }
 
 .alert .alert-content > :not(:last-child) {
@@ -41,15 +43,12 @@
 
 @mixin content-link-style .alert .alert-text;
 
+.alert .alert-text a {
+  color: var(--link-strong-color);
+}
+
 .alert .alert-actions:empty {
   display: none;
 }
 
-.alert.warning {
-  color: var(--ht-color-alert-warning-color);
-  background-color: var(--ht-color-alert-warning-bg);
-}
-
-.alert.warning .alert-title, .alert.warning .alert-icon {
-  color: var(--ht-color-alert-warning-hl-color);
-}
+@mixin each-type alert-color-variation;

@@ -8,7 +8,7 @@
 
 .loading-indicator .minute,
 .loading-indicator .hour {
-  fill: currentColor;
+  fill: currentcolor;
   transform-origin: 32px 32px;
   animation-name: rotate-hand;
   animation-iteration-count: infinite;
@@ -16,11 +16,11 @@
 }
 
 .loading-indicator .hour {
-  animation-duration: var(--ht-value-loading-indicator-full-revolution-time);
+  animation-duration: var(--loading-revolution-time);
 }
 
 .loading-indicator .minute {
-  animation-duration: calc(var(--ht-value-loading-indicator-full-revolution-time) / 12);
+  animation-duration: calc(var(--loading-revolution-time) / 12);
 }
 
 .loading-indicator .base {
@@ -30,7 +30,7 @@
 .loading-indicator .face,
 .loading-indicator .ticking {
   fill: none;
-  stroke: currentColor;
+  stroke: currentcolor;
 }
 
 .loading-indicator .face {
@@ -45,6 +45,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

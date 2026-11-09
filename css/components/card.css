@@ -1,42 +1,54 @@
 .card {
-  border-radius: var(--ht-value-card-border-radius);
-  padding: var(--ht-value-card-padding);
-  color: var(--ht-color-card-color);
-  background-color: var(--ht-color-card-bg);
+  border-radius: var(--border-radius-outer);
+  padding: var(--card-padding);
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border: var(--border-width) solid var(--tint-color);
+  box-shadow: var(--emphasis-shadow);
 }
 
 @media print {
   .card {
-    background-color: #fff;
+    background-color: #ffffff;
   }
-}
-
-.card h1 {
-  font-size: var(--ht-value-content-heading-1);
-}
-
-.card h2 {
-  font-size: var(--ht-value-content-heading-2);
-}
-
-.card h3 {
-  font-size: var(--ht-value-content-heading-3);
-}
-
-.card h4 {
-  font-size: var(--ht-value-content-heading-4);
 }
 
 .card.error {
   /* There are no card-error-* color tokens yet, this is the placeholder color for a missing token */
-  background-color: #FF00FF;
-  color: #FF00FF;
+  background-color: #ff00ff;
+  color: #ff00ff;
 }
 
-.card .card-header:not(:last-child) {
-  margin-bottom: var(--ht-value-card-padding);
+/* The header is a band across the top of the card, separated from the body by the card border */
+.card .card-header {
+  margin: calc(-1 * var(--card-padding)) calc(-1 * var(--card-padding)) var(--card-padding);
+  padding: var(--card-header-padding-vertical) var(--card-padding);
+  border-bottom: var(--border-width) solid var(--tint-color);
+  border-radius: calc(var(--border-radius-outer) - var(--border-width))
+    calc(var(--border-radius-outer) - var(--border-width)) 0 0;
+}
+
+/* A card that is only a header */
+.card .card-header:last-child {
+  margin-bottom: calc(-1 * var(--card-padding));
+  border-bottom: 0;
+  border-radius: calc(var(--border-radius-outer) - var(--border-width));
 }
 
 .card .card-header:empty {
   display: none;
+}
+
+/* Links in the body take the content link color, or the card's color on a colored card (so do default buttons) */
+.card a:where(:not($(content-controls))) {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+@mixin each-type card-color-variation;
+
+/* The bodies of light and dark cards follow the theme, so their links keep the regular link color */
+.card.card-light a:where(:not($(content-controls))),
+.card.card-dark a:where(:not($(content-controls))) {
+  color: var(--link-color);
 }

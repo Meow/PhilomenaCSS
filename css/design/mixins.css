@@ -3,65 +3,303 @@
  * because the sources are written without nesting.
  */
 
+/*
+ * The controls that color their own links, which the link styles of a container leave alone: in running content,
+ * and in a title bar. Used as `a:where(:not($(content-controls)))`.
+ */
+/* prettier-ignore */
+$content-controls: .button, .nav-link, .tag a, .badge a, .alert a;
+/* prettier-ignore */
+$bar-controls: .button, .tag a, .badge a;
+
+/* The semantic types that have a .{component}-{type} variant; neutral is the look without a class */
+@define-mixin each-type $variation {
+  @mixin $(variation) primary;
+  @mixin $(variation) success;
+  @mixin $(variation) warning;
+  @mixin $(variation) danger;
+  @mixin $(variation) special;
+  @mixin $(variation) light;
+  @mixin $(variation) dark;
+}
+
+/*
+ * The focus ring, called inside a :focus-visible rule: around the element, a little away from it (for small
+ * controls), or inset (for elements that are clipped by their container). $color defaults to the focus color.
+ */
+@define-mixin focus-ring $color: var(--focus-color) {
+  outline: var(--focus-outline) solid $(color);
+}
+
+@define-mixin focus-ring-offset $color: var(--focus-color) {
+  outline: var(--focus-outline) solid $(color);
+  outline-offset: var(--spacing-xs);
+}
+
+@define-mixin focus-ring-inset $color: var(--focus-color) {
+  outline: var(--focus-outline) solid $(color);
+  outline-offset: calc(-1 * var(--focus-outline));
+}
+
+/* A checkbox that drives a script-free toggle (burger menu, toggle box, clamp): out of sight, but still focusable */
+@define-mixin hidden-toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*
+ * The parts the menus share (dropdown, burger menu, the menus of a navbar), called inside their rules: an item of a
+ * menu, the icon slot in front of its text, and the rule between groups of items.
+ */
+@define-mixin menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@define-mixin menu-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  color: var(--muted-text-color);
+}
+
+@define-mixin menu-divider {
+  margin: 0;
+  border: 0;
+  border-top: var(--border-width) solid var(--tint-color);
+}
+
+/* Unavailable controls and muted content are faded by the same amount */
+@define-mixin faded {
+  opacity: var(--faded-opacity);
+}
+
 /* Links inside $selector */
 @define-mixin content-link-style $selector {
   $(selector) a {
-    color: var(--ht-color-content-link);
+    color: var(--link-color);
     text-decoration: underline;
   }
 }
 
 /* Logical margins and paddings, for left-to-right and right-to-left pages */
 @define-mixin margin-start $selector, $size {
-  :root[dir=ltr] $(selector) {
+  :root[dir="ltr"] $(selector) {
     margin-left: $(size) !important;
   }
-  :root[dir=rtl] $(selector) {
+  :root[dir="rtl"] $(selector) {
     margin-right: $(size) !important;
   }
 }
 
 @define-mixin margin-end $selector, $size {
-  :root[dir=ltr] $(selector) {
+  :root[dir="ltr"] $(selector) {
     margin-right: $(size) !important;
   }
-  :root[dir=rtl] $(selector) {
+  :root[dir="rtl"] $(selector) {
     margin-left: $(size) !important;
   }
 }
 
 @define-mixin padding-start $selector, $size {
-  :root[dir=ltr] $(selector) {
+  :root[dir="ltr"] $(selector) {
     padding-left: $(size) !important;
   }
-  :root[dir=rtl] $(selector) {
+  :root[dir="rtl"] $(selector) {
     padding-right: $(size) !important;
   }
 }
 
 @define-mixin padding-end $selector, $size {
-  :root[dir=ltr] $(selector) {
+  :root[dir="ltr"] $(selector) {
     padding-right: $(size) !important;
   }
-  :root[dir=rtl] $(selector) {
+  :root[dir="rtl"] $(selector) {
     padding-left: $(size) !important;
   }
 }
 
-/* Color variants: .button.button-{color} and .badge.badge-{color}, from the matching color tokens */
-@define-mixin button-color-variation $color {
-  .button.button-$(color) {
-    color: var(--ht-color-button-$(color)-color);
-    background-color: var(--ht-color-button-$(color)-bg);
-    --button-border-color: var(--ht-color-button-$(color)-border-color);
+/*
+ * Color variants of the components, from the roles of a type color (see css/design/tokens.css): .button-{type},
+ * .badge-{type}, .alert.{type}, .table-{type}, .card-{type}, .block-{type}, .media-{type}, .pagination-{type}, .counter-{type} and the
+ * overlays' .{type}.
+ * The types are neutral (the default look), primary, success, warning, danger, special, light and dark.
+ */
+@define-mixin button-color-variation $type {
+  .button.button-$(type) {
+    color: var(--$(type)-text-color);
+    background-color: var(--$(type)-color);
+    --_border-color: var(--$(type)-border-color);
   }
 }
 
-@define-mixin badge-color-variation $color {
-  .badge.badge-$(color) {
-    color: var(--ht-color-badge-$(color)-color);
-    background-color: var(--ht-color-badge-$(color)-bg);
-    border-color: var(--ht-color-badge-$(color)-bg);
+@define-mixin alert-color-variation $type {
+  .alert.$(type) {
+    background-color: var(--$(type)-tint-color);
+    border-color: var(--$(type)-tint-color);
+  }
+
+  .alert.$(type) .alert-title,
+  .alert.$(type) .alert-icon {
+    color: var(--$(type)-tint-text-color);
+  }
+}
+
+@define-mixin badge-color-variation $type {
+  .badge.badge-$(type) {
+    color: var(--$(type)-tint-text-color);
+    background-color: var(--$(type)-tint-color);
+  }
+
+  .badge.badge-$(type) .badge-prefix,
+  .badge.badge-$(type) .badge-suffix {
+    background-color: var(--$(type)-affix-color);
+  }
+}
+
+@define-mixin counter-color-variation $type {
+  .counter.counter-$(type) {
+    color: var(--$(type)-text-color);
+    background-color: var(--$(type)-color);
+  }
+}
+
+@define-mixin pagination-color-variation $type {
+  .pagination.pagination-$(type) {
+    color: var(--$(type)-tint-text-color);
+    background-color: var(--$(type)-tint-color);
+    border-color: var(--$(type)-border-color);
+  }
+
+  .pagination.pagination-$(type) a.pagination-link:hover,
+  .pagination.pagination-$(type) a.pagination-link:focus-visible {
+    background-color: var(--$(type)-affix-color);
+  }
+
+  .pagination.pagination-$(type) .pagination-link.current {
+    color: var(--$(type)-text-color);
+    background-color: var(--$(type)-color);
+  }
+}
+
+/* Tag categories: .tag.tag-{category} from the --tag-{category}-* color tokens */
+@define-mixin tag-category-variation $category {
+  .tag.tag-$(category) {
+    --_text: var(--tag-$(category)-text-color);
+    --_bg: var(--tag-$(category)-color);
+    --_affix: var(--tag-$(category)-affix-color);
+  }
+}
+
+/* Tables: .table.table-{type} colors the header, footer and frame, tr.{type}, th.{type} and td.{type} a row or a cell */
+@define-mixin table-color-variation $type {
+  .table.table-$(type) thead th,
+  .table.table-$(type) thead td,
+  .table.table-$(type) tfoot th,
+  .table.table-$(type) tfoot td {
+    color: var(--$(type)-bar-text-color);
+    background-color: var(--$(type)-bar-color);
+    border-color: var(--$(type)-bar-color);
+  }
+
+  .table-wrap:has(> .table.table-$(type)) {
+    border-color: var(--$(type)-bar-color);
+  }
+
+  .table tr.$(type) > th,
+  .table tr.$(type) > td,
+  .table th.$(type),
+  .table td.$(type) {
+    color: var(--text-color);
+    background-color: var(--$(type)-tint-color);
+  }
+
+  .table tr.$(type) a,
+  .table th.$(type) a,
+  .table td.$(type) a {
+    color: var(--$(type)-tint-text-color);
+  }
+}
+
+/* Cards: .card.card-{type} colors the header band, the border, the body wash, the links in the body and the
+   default buttons. Controls that color their own links are left alone. */
+@define-mixin card-color-variation $type {
+  .card.card-$(type) {
+    border-color: var(--$(type)-bar-color);
+    background-color: var(--$(type)-wash-color);
+  }
+
+  .card.card-$(type) > .card-header {
+    color: var(--$(type)-bar-text-color);
+    background-color: var(--$(type)-bar-color);
+    border-color: var(--$(type)-bar-color);
+  }
+
+  .card.card-$(type) a:where(:not($(content-controls))) {
+    color: var(--$(type)-tint-text-color);
+  }
+
+  .card.card-$(type)
+    .button:not(
+      .button-primary,
+      .button-success,
+      .button-danger,
+      .button-warning,
+      .button-special,
+      .button-light,
+      .button-dark
+    ) {
+    color: var(--$(type)-text-color);
+    background-color: var(--$(type)-color);
+    --_border-color: var(--$(type)-border-color);
+  }
+}
+
+/* Blocks: .block.block-{type} colors the header bar, the border and the links in the content */
+@define-mixin block-color-variation $type {
+  .block.block-$(type) {
+    border-color: var(--$(type)-bar-color);
+  }
+
+  .block.block-$(type) > .block-header {
+    color: var(--$(type)-bar-text-color);
+    background-color: var(--$(type)-bar-color);
+  }
+
+  .block.block-$(type) > .block-header a:where(:not($(bar-controls))) {
+    color: var(--$(type)-bar-text-color);
+  }
+
+  .block.block-$(type) .block-content a:where(:not($(content-controls))) {
+    color: var(--$(type)-tint-text-color);
+  }
+}
+
+/* Media boxes: .media-box.media-{type} colors the title bar and the border */
+@define-mixin media-color-variation $type {
+  .media-box.media-$(type) {
+    border-color: var(--$(type)-bar-color);
+  }
+
+  .media-box.media-$(type) > .media-box-header,
+  .media-box.media-$(type) > .media-box-header a:where(:not($(bar-controls))) {
+    color: var(--$(type)-bar-text-color);
+    background-color: var(--$(type)-bar-color);
+  }
+}
+
+/* Media overlays: .media-box-overlay.{type} takes the type's fill and text */
+@define-mixin media-overlay-color-variation $type {
+  .media-box .media-box-overlay.$(type),
+  .media-box .media-box-overlays > .$(type) {
+    color: var(--$(type)-text-color);
+    background-color: var(--$(type)-color);
   }
 }
 
@@ -70,6 +308,7 @@
  * $selector matches the elements in the row, the optional $sub-selector targets a part of each element instead
  * (for example `> .form-select-input`). The -inverted variant is the same for right-to-left rows.
  */
+/* prettier-ignore */
 @define-mixin combined-border-radius $selector, $sub-selector: {
   $(selector):first-child:not(:last-child)$(sub-selector) {
     border-top-right-radius: 0;
@@ -94,6 +333,7 @@
   }
 }
 
+/* prettier-ignore */
 @define-mixin combined-border-radius-inverted $selector, $sub-selector: {
   $(selector):first-child $(sub-selector) {
     border-top-left-radius: 0;

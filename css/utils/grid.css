@@ -1,7 +1,7 @@
 .grid-flex {
   display: flex;
   justify-content: space-between;
-  gap: var(--ht-value-grid-column-gap);
+  gap: var(--grid-column-gap);
 }
 
 .grid-flex .grid-flex-item {

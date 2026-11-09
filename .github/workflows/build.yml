@@ -2,7 +2,7 @@ name: Build
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -28,5 +28,14 @@ jobs:
       - name: Install pnpm dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Check formatting
+        run: pnpm run fmt:check
+
       - name: Build
         run: pnpm run build
+
+      - name: Check contrast ratios
+        run: pnpm run check:contrast

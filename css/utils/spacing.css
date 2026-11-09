@@ -1,70 +1,72 @@
 /*
- * Margin and padding utilities for each spacing token (--ht-value-spacing-{key}):
- * .m-{key} .mt-{key} .mb-{key} .my-{key} .mx-{key} .ms-{key} .me-{key}, and the same with p for padding.
- * To add a step, define --ht-value-spacing-{key} and call the mixins with the new key.
+ * Margin and padding utilities for each step of the spacing scale (--spacing-{key}, the keys are 0 and
+ * xs, sm, md, lg, xl): .m-{key} .mt-{key} .mb-{key} .my-{key} .mx-{key} .ms-{key} .me-{key}, and the same with p for
+ * padding. To add a step, define --spacing-{key} and call the mixins with the new key.
  */
 @define-mixin margin-utilities $key {
   .m-$(key) {
-    margin: var(--ht-value-spacing-$(key)) !important;
+    margin: var(--spacing-$(key)) !important;
   }
 
   .mt-$(key) {
-    margin-top: var(--ht-value-spacing-$(key)) !important;
+    margin-top: var(--spacing-$(key)) !important;
   }
 
   .mb-$(key) {
-    margin-bottom: var(--ht-value-spacing-$(key)) !important;
+    margin-bottom: var(--spacing-$(key)) !important;
   }
 
   .my-$(key) {
-    margin-top: var(--ht-value-spacing-$(key)) !important;
-    margin-bottom: var(--ht-value-spacing-$(key)) !important;
+    margin-top: var(--spacing-$(key)) !important;
+    margin-bottom: var(--spacing-$(key)) !important;
   }
 
   .mx-$(key) {
-    margin-left: var(--ht-value-spacing-$(key)) !important;
-    margin-right: var(--ht-value-spacing-$(key)) !important;
+    margin-left: var(--spacing-$(key)) !important;
+    margin-right: var(--spacing-$(key)) !important;
   }
 
-  @mixin margin-start .ms-$(key), var(--ht-value-spacing-$(key));
-  @mixin margin-end .me-$(key), var(--ht-value-spacing-$(key));
+  @mixin margin-start .ms-$(key), var(--spacing-$(key));
+  @mixin margin-end .me-$(key), var(--spacing-$(key));
 }
 
 @define-mixin padding-utilities $key {
   .p-$(key) {
-    padding: var(--ht-value-spacing-$(key)) !important;
+    padding: var(--spacing-$(key)) !important;
   }
 
   .pt-$(key) {
-    padding-top: var(--ht-value-spacing-$(key)) !important;
+    padding-top: var(--spacing-$(key)) !important;
   }
 
   .pb-$(key) {
-    padding-bottom: var(--ht-value-spacing-$(key)) !important;
+    padding-bottom: var(--spacing-$(key)) !important;
   }
 
   .py-$(key) {
-    padding-top: var(--ht-value-spacing-$(key)) !important;
-    padding-bottom: var(--ht-value-spacing-$(key)) !important;
+    padding-top: var(--spacing-$(key)) !important;
+    padding-bottom: var(--spacing-$(key)) !important;
   }
 
   .px-$(key) {
-    padding-left: var(--ht-value-spacing-$(key)) !important;
-    padding-right: var(--ht-value-spacing-$(key)) !important;
+    padding-left: var(--spacing-$(key)) !important;
+    padding-right: var(--spacing-$(key)) !important;
   }
 
-  @mixin padding-start .ps-$(key), var(--ht-value-spacing-$(key));
-  @mixin padding-end .pe-$(key), var(--ht-value-spacing-$(key));
+  @mixin padding-start .ps-$(key), var(--spacing-$(key));
+  @mixin padding-end .pe-$(key), var(--spacing-$(key));
 }
 
 @mixin margin-utilities 0;
-@mixin margin-utilities 1;
-@mixin margin-utilities 2;
-@mixin margin-utilities 3;
-@mixin margin-utilities 4;
+@mixin margin-utilities xs;
+@mixin margin-utilities sm;
+@mixin margin-utilities md;
+@mixin margin-utilities lg;
+@mixin margin-utilities xl;
 
 @mixin padding-utilities 0;
-@mixin padding-utilities 1;
-@mixin padding-utilities 2;
-@mixin padding-utilities 3;
-@mixin padding-utilities 4;
+@mixin padding-utilities xs;
+@mixin padding-utilities sm;
+@mixin padding-utilities md;
+@mixin padding-utilities lg;
+@mixin padding-utilities xl;

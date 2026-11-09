@@ -1,7 +1,7 @@
 .card-forms {
   display: flex;
   flex-flow: row wrap;
-  gap: var(--ht-value-card-padding);
+  gap: var(--card-padding);
   justify-content: flex-start;
 }
 
@@ -11,6 +11,6 @@
 
 @media (min-width: $breakpoint-xl) {
   .card-forms .card-forms-section {
-    flex-basis: calc(50% - var(--ht-value-card-padding) / 2);
+    flex-basis: calc(50% - var(--card-padding) / 2);
   }
 }

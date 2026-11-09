@@ -2,8 +2,9 @@
   display: flex;
   flex-flow: column;
   overflow: hidden;
-  border-radius: var(--ht-value-collapsible-border-radius);
-  background-color: var(--ht-color-collapsible-bg);
+  border-radius: var(--border-radius-outer);
+  background-color: var(--well-deep-color);
+  box-shadow: var(--emphasis-shadow);
   box-sizing: border-box;
   margin: 0;
 }
@@ -20,7 +21,7 @@
 }
 
 .collapsible.visible {
-  margin: var(--ht-value-collapsible-padding) 0;
+  margin: var(--collapsible-padding) 0;
 }
 
 .collapsible.visible.limited-height {
@@ -28,9 +29,14 @@
 }
 
 .collapsible .collapsible-inner {
-  padding: var(--ht-value-collapsible-padding);
+  padding: var(--collapsible-padding);
+}
+
+/* Links take the stronger shade made for tinted surfaces, as in alerts */
+.collapsible a:where(:not($(content-controls))) {
+  color: var(--link-strong-color);
 }
 
 .collapsible .collapsible-inner > :not(:last-child) {
-  margin-bottom: var(--ht-value-collapsible-padding);
+  margin-bottom: var(--collapsible-padding);
 }

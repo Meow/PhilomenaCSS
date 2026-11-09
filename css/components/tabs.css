@@ -1,0 +1,76 @@
+/*
+ * Tabs, as the tabbed headers of Philomena's blocks: a row of .tab links over the .tab-panel of the selected one.
+ * The framework styles the states, your script moves .selected between the tabs and between the panels:
+ *   <div class="tabs" role="tablist">
+ *     <a class="tab selected" href="#" role="tab" aria-selected="true">Comments</a>
+ *     <a class="tab" href="#" role="tab">History</a>
+ *   </div>
+ *   <div class="tab-panel selected" role="tabpanel">…</div>
+ *   <div class="tab-panel" role="tabpanel">…</div>
+ * The bar and its panels form one framed piece; they also work as the header and content of a .block.
+ */
+
+.tabs {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+  background-color: var(--tint-color);
+  border: var(--border-width) solid var(--tint-color);
+  border-bottom: 0;
+  border-radius: var(--border-radius-outer) var(--border-radius-outer) 0 0;
+  overflow: hidden;
+}
+
+.tabs .tab {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--bar-link-color);
+  font-weight: bold;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tabs .tab:hover {
+  background-color: var(--tint-faint-color);
+}
+
+/* The selected tab takes the surface of its panel, so that the two read as one piece */
+.tabs .tab.selected {
+  color: var(--text-color);
+  background-color: var(--surface-color);
+}
+
+.tabs .tab:focus-visible {
+  @mixin focus-ring-inset;
+}
+
+.tabs .tab.disabled {
+  @mixin faded;
+  font-style: italic;
+  pointer-events: none;
+}
+
+.tab-panel {
+  padding: var(--block-content-padding);
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border: var(--border-width) solid var(--tint-color);
+  border-top: 0;
+  border-radius: 0 0 var(--border-radius-outer) var(--border-radius-outer);
+  box-shadow: var(--emphasis-shadow);
+}
+
+.tab-panel:not(.selected) {
+  display: none;
+}
+
+/* In a block the block draws the frame */
+.block > .tabs,
+.block > .tab-panel {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}

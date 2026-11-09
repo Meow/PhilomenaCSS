@@ -1,20 +1,22 @@
 .header {
   position: sticky;
-  z-index: var(--ht-z-index-header);
-  height: var(--ht-value-header-height);
+  z-index: var(--z-header);
+  height: var(--header-height);
   top: 0;
   left: 0;
   right: 0;
-  background-color: var(--ht-color-header-bg);
+  background-color: var(--header-color);
+  color: var(--header-text-color);
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  padding: var(--ht-value-header-spacing-vertical) var(--ht-value-header-spacing-horizontal);
+  padding: var(--header-spacing-vertical) var(--header-spacing-horizontal);
   /* There is no header-spacing token, so this has always been 0 */
   gap: 0;
   box-sizing: border-box;
-  border-bottom: var(--ht-value-header-border) solid var(--ht-color-header-border);
+  border-bottom: var(--border-width) solid var(--tint-color);
+  box-shadow: var(--emphasis-shadow);
 }
 
 .header.non-stick {
@@ -22,7 +24,7 @@
 }
 
 .header.non-stick ~ * {
-  margin-top: var(--ht-value-header-height);
+  margin-top: var(--header-height);
 }
 
 @media print {
@@ -36,18 +38,18 @@
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  font-size: var(--ht-value-header-brand-font-size);
-  color: var(--ht-color-header-brand);
+  font-size: var(--header-brand-font-size);
+  color: var(--header-brand-color);
 }
 
 .header .header-brand .header-brand-text {
   font-weight: bold;
 }
 
-:root[dir=ltr] .header .header-brand .header-brand-text {
-  margin-left: 0.5em !important;
+:root[dir="ltr"] .header .header-brand .header-brand-text {
+  margin-left: var(--spacing-sm) !important;
 }
 
-:root[dir=rtl] .header .header-brand .header-brand-text {
-  margin-right: 0.5em !important;
+:root[dir="rtl"] .header .header-brand .header-brand-text {
+  margin-right: var(--spacing-sm) !important;
 }

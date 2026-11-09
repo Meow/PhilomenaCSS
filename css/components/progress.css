@@ -1,14 +1,14 @@
 .progress {
   display: block;
   width: 100%;
-  height: var(--ht-value-progress-bar-height);
-  border-radius: calc(var(--ht-value-progress-bar-height) * 0.5);
-  background-color: var(--ht-color-button-default-bg);
-  border: 1px solid var(--ht-color-button-default-border-color);
+  height: var(--progress-bar-height);
+  border-radius: calc(var(--progress-bar-height) * 0.5);
+  background-color: var(--neutral-color);
+  border: 1px solid var(--neutral-border-color);
 }
 
 .progress .progress-bar {
   height: 100%;
   border-radius: inherit;
-  background-color: currentColor;
+  background-color: currentcolor;
 }

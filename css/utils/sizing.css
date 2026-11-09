@@ -1,15 +1,15 @@
 /*
- * Size utilities for each size token (--ht-value-size-{step}, step 10 is 1em): .s-{step} sets the width and height,
- * .fs-{step} the font size. To add a step, define --ht-value-size-{step} and call the mixin with it.
+ * Size utilities for each size token (--size-{step}, step 10 is 1em): .s-{step} sets the width and height,
+ * .fs-{step} the font size. To add a step, define --size-{step} and call the mixin with it.
  */
 @define-mixin size-utilities $step {
   .s-$(step) {
-    width: var(--ht-value-size-$(step));
-    height: var(--ht-value-size-$(step));
+    width: var(--size-$(step));
+    height: var(--size-$(step));
   }
 
   .fs-$(step) {
-    font-size: var(--ht-value-size-$(step));
+    font-size: var(--size-$(step));
   }
 }
 

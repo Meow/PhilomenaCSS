@@ -6,14 +6,16 @@
 
 .popup {
   position: absolute;
-  max-width: var(--ht-value-popup-max-width);
+  max-width: var(--popup-max-width);
   width: 100%;
-  background-color: var(--ht-color-card-bg);
-  color: var(--ht-color-card-color);
-  border: var(--ht-value-popup-border) solid var(--ht-color-popup-border-color);
-  border-radius: var(--ht-value-card-border-radius);
-  box-shadow: 0 0 var(--ht-value-popup-box-shadow) var(--ht-color-popup-border-color);
-  padding: var(--ht-value-content-spacing);
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border: var(--border-thick-width) solid var(--tint-color);
+  border-radius: var(--border-radius-outer);
+  box-shadow:
+    var(--emphasis-shadow),
+    0 0 var(--popup-box-shadow) var(--shadow-color);
+  padding: var(--content-spacing);
   z-index: 3;
 }
 
@@ -34,10 +36,12 @@
     margin: 0;
     overflow: hidden;
   }
+
   @supports (position-anchor: --test) {
     .popup {
       transform: none;
     }
+
     .popup.has-anchor {
       position-anchor: var(--position-anchor-name);
       top: anchor(bottom) !important;
@@ -48,7 +52,7 @@
 
 .popup.wide {
   width: 100%;
-  max-width: var(--ht-value-popup-wide-max-width);
+  max-width: var(--popup-wide-max-width);
 }
 
 .popup.visible {

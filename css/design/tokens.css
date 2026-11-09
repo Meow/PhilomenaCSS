@@ -1,614 +1,463 @@
 /*
- * Design tokens, emitted as custom properties:
- *  --ht-z-index-{key}  layering
- *  --ht-color-{key}    colors, with -light and -dark variants; the unsuffixed property follows the active theme
- *                      (an explicit data-theme on :root wins, otherwise the system preference)
- *  --ht-value-{key}    sizes and other values, some of them change at a breakpoint
+ * Design tokens, emitted as custom properties (names are at most four words):
+ *  --{name}-color   colors; the dark theme's values are set on :root, the light theme's by the light-colors mixin,
+ *                   which is emitted for the system preference (unless data-theme="dark") and for data-theme="light"
+ *  --{name}-font    font families
+ *  --z-{name}       layering
+ *  everything else  sizes, spacing, radii and other values, some of them change at a breakpoint
+ *
+ * The palette follows Philomena's: a few structural colors, and a type-color mixin that derives every role of a
+ * semantic color (neutral, primary, success, warning, danger, special) from one hue, so that buttons, badges,
+ * alerts, cards, blocks, tables and media boxes all use the same tokens:
+ *  --{type}-color / -text-color / -border-color   a button's fill, its text and its border
+ *  --{type}-tint-color / -tint-text-color          a tinted surface (alerts, badges, table rows) and the text on it
+ *  --{type}-bar-color / -bar-text-color            the title bar of a colored card, block, media box or table
+ *  --{type}-wash-color                             the body of a colored card
+ *  --{type}-affix-color                            the prefix and suffix of a badge, the hover of a pagination link
+ * light and dark are fixed colors with the same roles, tag categories get --tag-{category}-color / -text-color /
+ * -affix-color from the tag-color mixin.
  *
  * Colors derived from another color use relative color syntax on $variables, which is computed into a static
  * color at build time. Use $variables and not var(--variables) as the origin, a var() can't be computed and
  * would be left for the browser, which the supported browsers don't understand.
+ *
+ * Contrast rules (WCAG 2 ratios, checked by scripts/contrast.mjs):
+ *  - text and labels are at least 4.5:1 from their background, including placeholders, muted text, links and
+ *    syntax colors (most pairs are well above, body text is over 9:1)
+ *  - the borders of controls and focus rings are at least 4.5:1 from the surfaces they separate; containers have
+ *    subtle borders in the tint of their title bar and sharp inset lines for emphasis instead
+ *  - buttons are at least 4.5:1 from the card and their text at least 4.5:1 from them
+ *  - everything else (the page under the cards, inputs, badges, alerts, code) keeps Philomena's tones
+ * The lightness of a derived color is absolute (`hsl(from $color h s 35%)`) so that the ratio holds for other
+ * hues as well, give or take a little; the saturation shifts keep the chrome calmer than the base color.
  */
 
-$_button-primary-bg-light: hsl(from $brand-color h s min(l + 22, 100));
-/* The gradient ends follow the brand color: the start is a hair off the brand hue, the end is a desaturated, darker
-   color further around the color wheel (#5865f2 gives roughly #585ef2 and #a55ea5) */
-$_bg-gradient-start: hsl(from $brand-color calc(h + 2) s l);
-$_bg-gradient-end: hsl(from $brand-color calc(h + 65) max(s - 59, 0) max(l - 13, 0));
-$_badge-base-color-light: hsl(219, 50%, 25%);
-$_badge-base-color-dark: hsl(219, 50%, 80%);
-$_dark-theme-color: #222;
-$_light-theme-color: #eee;
+/* Page background gradient, opt-in (css/design/background-gradient.css): the middle is the base color, the start
+   is a hair off its hue, the end is a desaturated, darker color further around the color wheel */
+$_gradient-start-light: hsl(from $base-color-light calc(h + 2) s l);
+$_gradient-start-dark: hsl(from $base-color-dark calc(h + 2) s l);
+$_gradient-end-light: hsl(from $base-color-light calc(h + 65) max(s - 59, 0) max(l - 13, 0));
+$_gradient-end-dark: hsl(from $base-color-dark calc(h + 65) max(s - 59, 0) max(l - 13, 0));
+/* Syntax highlighting hues, darkened on the light code background and lightened on the dark one */
+$_syntax-command: #7a3e9d;
+$_syntax-flag: #1b6b93;
+$_syntax-string: #2e7d32;
+$_syntax-number: #b25000;
+$_syntax-key: #1b6b93;
+$_syntax-punctuation: #6b6d78;
 
-:root {
-  --ht-z-index-background: 1;
-  --ht-z-index-default: 2;
-  --ht-z-index-focus: 3;
-  --ht-z-index-form-input-group-symbol: 4;
-  --ht-z-index-header: 5;
-  --ht-z-index-sidebar-close-overlay: 6;
-  --ht-z-index-sidebar: 7;
-  --ht-z-index-combobox: 8;
-  --ht-z-index-combobox-suggestions: 9;
-  --ht-z-index-combobox-suggestions-header: 10;
-  --ht-color-layout-bg-light: #bbb;
-  --ht-color-layout-bg-dark: #000;
-  --ht-color-layout-bg: var(--ht-color-layout-bg-light);
-  --ht-color-layout-color-light: $text-color-light;
-  --ht-color-layout-color-dark: $text-color-dark;
-  --ht-color-layout-color: var(--ht-color-layout-color-light);
-  --ht-color-bg-gradient-start-light: $_bg-gradient-start;
-  --ht-color-bg-gradient-start-dark: $_bg-gradient-start;
-  --ht-color-bg-gradient-start: var(--ht-color-bg-gradient-start-light);
-  --ht-color-bg-gradient-mid-light: $brand-color;
-  --ht-color-bg-gradient-mid-dark: $brand-color;
-  --ht-color-bg-gradient-mid: var(--ht-color-bg-gradient-mid-light);
-  --ht-color-bg-gradient-end-light: $_bg-gradient-end;
-  --ht-color-bg-gradient-end-dark: $_bg-gradient-end;
-  --ht-color-bg-gradient-end: var(--ht-color-bg-gradient-end-light);
-  --ht-color-header-bg-light: hsl(from $brand-color h max(s - 10, 0) min(l + 27, 100));
-  --ht-color-header-bg-dark: #1A1B1E;
-  --ht-color-header-bg: var(--ht-color-header-bg-light);
-  --ht-color-header-border-light: hsl(from $brand-color h max(s - 10, 0) min(l + 20, 100));
-  --ht-color-header-border-dark: #2C2E33;
-  --ht-color-header-border: var(--ht-color-header-border-light);
-  --ht-color-header-brand-light: hsl(from $brand-color h max(s - 15, 0) max(l - 5, 0));
-  --ht-color-header-brand-dark: #909296;
-  --ht-color-header-brand: var(--ht-color-header-brand-light);
-  --ht-color-card-bg-light: hsl(from $brand-color h max(s - 10, 0) min(l + 30, 100));
-  --ht-color-card-bg-dark: #1A1B1E;
-  --ht-color-card-bg: var(--ht-color-card-bg-light);
-  --ht-color-card-color-light: $text-color-light;
-  --ht-color-card-color-dark: $text-color-dark;
-  --ht-color-card-color: var(--ht-color-card-color-light);
-  --ht-color-alert-bg-light: rgba(255, 255, 255, .2);
-  --ht-color-alert-bg-dark: rgba(20, 21, 23, 0.2);
-  --ht-color-alert-bg: var(--ht-color-alert-bg-light);
-  --ht-color-alert-color-light: rgb(62, 61, 58);
-  --ht-color-alert-color-dark: rgb(193, 194, 197);
-  --ht-color-alert-color: var(--ht-color-alert-color-light);
-  --ht-color-alert-warning-bg-light: rgba(246, 178, 143, 0.2);
-  --ht-color-alert-warning-bg-dark: rgba(232, 89, 12, 0.2);
-  --ht-color-alert-warning-bg: var(--ht-color-alert-warning-bg-light);
-  --ht-color-alert-warning-color-light: #000;
-  --ht-color-alert-warning-color-dark: rgb(255, 255, 255);
-  --ht-color-alert-warning-color: var(--ht-color-alert-warning-color-light);
-  --ht-color-alert-warning-hl-color-light: rgb(126, 58, 4);
-  --ht-color-alert-warning-hl-color-dark: #ffd8a8;
-  --ht-color-alert-warning-hl-color: var(--ht-color-alert-warning-hl-color-light);
-  --ht-color-button-gradient-shade-light: rgba(0, 0, 0, .05);
-  --ht-color-button-gradient-shade-dark: rgba(0, 0, 0, .05);
-  --ht-color-button-gradient-shade: var(--ht-color-button-gradient-shade-light);
-  --ht-color-button-border-color-light: rgba(0, 0, 0, .2);
-  --ht-color-button-border-color-dark: rgba(255, 255, 255, .2);
-  --ht-color-button-border-color: var(--ht-color-button-border-color-light);
-  --ht-color-button-default-color-light: #000;
-  --ht-color-button-default-color-dark: #fff;
-  --ht-color-button-default-color: var(--ht-color-button-default-color-light);
-  --ht-color-button-default-bg-light: hsl(from $brand-color h max(s - 100, 0) min(l + 20, 100));
-  --ht-color-button-default-bg-dark: hsl(from $brand-color h max(s - 100, 0) max(l - 25, 0));
-  --ht-color-button-default-bg: var(--ht-color-button-default-bg-light);
-  --ht-color-button-default-border-color-light: hsl(from $brand-color h max(s - 100, 0) min(l + 10, 100));
-  --ht-color-button-default-border-color-dark: hsl(from $brand-color h max(s - 100, 0) max(l - 30, 0));
-  --ht-color-button-default-border-color: var(--ht-color-button-default-border-color-light);
-  --ht-color-button-primary-color-light: #000;
-  --ht-color-button-primary-color-dark: #fff;
-  --ht-color-button-primary-color: var(--ht-color-button-primary-color-light);
-  --ht-color-button-primary-bg-light: $_button-primary-bg-light;
-  --ht-color-button-primary-bg-dark: $brand-color;
-  --ht-color-button-primary-bg: var(--ht-color-button-primary-bg-light);
-  --ht-color-button-primary-border-color-light: hsl(from $brand-color h max(s - 10, 0) min(l + 12, 100));
-  --ht-color-button-primary-border-color-dark: hsl(from $brand-color h max(s - 10, 0) max(l - 10, 0));
-  --ht-color-button-primary-border-color: var(--ht-color-button-primary-border-color-light);
-  --ht-color-button-success-color-light: #000;
-  --ht-color-button-success-color-dark: #fff;
-  --ht-color-button-success-color: var(--ht-color-button-success-color-light);
-  --ht-color-button-success-bg-light: hsl(from #559933 h s min(l + 22, 100));
-  --ht-color-button-success-bg-dark: #559933;
-  --ht-color-button-success-bg: var(--ht-color-button-success-bg-light);
-  --ht-color-button-success-border-color-light: hsl(from #559933 h max(s - 10, 0) min(l + 12, 100));
-  --ht-color-button-success-border-color-dark: hsl(from #559933 h max(s - 10, 0) max(l - 10, 0));
-  --ht-color-button-success-border-color: var(--ht-color-button-success-border-color-light);
-  --ht-color-button-danger-color-light: #000;
-  --ht-color-button-danger-color-dark: #fff;
-  --ht-color-button-danger-color: var(--ht-color-button-danger-color-light);
-  --ht-color-button-danger-bg-light: hsl(from #993333 h s min(l + 30, 100));
-  --ht-color-button-danger-bg-dark: #993333;
-  --ht-color-button-danger-bg: var(--ht-color-button-danger-bg-light);
-  --ht-color-button-danger-border-color-light: hsl(from #993333 h max(s - 10, 0) min(l + 20, 100));
-  --ht-color-button-danger-border-color-dark: hsl(from #993333 h max(s - 10, 0) max(l - 10, 0));
-  --ht-color-button-danger-border-color: var(--ht-color-button-danger-border-color-light);
-  --ht-color-button-warning-color-light: #000;
-  --ht-color-button-warning-color-dark: #fff;
-  --ht-color-button-warning-color: var(--ht-color-button-warning-color-light);
-  --ht-color-button-warning-bg-light: hsl(from #997733 h s min(l + 30, 100));
-  --ht-color-button-warning-bg-dark: #997733;
-  --ht-color-button-warning-bg: var(--ht-color-button-warning-bg-light);
-  --ht-color-button-warning-border-color-light: hsl(from #997733 h max(s - 10, 0) min(l + 20, 100));
-  --ht-color-button-warning-border-color-dark: hsl(from #997733 h max(s - 10, 0) max(l - 10, 0));
-  --ht-color-button-warning-border-color: var(--ht-color-button-warning-border-color-light);
-  --ht-color-button-light-color-light: $_dark-theme-color;
-  --ht-color-button-light-color-dark: $_dark-theme-color;
-  --ht-color-button-light-color: var(--ht-color-button-light-color-light);
-  --ht-color-button-light-bg-light: $_light-theme-color;
-  --ht-color-button-light-bg-dark: $_light-theme-color;
-  --ht-color-button-light-bg: var(--ht-color-button-light-bg-light);
-  --ht-color-button-light-border-color-light: #aaa;
-  --ht-color-button-light-border-color-dark: #aaa;
-  --ht-color-button-light-border-color: var(--ht-color-button-light-border-color-light);
-  --ht-color-button-dark-color-light: $_light-theme-color;
-  --ht-color-button-dark-color-dark: $_light-theme-color;
-  --ht-color-button-dark-color: var(--ht-color-button-dark-color-light);
-  --ht-color-button-dark-bg-light: $_dark-theme-color;
-  --ht-color-button-dark-bg-dark: $_dark-theme-color;
-  --ht-color-button-dark-bg: var(--ht-color-button-dark-bg-light);
-  --ht-color-button-dark-border-color-light: #000;
-  --ht-color-button-dark-border-color-dark: #000;
-  --ht-color-button-dark-border-color: var(--ht-color-button-dark-border-color-light);
-  --ht-color-popup-border-color-light: hsl(from $brand-color h max(s - 10, 0) min(l + 20, 100));
-  --ht-color-popup-border-color-dark: #2c2e33;
-  --ht-color-popup-border-color: var(--ht-color-popup-border-color-light);
-  --ht-color-input-field-color-light: #212121;
-  --ht-color-input-field-color-dark: #c1c2c5;
-  --ht-color-input-field-color: var(--ht-color-input-field-color-light);
-  --ht-color-input-field-placeholder-color-light: rgb(from #212121 r g b / .5);
-  --ht-color-input-field-placeholder-color-dark: rgb(from #c1c2c5 r g b / .5);
-  --ht-color-input-field-placeholder-color: var(--ht-color-input-field-placeholder-color-light);
-  --ht-color-input-field-bg-light: hsl(from $brand-color h max(s - 10, 0) min(l + 25, 100));
-  --ht-color-input-field-bg-dark: #25262b;
-  --ht-color-input-field-bg: var(--ht-color-input-field-bg-light);
-  --ht-color-input-field-invalid-color-light: #763211;
-  --ht-color-input-field-invalid-color-dark: #eeaa80;
-  --ht-color-input-field-invalid-color: var(--ht-color-input-field-invalid-color-light);
-  --ht-color-input-field-invalid-bg-light: #fff0ee;
-  --ht-color-input-field-invalid-bg-dark: #44332b;
-  --ht-color-input-field-invalid-bg: var(--ht-color-input-field-invalid-bg-light);
-  --ht-color-input-field-border-color-light: hsl(from $brand-color h max(s - 10, 0) min(l + 20, 100));
-  --ht-color-input-field-border-color-dark: #373a40;
-  --ht-color-input-field-border-color: var(--ht-color-input-field-border-color-light);
-  --ht-color-input-field-focus-border-color-light: hsl(from $brand-color h s min(l + 20, 100));
-  --ht-color-input-field-focus-border-color-dark: $brand-color;
-  --ht-color-input-field-focus-border-color: var(--ht-color-input-field-focus-border-color-light);
-  --ht-color-input-field-invalid-focus-border-color-light: #763211;
-  --ht-color-input-field-invalid-focus-border-color-dark: #eeaa80;
-  --ht-color-input-field-invalid-focus-border-color: var(--ht-color-input-field-invalid-focus-border-color-light);
-  --ht-color-input-field-box-shadow-light: rgba(0, 0, 0, .25);
-  --ht-color-input-field-box-shadow-dark: rgba(0, 0, 0, .5);
-  --ht-color-input-field-box-shadow: var(--ht-color-input-field-box-shadow-light);
-  --ht-color-collapsible-bg-light: rgb(from #fff r g b / .5);
-  --ht-color-collapsible-bg-dark: rgb(from #000 r g b / .5);
-  --ht-color-collapsible-bg: var(--ht-color-collapsible-bg-light);
-  --ht-color-table-border-light: #6d6e70;
-  --ht-color-table-border-dark: #373a40;
-  --ht-color-table-border: var(--ht-color-table-border-light);
-  --ht-color-code-color-light: #323339;
-  --ht-color-code-color-dark: #EFEFF0;
-  --ht-color-code-color: var(--ht-color-code-color-light);
-  --ht-color-code-bg-light: #F5F5FA;
-  --ht-color-code-bg-dark: #1F202F;
-  --ht-color-code-bg: var(--ht-color-code-bg-light);
-  --ht-color-code-border-light: #D4D3D9;
-  --ht-color-code-border-dark: #373846;
-  --ht-color-code-border: var(--ht-color-code-border-light);
-  --ht-color-code-syntax-command-light: #7A3E9D;
-  --ht-color-code-syntax-command-dark: #C792EA;
-  --ht-color-code-syntax-command: var(--ht-color-code-syntax-command-light);
-  --ht-color-code-syntax-flag-light: #1B6B93;
-  --ht-color-code-syntax-flag-dark: #82AAFF;
-  --ht-color-code-syntax-flag: var(--ht-color-code-syntax-flag-light);
-  --ht-color-code-syntax-string-light: #2E7D32;
-  --ht-color-code-syntax-string-dark: #C3E88D;
-  --ht-color-code-syntax-string: var(--ht-color-code-syntax-string-light);
-  --ht-color-code-syntax-number-light: #B25000;
-  --ht-color-code-syntax-number-dark: #F78C6C;
-  --ht-color-code-syntax-number: var(--ht-color-code-syntax-number-light);
-  --ht-color-code-syntax-key-light: #1B6B93;
-  --ht-color-code-syntax-key-dark: #89DDFF;
-  --ht-color-code-syntax-key: var(--ht-color-code-syntax-key-light);
-  --ht-color-code-syntax-punctuation-light: #6B6D78;
-  --ht-color-code-syntax-punctuation-dark: #8A8CA0;
-  --ht-color-code-syntax-punctuation: var(--ht-color-code-syntax-punctuation-light);
-  --ht-color-content-link-light: hsl(from $brand-color h s max(l - 10, 0));
-  --ht-color-content-link-dark: hsl(from $brand-color h s min(l + 10, 100));
-  --ht-color-content-link: var(--ht-color-content-link-light);
-  --ht-color-combobox-highlighted-item-bg-light: hsl(from $_button-primary-bg-light h max(s - 15, 0) l);
-  --ht-color-combobox-highlighted-item-bg-dark: hsl(from $brand-color h max(s - 15, 0) l);
-  --ht-color-combobox-highlighted-item-bg: var(--ht-color-combobox-highlighted-item-bg-light);
-  --ht-color-badge-default-color-light: hsl(from $_badge-base-color-light h max(s - 100, 0) l);
-  --ht-color-badge-default-color-dark: hsl(from $_badge-base-color-dark h max(s - 100, 0) l);
-  --ht-color-badge-default-color: var(--ht-color-badge-default-color-light);
-  --ht-color-badge-default-bg-light: hsl(from $_badge-base-color-dark h max(s - 100, 0) l);
-  --ht-color-badge-default-bg-dark: hsl(from $_badge-base-color-light h max(s - 100, 0) l);
-  --ht-color-badge-default-bg: var(--ht-color-badge-default-bg-light);
-  --ht-color-badge-secondary-bg-light: rgba(255, 255, 255, .2);
-  --ht-color-badge-secondary-bg-dark: rgba(0, 0, 0, .2);
-  --ht-color-badge-secondary-bg: var(--ht-color-badge-secondary-bg-light);
-  --ht-color-badge-muted-color-light: hsl(from $_badge-base-color-light h max(s - 100, 0) min(l + 15, 100));
-  --ht-color-badge-muted-color-dark: hsl(from $_badge-base-color-dark h max(s - 100, 0) min(l + 15, 100));
-  --ht-color-badge-muted-color: var(--ht-color-badge-muted-color-light);
-  --ht-color-badge-muted-bg-light: hsl(from $_badge-base-color-dark h max(s - 100, 0) min(l + 15, 100));
-  --ht-color-badge-muted-bg-dark: hsl(from $_badge-base-color-light h max(s - 100, 0) min(l + 15, 100));
-  --ht-color-badge-muted-bg: var(--ht-color-badge-muted-bg-light);
-  --ht-color-badge-green-color-light: hsl(from $_badge-base-color-light calc(h - 60) s l);
-  --ht-color-badge-green-color-dark: hsl(from $_badge-base-color-dark calc(h - 60) s l);
-  --ht-color-badge-green-color: var(--ht-color-badge-green-color-light);
-  --ht-color-badge-green-bg-light: hsl(from $_badge-base-color-dark calc(h - 60) s l);
-  --ht-color-badge-green-bg-dark: hsl(from $_badge-base-color-light calc(h - 60) s l);
-  --ht-color-badge-green-bg: var(--ht-color-badge-green-bg-light);
-  --ht-color-badge-blue-color-light: $_badge-base-color-light;
-  --ht-color-badge-blue-color-dark: $_badge-base-color-dark;
-  --ht-color-badge-blue-color: var(--ht-color-badge-blue-color-light);
-  --ht-color-badge-blue-bg-light: $_badge-base-color-dark;
-  --ht-color-badge-blue-bg-dark: $_badge-base-color-light;
-  --ht-color-badge-blue-bg: var(--ht-color-badge-blue-bg-light);
-  --ht-color-badge-cyan-color-light: hsl(from $_badge-base-color-light calc(h - 25) s l);
-  --ht-color-badge-cyan-color-dark: hsl(from $_badge-base-color-dark calc(h - 25) s l);
-  --ht-color-badge-cyan-color: var(--ht-color-badge-cyan-color-light);
-  --ht-color-badge-cyan-bg-light: hsl(from $_badge-base-color-dark calc(h - 25) s l);
-  --ht-color-badge-cyan-bg-dark: hsl(from $_badge-base-color-light calc(h - 25) s l);
-  --ht-color-badge-cyan-bg: var(--ht-color-badge-cyan-bg-light);
-  --ht-color-badge-purple-color-light: hsl(from $_badge-base-color-light calc(h + 50) s l);
-  --ht-color-badge-purple-color-dark: hsl(from $_badge-base-color-dark calc(h + 50) s l);
-  --ht-color-badge-purple-color: var(--ht-color-badge-purple-color-light);
-  --ht-color-badge-purple-bg-light: hsl(from $_badge-base-color-dark calc(h + 50) s l);
-  --ht-color-badge-purple-bg-dark: hsl(from $_badge-base-color-light calc(h + 50) s l);
-  --ht-color-badge-purple-bg: var(--ht-color-badge-purple-bg-light);
-  --ht-color-badge-red-color-light: hsl(from $_badge-base-color-light calc(h + 120) s l);
-  --ht-color-badge-red-color-dark: hsl(from $_badge-base-color-dark calc(h + 120) s l);
-  --ht-color-badge-red-color: var(--ht-color-badge-red-color-light);
-  --ht-color-badge-red-bg-light: hsl(from $_badge-base-color-dark calc(h + 120) s l);
-  --ht-color-badge-red-bg-dark: hsl(from $_badge-base-color-light calc(h + 120) s l);
-  --ht-color-badge-red-bg: var(--ht-color-badge-red-bg-light);
-  --ht-color-badge-yellow-color-light: hsl(from $_badge-base-color-light calc(h + 190) s l);
-  --ht-color-badge-yellow-color-dark: hsl(from $_badge-base-color-dark calc(h + 190) s l);
-  --ht-color-badge-yellow-color: var(--ht-color-badge-yellow-color-light);
-  --ht-color-badge-yellow-bg-light: hsl(from $_badge-base-color-dark calc(h + 190) s l);
-  --ht-color-badge-yellow-bg-dark: hsl(from $_badge-base-color-light calc(h + 190) s l);
-  --ht-color-badge-yellow-bg: var(--ht-color-badge-yellow-bg-light);
-  --ht-color-drop-shadow-light: rgba(255, 255, 255, .5);
-  --ht-color-drop-shadow-dark: rgba(0, 0, 0, .5);
-  --ht-color-drop-shadow: var(--ht-color-drop-shadow-light);
-  --ht-color-form-message-error-light: #800;
-  --ht-color-form-message-error-dark: #faa;
-  --ht-color-form-message-error: var(--ht-color-form-message-error-light);
-  --ht-color-form-message-success-light: #282;
-  --ht-color-form-message-success-dark: #afa;
-  --ht-color-form-message-success: var(--ht-color-form-message-success-light);
-  --ht-color-muted-text-light: #555;
-  --ht-color-muted-text-dark: #999;
-  --ht-color-muted-text: var(--ht-color-muted-text-light);
+/*
+ * The roles of a semantic color, per theme. $sat shifts the saturation of every role (the dark theme mutes the
+ * success green), $fill is the lightness of the button fill (green is bright, so it sits lower). The lightness
+ * values are tuned so that the text roles are 4.5:1+ on their background.
+ */
+@define-mixin type-color-light $type, $color, $sat: 0, $fill: 35% {
+  --$(type)-color: hsl(from $color h calc(s + $sat) $(fill));
+  --$(type)-text-color: hsl(from $color h calc(s + $sat) 88%);
+  --$(type)-border-color: hsl(from $color h calc(s + $sat) calc($(fill) + 18%));
+  --$(type)-tint-color: hsl(from $color h calc(s + $sat) 90%);
+  --$(type)-tint-text-color: hsl(from $color h calc(s + $sat) 28%);
+  --$(type)-bar-color: hsl(from $color h calc(s + $sat) 82%);
+  --$(type)-bar-text-color: hsl(from $color h calc(s + $sat) 20%);
+  --$(type)-wash-color: hsl(from $color h calc(s + $sat - 15) 92%);
+  --$(type)-affix-color: hsl(from $color h calc(s + $sat + 20) 82%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --ht-color-layout-bg: var(--ht-color-layout-bg-dark);
-    --ht-color-layout-color: var(--ht-color-layout-color-dark);
-    --ht-color-bg-gradient-start: var(--ht-color-bg-gradient-start-dark);
-    --ht-color-bg-gradient-mid: var(--ht-color-bg-gradient-mid-dark);
-    --ht-color-bg-gradient-end: var(--ht-color-bg-gradient-end-dark);
-    --ht-color-header-bg: var(--ht-color-header-bg-dark);
-    --ht-color-header-border: var(--ht-color-header-border-dark);
-    --ht-color-header-brand: var(--ht-color-header-brand-dark);
-    --ht-color-card-bg: var(--ht-color-card-bg-dark);
-    --ht-color-card-color: var(--ht-color-card-color-dark);
-    --ht-color-alert-bg: var(--ht-color-alert-bg-dark);
-    --ht-color-alert-color: var(--ht-color-alert-color-dark);
-    --ht-color-alert-warning-bg: var(--ht-color-alert-warning-bg-dark);
-    --ht-color-alert-warning-color: var(--ht-color-alert-warning-color-dark);
-    --ht-color-alert-warning-hl-color: var(--ht-color-alert-warning-hl-color-dark);
-    --ht-color-button-gradient-shade: var(--ht-color-button-gradient-shade-dark);
-    --ht-color-button-border-color: var(--ht-color-button-border-color-dark);
-    --ht-color-button-default-color: var(--ht-color-button-default-color-dark);
-    --ht-color-button-default-bg: var(--ht-color-button-default-bg-dark);
-    --ht-color-button-default-border-color: var(--ht-color-button-default-border-color-dark);
-    --ht-color-button-primary-color: var(--ht-color-button-primary-color-dark);
-    --ht-color-button-primary-bg: var(--ht-color-button-primary-bg-dark);
-    --ht-color-button-primary-border-color: var(--ht-color-button-primary-border-color-dark);
-    --ht-color-button-success-color: var(--ht-color-button-success-color-dark);
-    --ht-color-button-success-bg: var(--ht-color-button-success-bg-dark);
-    --ht-color-button-success-border-color: var(--ht-color-button-success-border-color-dark);
-    --ht-color-button-danger-color: var(--ht-color-button-danger-color-dark);
-    --ht-color-button-danger-bg: var(--ht-color-button-danger-bg-dark);
-    --ht-color-button-danger-border-color: var(--ht-color-button-danger-border-color-dark);
-    --ht-color-button-warning-color: var(--ht-color-button-warning-color-dark);
-    --ht-color-button-warning-bg: var(--ht-color-button-warning-bg-dark);
-    --ht-color-button-warning-border-color: var(--ht-color-button-warning-border-color-dark);
-    --ht-color-button-light-color: var(--ht-color-button-light-color-dark);
-    --ht-color-button-light-bg: var(--ht-color-button-light-bg-dark);
-    --ht-color-button-light-border-color: var(--ht-color-button-light-border-color-dark);
-    --ht-color-button-dark-color: var(--ht-color-button-dark-color-dark);
-    --ht-color-button-dark-bg: var(--ht-color-button-dark-bg-dark);
-    --ht-color-button-dark-border-color: var(--ht-color-button-dark-border-color-dark);
-    --ht-color-popup-border-color: var(--ht-color-popup-border-color-dark);
-    --ht-color-input-field-color: var(--ht-color-input-field-color-dark);
-    --ht-color-input-field-placeholder-color: var(--ht-color-input-field-placeholder-color-dark);
-    --ht-color-input-field-bg: var(--ht-color-input-field-bg-dark);
-    --ht-color-input-field-invalid-color: var(--ht-color-input-field-invalid-color-dark);
-    --ht-color-input-field-invalid-bg: var(--ht-color-input-field-invalid-bg-dark);
-    --ht-color-input-field-border-color: var(--ht-color-input-field-border-color-dark);
-    --ht-color-input-field-focus-border-color: var(--ht-color-input-field-focus-border-color-dark);
-    --ht-color-input-field-invalid-focus-border-color: var(--ht-color-input-field-invalid-focus-border-color-dark);
-    --ht-color-input-field-box-shadow: var(--ht-color-input-field-box-shadow-dark);
-    --ht-color-collapsible-bg: var(--ht-color-collapsible-bg-dark);
-    --ht-color-table-border: var(--ht-color-table-border-dark);
-    --ht-color-code-color: var(--ht-color-code-color-dark);
-    --ht-color-code-bg: var(--ht-color-code-bg-dark);
-    --ht-color-code-border: var(--ht-color-code-border-dark);
-    --ht-color-code-syntax-command: var(--ht-color-code-syntax-command-dark);
-    --ht-color-code-syntax-flag: var(--ht-color-code-syntax-flag-dark);
-    --ht-color-code-syntax-string: var(--ht-color-code-syntax-string-dark);
-    --ht-color-code-syntax-number: var(--ht-color-code-syntax-number-dark);
-    --ht-color-code-syntax-key: var(--ht-color-code-syntax-key-dark);
-    --ht-color-code-syntax-punctuation: var(--ht-color-code-syntax-punctuation-dark);
-    --ht-color-content-link: var(--ht-color-content-link-dark);
-    --ht-color-combobox-highlighted-item-bg: var(--ht-color-combobox-highlighted-item-bg-dark);
-    --ht-color-badge-default-color: var(--ht-color-badge-default-color-dark);
-    --ht-color-badge-default-bg: var(--ht-color-badge-default-bg-dark);
-    --ht-color-badge-secondary-bg: var(--ht-color-badge-secondary-bg-dark);
-    --ht-color-badge-muted-color: var(--ht-color-badge-muted-color-dark);
-    --ht-color-badge-muted-bg: var(--ht-color-badge-muted-bg-dark);
-    --ht-color-badge-green-color: var(--ht-color-badge-green-color-dark);
-    --ht-color-badge-green-bg: var(--ht-color-badge-green-bg-dark);
-    --ht-color-badge-blue-color: var(--ht-color-badge-blue-color-dark);
-    --ht-color-badge-blue-bg: var(--ht-color-badge-blue-bg-dark);
-    --ht-color-badge-cyan-color: var(--ht-color-badge-cyan-color-dark);
-    --ht-color-badge-cyan-bg: var(--ht-color-badge-cyan-bg-dark);
-    --ht-color-badge-purple-color: var(--ht-color-badge-purple-color-dark);
-    --ht-color-badge-purple-bg: var(--ht-color-badge-purple-bg-dark);
-    --ht-color-badge-red-color: var(--ht-color-badge-red-color-dark);
-    --ht-color-badge-red-bg: var(--ht-color-badge-red-bg-dark);
-    --ht-color-badge-yellow-color: var(--ht-color-badge-yellow-color-dark);
-    --ht-color-badge-yellow-bg: var(--ht-color-badge-yellow-bg-dark);
-    --ht-color-drop-shadow: var(--ht-color-drop-shadow-dark);
-    --ht-color-form-message-error: var(--ht-color-form-message-error-dark);
-    --ht-color-form-message-success: var(--ht-color-form-message-success-dark);
-    --ht-color-muted-text: var(--ht-color-muted-text-dark);
-  }
+@define-mixin type-color-dark $type, $color, $sat: 0, $fill: 35% {
+  --$(type)-color: hsl(from $color h calc(s + $sat) $(fill));
+  --$(type)-text-color: hsl(from $color h calc(s + $sat) 88%);
+  --$(type)-border-color: hsl(from $color h calc(s + $sat) calc($(fill) + 18%));
+  --$(type)-tint-color: hsl(from $color h calc(s + $sat) 22%);
+  --$(type)-tint-text-color: hsl(from $color h calc(s + $sat) 84%);
+  --$(type)-bar-color: hsl(from $color h calc(s + $sat) 30%);
+  --$(type)-bar-text-color: hsl(from $color h calc(s + $sat) 90%);
+  --$(type)-wash-color: hsl(from $color h calc(s + $sat - 15) 12%);
+  --$(type)-affix-color: hsl(from $color h calc(s + $sat + 25) 12%);
 }
 
-:root[data-theme="dark"] {
-  --ht-color-layout-bg: var(--ht-color-layout-bg-dark);
-  --ht-color-layout-color: var(--ht-color-layout-color-dark);
-  --ht-color-bg-gradient-start: var(--ht-color-bg-gradient-start-dark);
-  --ht-color-bg-gradient-mid: var(--ht-color-bg-gradient-mid-dark);
-  --ht-color-bg-gradient-end: var(--ht-color-bg-gradient-end-dark);
-  --ht-color-header-bg: var(--ht-color-header-bg-dark);
-  --ht-color-header-border: var(--ht-color-header-border-dark);
-  --ht-color-header-brand: var(--ht-color-header-brand-dark);
-  --ht-color-card-bg: var(--ht-color-card-bg-dark);
-  --ht-color-card-color: var(--ht-color-card-color-dark);
-  --ht-color-alert-bg: var(--ht-color-alert-bg-dark);
-  --ht-color-alert-color: var(--ht-color-alert-color-dark);
-  --ht-color-alert-warning-bg: var(--ht-color-alert-warning-bg-dark);
-  --ht-color-alert-warning-color: var(--ht-color-alert-warning-color-dark);
-  --ht-color-alert-warning-hl-color: var(--ht-color-alert-warning-hl-color-dark);
-  --ht-color-button-gradient-shade: var(--ht-color-button-gradient-shade-dark);
-  --ht-color-button-border-color: var(--ht-color-button-border-color-dark);
-  --ht-color-button-default-color: var(--ht-color-button-default-color-dark);
-  --ht-color-button-default-bg: var(--ht-color-button-default-bg-dark);
-  --ht-color-button-default-border-color: var(--ht-color-button-default-border-color-dark);
-  --ht-color-button-primary-color: var(--ht-color-button-primary-color-dark);
-  --ht-color-button-primary-bg: var(--ht-color-button-primary-bg-dark);
-  --ht-color-button-primary-border-color: var(--ht-color-button-primary-border-color-dark);
-  --ht-color-button-success-color: var(--ht-color-button-success-color-dark);
-  --ht-color-button-success-bg: var(--ht-color-button-success-bg-dark);
-  --ht-color-button-success-border-color: var(--ht-color-button-success-border-color-dark);
-  --ht-color-button-danger-color: var(--ht-color-button-danger-color-dark);
-  --ht-color-button-danger-bg: var(--ht-color-button-danger-bg-dark);
-  --ht-color-button-danger-border-color: var(--ht-color-button-danger-border-color-dark);
-  --ht-color-button-warning-color: var(--ht-color-button-warning-color-dark);
-  --ht-color-button-warning-bg: var(--ht-color-button-warning-bg-dark);
-  --ht-color-button-warning-border-color: var(--ht-color-button-warning-border-color-dark);
-  --ht-color-button-light-color: var(--ht-color-button-light-color-dark);
-  --ht-color-button-light-bg: var(--ht-color-button-light-bg-dark);
-  --ht-color-button-light-border-color: var(--ht-color-button-light-border-color-dark);
-  --ht-color-button-dark-color: var(--ht-color-button-dark-color-dark);
-  --ht-color-button-dark-bg: var(--ht-color-button-dark-bg-dark);
-  --ht-color-button-dark-border-color: var(--ht-color-button-dark-border-color-dark);
-  --ht-color-popup-border-color: var(--ht-color-popup-border-color-dark);
-  --ht-color-input-field-color: var(--ht-color-input-field-color-dark);
-  --ht-color-input-field-placeholder-color: var(--ht-color-input-field-placeholder-color-dark);
-  --ht-color-input-field-bg: var(--ht-color-input-field-bg-dark);
-  --ht-color-input-field-invalid-color: var(--ht-color-input-field-invalid-color-dark);
-  --ht-color-input-field-invalid-bg: var(--ht-color-input-field-invalid-bg-dark);
-  --ht-color-input-field-border-color: var(--ht-color-input-field-border-color-dark);
-  --ht-color-input-field-focus-border-color: var(--ht-color-input-field-focus-border-color-dark);
-  --ht-color-input-field-invalid-focus-border-color: var(--ht-color-input-field-invalid-focus-border-color-dark);
-  --ht-color-input-field-box-shadow: var(--ht-color-input-field-box-shadow-dark);
-  --ht-color-collapsible-bg: var(--ht-color-collapsible-bg-dark);
-  --ht-color-table-border: var(--ht-color-table-border-dark);
-  --ht-color-code-color: var(--ht-color-code-color-dark);
-  --ht-color-code-bg: var(--ht-color-code-bg-dark);
-  --ht-color-code-border: var(--ht-color-code-border-dark);
-  --ht-color-code-syntax-command: var(--ht-color-code-syntax-command-dark);
-  --ht-color-code-syntax-flag: var(--ht-color-code-syntax-flag-dark);
-  --ht-color-code-syntax-string: var(--ht-color-code-syntax-string-dark);
-  --ht-color-code-syntax-number: var(--ht-color-code-syntax-number-dark);
-  --ht-color-code-syntax-key: var(--ht-color-code-syntax-key-dark);
-  --ht-color-code-syntax-punctuation: var(--ht-color-code-syntax-punctuation-dark);
-  --ht-color-content-link: var(--ht-color-content-link-dark);
-  --ht-color-combobox-highlighted-item-bg: var(--ht-color-combobox-highlighted-item-bg-dark);
-  --ht-color-badge-default-color: var(--ht-color-badge-default-color-dark);
-  --ht-color-badge-default-bg: var(--ht-color-badge-default-bg-dark);
-  --ht-color-badge-secondary-bg: var(--ht-color-badge-secondary-bg-dark);
-  --ht-color-badge-muted-color: var(--ht-color-badge-muted-color-dark);
-  --ht-color-badge-muted-bg: var(--ht-color-badge-muted-bg-dark);
-  --ht-color-badge-green-color: var(--ht-color-badge-green-color-dark);
-  --ht-color-badge-green-bg: var(--ht-color-badge-green-bg-dark);
-  --ht-color-badge-blue-color: var(--ht-color-badge-blue-color-dark);
-  --ht-color-badge-blue-bg: var(--ht-color-badge-blue-bg-dark);
-  --ht-color-badge-cyan-color: var(--ht-color-badge-cyan-color-dark);
-  --ht-color-badge-cyan-bg: var(--ht-color-badge-cyan-bg-dark);
-  --ht-color-badge-purple-color: var(--ht-color-badge-purple-color-dark);
-  --ht-color-badge-purple-bg: var(--ht-color-badge-purple-bg-dark);
-  --ht-color-badge-red-color: var(--ht-color-badge-red-color-dark);
-  --ht-color-badge-red-bg: var(--ht-color-badge-red-bg-dark);
-  --ht-color-badge-yellow-color: var(--ht-color-badge-yellow-color-dark);
-  --ht-color-badge-yellow-bg: var(--ht-color-badge-yellow-bg-dark);
-  --ht-color-drop-shadow: var(--ht-color-drop-shadow-dark);
-  --ht-color-form-message-error: var(--ht-color-form-message-error-dark);
-  --ht-color-form-message-success: var(--ht-color-form-message-success-dark);
-  --ht-color-muted-text: var(--ht-color-muted-text-dark);
+/* The light and dark types are fixed colors, the same in both themes (their washes are set per theme) */
+@define-mixin fixed-type-colors {
+  --light-color: #eeeeee;
+  --light-text-color: #222222;
+  --light-border-color: #ffffff;
+  --light-tint-color: #eeeeee;
+  --light-tint-text-color: #222222;
+  --light-bar-color: #eeeeee;
+  --light-bar-text-color: #222222;
+  --light-affix-color: #dddddd;
+  --dark-color: #222222;
+  --dark-text-color: #eeeeee;
+  --dark-border-color: #555555;
+  --dark-tint-color: #222222;
+  --dark-tint-text-color: #eeeeee;
+  --dark-bar-color: #222222;
+  --dark-bar-text-color: #eeeeee;
+  --dark-affix-color: #111111;
+}
+
+/* A tag category: a tint of the hue with bold text in the hue (darkened on the light theme, lightened on the
+   dark one so that it reads) and a stronger shade for the count and the optional border */
+@define-mixin tag-color-light $category, $color {
+  --tag-$(category)-color: hsl(from $color h calc(s - 20) 86%);
+  --tag-$(category)-text-color: hsl(from $color h s 28%);
+  --tag-$(category)-affix-color: hsl(from $color h calc(s - 20) 70%);
+}
+
+@define-mixin tag-color-dark $category, $color {
+  --tag-$(category)-color: hsl(from $color h s 18%);
+  --tag-$(category)-text-color: hsl(from $color h s min(l + 14, 100));
+  --tag-$(category)-affix-color: hsl(from $color h s 27%);
+}
+
+/* Every tag category, for the theme whose tag-color-{theme} mixin is named */
+@define-mixin tag-colors $theme {
+  @mixin tag-color-$(theme) default, $tag-color;
+  @mixin tag-color-$(theme) rating, $tag-rating-color;
+  @mixin tag-color-$(theme) spoiler, $tag-spoiler-color;
+  @mixin tag-color-$(theme) origin, $tag-origin-color;
+  @mixin tag-color-$(theme) oc, $tag-oc-color;
+  @mixin tag-color-$(theme) error, $tag-error-color;
+  @mixin tag-color-$(theme) character, $tag-character-color;
+  @mixin tag-color-$(theme) official, $tag-official-color;
+  @mixin tag-color-$(theme) fanmade, $tag-fanmade-color;
+  @mixin tag-color-$(theme) species, $tag-species-color;
+  @mixin tag-color-$(theme) body, $tag-body-color;
+}
+
+/* The light theme's colors, emitted for the system preference and for data-theme="light" */
+@define-mixin light-colors {
+  /* The page, the surfaces on it and the text */
+  --page-bg-color: $page-color-light;
+  --surface-color: $surface-color-light;
+  --text-color: $text-color-light;
+  --muted-text-color: hsl(from $text-color-light h s 34%);
+  --placeholder-color: hsl(from $base-color-light h calc(s - 40) 40%);
+  --link-color: hsl(from $link-color-light h s 39%);
+  --link-strong-color: hsl(from $link-color-light h s 35%);
+  /* Tints of the base color: title bars and container borders, sub bars, the wells inputs and code sit in,
+     overlays for stripes and hover, links on bars, and the accent of blockquote bars */
+  --tint-color: hsl(from $base-color-light h s 88%);
+  --tint-faint-color: hsl(from $base-color-light h calc(s - 20) 94%);
+  --well-color: hsl(from $base-color-light h calc(s - 20) 96%);
+  --well-deep-color: hsl(from $base-color-light h calc(s - 20) 90%);
+  --stripe-color: rgba(0, 0, 0, 0.03);
+  --hover-color: rgba(0, 0, 0, 0.04);
+  --bar-link-color: hsl(from $base-color-light h s 30%);
+  --accent-color: hsl(from $base-color-light h s 65%);
+  /* Controls: the 4.5:1 border of inputs, focus rings, the feedback shades of buttons */
+  --control-border-color: hsl(from $base-color-light h calc(s - 20) 42%);
+  --focus-color: hsl(from $base-color-light h s 39%);
+  --hover-shade-color: rgba(0, 0, 0, 0.12);
+  --active-shade-color: rgba(0, 0, 0, 0.25);
+  /* Shadows and the inset emphasis lines of containers */
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --inset-highlight-color: rgba(255, 255, 255, 0.7);
+  --inset-shadow-color: rgba(0, 0, 0, 0.08);
+  /* The site header, Philomena's dark bar */
+  --header-color: hsl(from $base-color-light h s 38%);
+  --header-text-color: #ffffff;
+  --header-brand-color: hsl(from $base-color-light h s 89%);
+  /* Labels and veils over media */
+  --overlay-color: rgba(0, 0, 0, 0.7);
+  --overlay-text-color: #ffffff;
+  --veil-color: rgba(0, 0, 0, 0.6);
+  --veil-text-color: #ffffff;
+  /* The washes of the fixed types and the page background gradient */
+  --light-wash-color: hsl(0, 0%, 92%);
+  --dark-wash-color: hsl(0, 0%, 88%);
+  --gradient-start-color: $_gradient-start-light;
+  --gradient-mid-color: $base-color-light;
+  --gradient-end-color: $_gradient-end-light;
+  /* Syntax highlighting */
+  --syntax-command-color: hsl(from $_syntax-command h s 37%);
+  --syntax-flag-color: hsl(from $_syntax-flag h s 32%);
+  --syntax-string-color: hsl(from $_syntax-string h s 28%);
+  --syntax-number-color: hsl(from $_syntax-number h s 30%);
+  --syntax-key-color: hsl(from $_syntax-key h s 32%);
+  --syntax-punctuation-color: hsl(from $_syntax-punctuation h s 37%);
+  /* The semantic types and the tag categories */
+  @mixin type-color-light neutral, $base-color-light, -28;
+  @mixin type-color-light primary, $primary-color;
+  @mixin type-color-light success, $success-color, 0, 29%;
+  @mixin type-color-light warning, $warning-color;
+  @mixin type-color-light danger, $danger-color;
+  @mixin type-color-light special, $special-color;
+  @mixin fixed-type-colors;
+  @mixin tag-colors light;
 }
 
 :root {
-  --ht-value-base-font-size: 16px;
-  --ht-value-font-family-base: "Montserrat", sans-serif;
-  --ht-value-font-family-mono: "Source Code Pro", "Consolas", monospace;
-  --ht-value-bg-gradient-opacity: .5;
-  --ht-value-bg-gradient-start-position: 0%;
-  --ht-value-bg-gradient-mid-position: 50%;
-  --ht-value-bg-gradient-end-position: 100%;
-  --ht-value-bg-gradient-angle: 15deg;
-  --ht-value-header-height: 3.25rem;
-  --ht-value-header-spacing-horizontal: .625rem;
-  --ht-value-header-spacing-vertical: .625rem;
-  --ht-value-header-border: 0.0625rem;
-  --ht-value-header-brand-font-size: 1.25rem;
-  --ht-value-content-spacing: 1rem;
-  --ht-value-content-container-max-width: 1080px;
-  --ht-value-content-heading-1: 1.8125em;
-  --ht-value-content-heading-2: 1.625em;
-  --ht-value-content-heading-3: 1.375em;
-  --ht-value-content-heading-4: 1.25em;
-  --ht-value-content-heading-margin-bottom: .25em;
-  --ht-value-button-padding-horizontal: .375rem;
-  --ht-value-button-padding-vertical: .25rem;
-  --ht-value-button-border-width: .0625rem;
-  --ht-value-button-shadow-size: .125rem;
-  --ht-value-button-border-radius: .25rem;
-  --ht-value-button-font-size: .875rem;
-  --ht-value-button-content-gap: .25rem;
-  --ht-value-button-group-gap: .375rem;
-  --ht-value-grid-column-gap: 0;
-  --ht-value-popup-max-width: 400px;
-  --ht-value-popup-wide-max-width: 40em;
-  --ht-value-card-padding: 1rem;
-  --ht-value-card-border-radius: 0.25rem;
-  --ht-value-card-spacing: .5rem;
-  --ht-value-alert-spacing: 1rem;
-  --ht-value-alert-border-radius: .5rem;
-  --ht-value-popup-border: .125rem;
-  --ht-value-popup-box-shadow: 1rem;
-  --ht-value-input-field-padding: .375rem;
-  --ht-value-input-field-border: .0625rem;
-  --ht-value-input-field-color-width: 4rem;
-  --ht-value-input-field-color-height: 2.5rem;
-  --ht-value-input-field-border-radius: .25rem;
-  --ht-value-input-field-box-shadow-inset-y: .0625rem;
-  --ht-value-input-field-box-shadow: .125rem;
-  --ht-value-form-control-spacing: .5rem;
-  --ht-value-focus-outline: .1875em;
-  --ht-value-collapsible-padding: .375em;
-  --ht-value-collapsible-border-radius: .5em;
-  --ht-value-form-checkbox-width: 1em;
-  --ht-value-form-checkbox-height: 1em;
-  --ht-value-form-checkbox-border: .0625em;
-  --ht-value-form-checkbox-border-radius: .25em;
-  --ht-value-form-radio-select-icon: 65%;
-  --ht-value-form-select-icon-size: 1em;
-  --ht-value-form-select-icon-padding: .25em;
-  --ht-value-table-cell-spacing: .5em;
-  --ht-value-table-border-size: .0625em;
-  --ht-value-code-border: .0625em;
-  --ht-value-code-padding-vertical: .125em;
-  --ht-value-code-padding-horizontal: .5em;
-  --ht-value-code-border-radius: .25em;
-  --ht-value-code-line-height: 1.5em;
-  --ht-value-code-small-font-size: .75em;
-  --ht-value-progress-bar-height: .75em;
-  --ht-value-loading-indicator-full-revolution-time: 5s;
-  --ht-value-badge-border: .125rem;
-  --ht-value-badge-border-radius: .5rem;
-  --ht-value-badge-padding-horozontal: .25rem;
-  --ht-value-badge-spacing: .25rem;
-  --ht-value-badge-grooup-spacing: .25rem;
-  --ht-value-badge-font-size: .875rem;
-  --ht-value-nav-spacing: .125rem;
-  --ht-value-nav-link-border-radius: .25rem;
-  --ht-value-nav-link-padding-horizontal: .375rem;
-  --ht-value-nav-link-padding-vertical: .25rem;
-  --ht-value-faq-body-padding: 0.75rem;
-  --ht-value-faq-body-line-height: 1.3;
-  --ht-value-spacing-0: 0;
-  --ht-value-spacing-1: .25em;
-  --ht-value-spacing-2: .5em;
-  --ht-value-spacing-3: 1em;
-  --ht-value-spacing-4: 1.75em;
-  --ht-value-size-10: 1em;
-  --ht-value-size-15: 1.5em;
-  --ht-value-size-20: 2em;
-  --ht-value-size-100: 10em;
+  --z-background: 1;
+  --z-default: 2;
+  --z-focus: 3;
+  --z-input-symbol: 4;
+  --z-header: 5;
+  --z-sidebar-overlay: 6;
+  --z-sidebar: 7;
+  --z-combobox: 8;
+  --z-suggestions: 9;
+  --z-suggestions-header: 10;
+  /* The dark theme's colors, the default; see the light-colors mixin for what each group is */
+  --page-bg-color: $page-color-dark;
+  --surface-color: $surface-color-dark;
+  --text-color: $text-color-dark;
+  --muted-text-color: hsl(from $text-color-dark h s 69%);
+  --placeholder-color: hsl(from $base-color-dark h calc(s - 15) 60%);
+  --link-color: hsl(from $link-color-dark h s 61%);
+  --link-strong-color: hsl(from $link-color-dark h s 72%);
+  --tint-color: hsl(from $base-color-dark h s 25%);
+  --tint-faint-color: hsl(from $base-color-dark h calc(s - 5) 19%);
+  --well-color: hsl(from $base-color-dark h calc(s - 5) 11%);
+  --well-deep-color: hsl(from $base-color-dark h calc(s - 5) 9%);
+  --stripe-color: rgba(255, 255, 255, 0.04);
+  --hover-color: rgba(255, 255, 255, 0.05);
+  --bar-link-color: hsl(from $base-color-dark h calc(s + 20) 78%);
+  --accent-color: hsl(from $base-color-dark h calc(s + 10) 55%);
+  --control-border-color: hsl(from $base-color-dark h s 59%);
+  --focus-color: hsl(from $base-color-dark h calc(s + 15) 61%);
+  --hover-shade-color: rgba(0, 0, 0, 0.18);
+  --active-shade-color: rgba(0, 0, 0, 0.35);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --inset-highlight-color: rgba(255, 255, 255, 0.06);
+  --inset-shadow-color: rgba(0, 0, 0, 0.45);
+  --header-color: hsl(from $base-color-dark h calc(s + 20) 30%);
+  --header-text-color: #ffffff;
+  --header-brand-color: hsl(from $base-color-dark h calc(s + 20) 88%);
+  --overlay-color: rgba(0, 0, 0, 0.7);
+  --overlay-text-color: #ffffff;
+  --veil-color: rgba(0, 0, 0, 0.6);
+  --veil-text-color: #ffffff;
+  --light-wash-color: hsl(0, 0%, 20%);
+  --dark-wash-color: hsl(0, 0%, 10%);
+  --gradient-start-color: $_gradient-start-dark;
+  --gradient-mid-color: $base-color-dark;
+  --gradient-end-color: $_gradient-end-dark;
+  --syntax-command-color: hsl(from $_syntax-command h s 73%);
+  --syntax-flag-color: hsl(from $_syntax-flag h s 70%);
+  --syntax-string-color: hsl(from $_syntax-string h s 68%);
+  --syntax-number-color: hsl(from $_syntax-number h s 70%);
+  --syntax-key-color: hsl(from $_syntax-key h s 70%);
+  --syntax-punctuation-color: hsl(from $_syntax-punctuation h s 73%);
+
+  @mixin type-color-dark neutral, $base-color-dark, -9;
+  @mixin type-color-dark primary, $primary-color;
+  @mixin type-color-dark success, $success-color, -20, 32%;
+  @mixin type-color-dark warning, $warning-color;
+  @mixin type-color-dark danger, $danger-color;
+  @mixin type-color-dark special, $special-color;
+  @mixin fixed-type-colors;
+  @mixin tag-colors dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    @mixin light-colors;
+  }
+}
+
+:root[data-theme="light"] {
+  @mixin light-colors;
+}
+
+:root {
+  /* Font sizes, as in Philomena: 14px text, which every rem in the framework is a multiple of, 16px in the header
+     and its navbar, and headings from 1.75rem down to the text size */
+  --base-font-size: 14px;
+  --header-font-size: 16px;
+  --heading-1-size: 1.75rem;
+  --heading-2-size: 1.5rem;
+  --heading-3-size: 1.35rem;
+  --heading-4-size: 1.2rem;
+  --heading-5-size: 1.1rem;
+  --heading-6-size: 1rem;
+  --base-font: "Montserrat", sans-serif;
+  --mono-font: "Source Code Pro", "Consolas", monospace;
+  /* Line heights, as in Philomena: tight for the page and headings, looser for paragraphs and other running text */
+  --base-line-height: 1.15;
+  --heading-line-height: 1.15;
+  --text-line-height: 1.35;
+  --gradient-opacity: 0.5;
+  --gradient-start-position: 0%;
+  --gradient-mid-position: 50%;
+  --gradient-end-position: 100%;
+  --gradient-angle: 15deg;
+  /* The spacing scale: every padding, margin and gap in the framework is one of these steps, and so are the
+     .m-{key} and .p-{key} utilities (css/utils/spacing.css) */
+  --spacing-0: 0;
+  --spacing-tiny: 0.1rem;
+  --spacing-small: 0.25rem;
+  --spacing-medium: 0.4rem;
+  --spacing-large: 0.8rem;
+  --spacing-huge: 1.2rem;
+  --spacing-xs: var(--spacing-tiny);
+  --spacing-sm: var(--spacing-small);
+  --spacing-md: var(--spacing-medium);
+  --spacing-lg: var(--spacing-large);
+  --spacing-xl: var(--spacing-huge);
+  /* Rhythm: significant blocks (cards, tables, alerts, code blocks) and headings keep a large distance, controls
+     (buttons, badges, form controls) a medium one */
+  --block-spacing: var(--spacing-lg);
+  --heading-spacing: var(--spacing-lg);
+  /* The border radii: outer for cards and other blocks, inner for the controls inside them, large for badges */
+  --border-radius-none: 0;
+  --border-radius-inner: 0.15rem;
+  --border-radius-outer: 0.25rem;
+  --border-radius-large: 0.5rem;
+  /* Border widths: the regular one for borders and dividers, the thick one for emphasis (popups, table header rules) */
+  --border-width: 0.0625rem;
+  --border-thick-width: 0.125rem;
+  /* The gap between the items of a group: buttons, badges, tags, media boxes */
+  --group-gap: var(--spacing-md);
+  --header-height: 3.25rem;
+  --header-spacing-horizontal: var(--spacing-md);
+  --header-spacing-vertical: var(--spacing-md);
+  --header-brand-font-size: 1.25rem;
+  --content-spacing: var(--spacing-lg);
+  --content-container-max-width: 1280px;
+  --button-padding-horizontal: var(--spacing-md);
+  --button-padding-vertical: var(--spacing-sm);
+  --button-font-size: 1rem;
+  --button-content-gap: var(--spacing-xs);
+  --grid-column-gap: 0;
+  --popup-max-width: 400px;
+  --popup-wide-max-width: 40em;
+  --card-padding: var(--spacing-lg);
+  --card-header-padding-vertical: var(--spacing-md);
+  --emphasis-shadow: inset 1px 1px 0 var(--inset-highlight-color), inset -1px -1px 0 var(--inset-shadow-color);
+  --block-header-padding-vertical: var(--spacing-md);
+  --block-header-padding-horizontal: var(--spacing-lg);
+  --block-content-padding: var(--spacing-lg);
+  /* Blockquotes: a bar on the start side, a gap to the text; nested quotes add a bar each, from the seventh level
+     on the gap is small so that deep threads do not run out of room */
+  --blockquote-bar-width: var(--spacing-md);
+  --blockquote-gap: var(--spacing-lg);
+  --blockquote-deep-gap: var(--spacing-sm);
+  --blockquote-nested-gap: var(--spacing-lg);
+  /* Media boxes and lists: the list fills the row with boxes at least --media-box-width wide, Philomena's thumbnail
+     size (--media-box-small-width on small screens and in .small lists) */
+  --media-box-width: 250px;
+  --media-box-small-width: 150px;
+  --media-header-padding-vertical: var(--spacing-sm);
+  --media-header-padding-horizontal: var(--spacing-sm);
+  --media-header-font-size: 0.875em;
+  --media-overlay-padding: var(--spacing-xs) var(--spacing-sm);
+  --media-overlay-inset-horizontal: var(--spacing-lg);
+  --media-overlay-inset-vertical: var(--spacing-sm);
+  --media-overlay-gap: var(--spacing-sm);
+  --media-spoiler-blur: 1rem;
+  --alert-spacing: var(--spacing-lg);
+  --alert-gap: var(--spacing-md);
+  --popup-box-shadow: 1rem;
+  --input-padding: var(--spacing-sm);
+  --color-input-width: 4rem;
+  --color-input-height: 2.5rem;
+  --input-shadow-offset: 0.0625rem;
+  --input-shadow-size: 0.125rem;
+  --form-control-spacing: var(--spacing-md);
+  --focus-outline: 0.1875em;
+  /* How much unavailable controls and muted content are faded */
+  --faded-opacity: 0.6;
+  --collapsible-padding: var(--spacing-lg);
+  --form-checkbox-width: 1em;
+  --form-checkbox-height: 1em;
+  --form-switch-width: 2.5em;
+  --form-switch-height: 1.25em;
+  --form-radio-select-icon: 65%;
+  --form-select-icon-size: 1em;
+  --form-select-icon-padding: var(--spacing-xs);
+  --table-cell-padding-vertical: var(--spacing-sm);
+  --table-cell-padding-horizontal: var(--spacing-md);
+  --table-header-padding-vertical: var(--spacing-md);
+  --code-padding-vertical: var(--spacing-0);
+  --code-padding-horizontal: var(--spacing-sm);
+  --code-block-padding: var(--spacing-md);
+  --code-block-font-size: 0.875em;
+  --code-line-height: var(--text-line-height);
+  --code-small-font-size: 0.75em;
+  --progress-bar-height: 0.75em;
+  --loading-revolution-time: 5s;
+  --badge-padding-vertical: var(--spacing-sm);
+  --badge-padding-horizontal: var(--spacing-md);
+  --badge-font-size: 0.875rem;
+  /* Counters: the size of a badge, smaller when pinned to a corner */
+  --counter-corner-font-size: 0.7rem;
+  /* Tags are borderless; set --tag-border to a width (such as .0625rem) to draw one, the padding shrinks to keep the height */
+  --tag-border: 0px;
+  --tag-padding-vertical: var(--spacing-md);
+  --tag-padding-horizontal: var(--spacing-md);
+  --tag-gap: var(--spacing-0);
+  --tag-font-size: 1em;
+  /* The tag box, an editable tag list in the input material */
+  --tag-box-padding: var(--spacing-md);
+  --tag-box-min-height: 7.5em;
+  --tag-box-max-height: 50vh;
+  --nav-spacing: var(--spacing-xs);
+  --nav-link-padding-horizontal: var(--spacing-sm);
+  --nav-link-padding-vertical: var(--spacing-xs);
+  /* The navbar: its items, and the items and the icon column of its dropdown menus */
+  --navbar-item-padding-vertical: var(--spacing-lg);
+  --navbar-item-padding-horizontal: var(--spacing-xl);
+  --navbar-menu-min-width: 12rem;
+  --navbar-menu-padding-vertical: var(--spacing-md);
+  --navbar-menu-padding-horizontal: var(--spacing-lg);
+  --navbar-menu-icon-width: 2.5em;
+  /* A clamp cuts its text off after six lines, any length works; a communication follows it unless set */
+  --clamp-max-height: calc(6em * var(--text-line-height));
+  --communication-max-height: var(--clamp-max-height);
+  --communication-name-font-size: 15px;
+  /* Avatars, Philomena's sizes */
+  --avatar-xs-size: 28px;
+  --avatar-sm-size: 50px;
+  --avatar-md-size: 100px;
+  --avatar-lg-size: 125px;
+  /* The burger menu, dropdown menus, sliders and the layout helpers */
+  --burger-width: 16rem;
+  --dropdown-min-width: 10rem;
+  --slider-width: 12rem;
+  --slider-track-height: var(--spacing-md);
+  --slider-thumb-size: 1.25em;
+  --layout-side-width: 22rem;
+  --layout-narrow-width: 50rem;
+  --faq-body-padding: var(--spacing-md);
+  --faq-body-line-height: var(--text-line-height);
+  --size-10: 1em;
+  --size-15: 1.5em;
+  --size-20: 2em;
+  --size-100: 10em;
+}
+
+@media (max-width: $breakpoint-below-md) {
+  :root {
+    --media-box-width: var(--media-box-small-width);
+  }
+}
+
+@media (min-width: $breakpoint-lg) {
+  :root {
+    --button-padding-horizontal: var(--spacing-lg);
+  }
 }
 
 @media (min-width: $breakpoint-md) {
   :root {
-    --ht-value-button-padding-horizontal: .5rem;
-  }
-}
-
-@media (min-width: $breakpoint-lg) {
-  :root {
-    --ht-value-button-padding-horizontal: .625rem;
-  }
-}
-
-@media (min-width: $breakpoint-md) {
-  :root {
-    --ht-value-button-padding-vertical: .375rem;
-  }
-}
-
-@media (min-width: $breakpoint-lg) {
-  :root {
-    --ht-value-button-padding-vertical: .375rem;
-  }
-}
-
-@media (min-width: $breakpoint-md) {
-  :root {
-    --ht-value-button-font-size: .95rem;
-  }
-}
-
-@media (min-width: $breakpoint-lg) {
-  :root {
-    --ht-value-button-font-size: 1rem;
-  }
-}
-
-@media (min-width: $breakpoint-lg) {
-  :root {
-    --ht-value-input-field-padding: .5rem;
+    --button-padding-vertical: var(--spacing-md);
   }
 }
 
 @media (min-width: $breakpoint-xl) {
   :root {
-    --ht-value-input-field-padding: .75rem;
-  }
-}
-
-@media (min-width: $breakpoint-md) {
-  :root {
-    --ht-value-nav-link-padding-horizontal: .5rem;
+    --input-padding: var(--spacing-md);
   }
 }
 
 @media (min-width: $breakpoint-lg) {
   :root {
-    --ht-value-nav-link-padding-horizontal: .6rem;
+    --nav-link-padding-horizontal: var(--spacing-md);
   }
 }
 
 @media (min-width: $breakpoint-md) {
   :root {
-    --ht-value-nav-link-padding-vertical: .375rem;
-  }
-}
-
-@media (min-width: $breakpoint-lg) {
-  :root {
-    --ht-value-nav-link-padding-vertical: .5rem;
+    --nav-link-padding-vertical: var(--spacing-sm);
   }
 }

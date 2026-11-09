@@ -1,0 +1,217 @@
+/*
+ * A navigation bar with dropdown menus, in the header's colors and font size. Items are links in the tinted color of the header brand, white under the pointer, with an optional icon,
+ * divided by thin lines; a .navbar-dropdown wraps an item and its .navbar-menu, which opens while the dropdown is
+ * hovered, has the focus inside, or has .open (set it from your script for touch screens). Menu items have an icon
+ * column in a darker strip, which fills with the button color under the pointer. Markup:
+ *   <nav class="navbar">
+ *     <a class="navbar-item" href="…"><span class="navbar-icon">…</span>Groups</a>
+ *     <div class="navbar-dropdown">
+ *       <a class="navbar-item caret" href="…" aria-haspopup="true">Help</a>
+ *       <div class="navbar-menu">
+ *         <a class="navbar-menu-item" href="…"><span class="navbar-menu-icon">…</span><span class="navbar-menu-text">FAQ</span></a>
+ *         <hr class="navbar-menu-divider">
+ *         …
+ *       </div>
+ *     </div>
+ *   </nav>
+ * .navbar-menu.end aligns a menu with the end of its item, a .navbar-spacer pushes the items after it to the end of
+ * the bar. Counts next to items and on icons are .counter elements (css/components/counter.css). The bar works on its own or inside a .header.
+ */
+
+.navbar {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+  color: var(--header-text-color);
+  background-color: var(--header-color);
+  border-bottom: var(--border-width) solid var(--tint-color);
+  box-shadow: var(--emphasis-shadow);
+}
+
+/* Inside a header the bar fills its height and the header draws the frame */
+.header .navbar {
+  align-self: stretch;
+  flex-wrap: nowrap;
+  margin-block: calc(-1 * var(--header-spacing-vertical));
+  border-bottom: 0;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.navbar .navbar-item {
+  --_shade: transparent;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--navbar-item-padding-vertical) var(--navbar-item-padding-horizontal);
+  color: var(--header-brand-color);
+  box-shadow: inset 0 0 0 100em var(--_shade);
+  transition-property: color, box-shadow;
+  transition-duration: 0.1s;
+  border-inline-end: var(--border-width) solid var(--inset-shadow-color);
+  font-size: var(--header-font-size);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.navbar .navbar-item:hover,
+.navbar .navbar-item.current {
+  --_shade: var(--hover-shade-color);
+  color: var(--header-text-color);
+}
+
+.navbar .navbar-item:focus-visible {
+  @mixin focus-ring-inset;
+}
+
+/* A slot for a fixed-width icon before the text of an item */
+.navbar .navbar-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+}
+
+/* A badge in an item does not make the bar taller */
+.navbar .navbar-item .badge {
+  margin-block: calc(-1 * var(--badge-padding-vertical));
+}
+
+/* Pushes the items after it to the end of the bar */
+.navbar .navbar-spacer {
+  flex: 1 1 auto;
+}
+
+/* A caret after the text of an item that opens a menu */
+.navbar .navbar-item.caret:after {
+  content: "";
+  border: 0.3em solid transparent;
+  border-top-color: currentcolor;
+  border-bottom-width: 0;
+  margin-inline-start: var(--spacing-xs);
+}
+
+.navbar .navbar-dropdown {
+  position: relative;
+  display: flex;
+}
+
+/* The item of an open menu takes the menu's surface, so that the two read as one piece */
+.navbar .navbar-dropdown:hover > .navbar-item,
+.navbar .navbar-dropdown:focus-within > .navbar-item,
+.navbar .navbar-dropdown.open > .navbar-item {
+  --_shade: transparent;
+  color: var(--text-color);
+  background-color: var(--surface-color);
+}
+
+.navbar .navbar-menu {
+  display: none;
+  position: absolute;
+  z-index: var(--z-combobox);
+  top: 100%;
+  inset-inline-start: 0;
+  min-inline-size: max(100%, var(--navbar-menu-min-width));
+  flex-flow: column;
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border: var(--border-width) solid var(--tint-color);
+  border-top: 0;
+  border-radius: 0 0 var(--border-radius-outer) var(--border-radius-outer);
+  box-shadow: 0 var(--spacing-sm) var(--spacing-lg) var(--shadow-color);
+  overflow: hidden;
+}
+
+.navbar .navbar-menu.end {
+  inset-inline: auto 0;
+}
+
+.navbar .navbar-dropdown:hover > .navbar-menu,
+.navbar .navbar-dropdown:focus-within > .navbar-menu,
+.navbar .navbar-dropdown.open > .navbar-menu {
+  display: flex;
+}
+
+.navbar .navbar-menu-item {
+  display: flex;
+  align-items: stretch;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.navbar .navbar-menu-icon,
+.navbar .navbar-menu-text {
+  display: flex;
+  align-items: center;
+  padding: var(--navbar-menu-padding-vertical) var(--navbar-menu-padding-horizontal);
+}
+
+/* The icon column: a darker strip down the start side of the menu */
+.navbar .navbar-menu-icon {
+  flex: 0 0 auto;
+  justify-content: center;
+  inline-size: var(--navbar-menu-icon-width);
+  box-sizing: border-box;
+  padding-inline: 0;
+  color: var(--muted-text-color);
+  background-color: var(--well-color);
+  border-inline-end: var(--border-width) solid var(--tint-color);
+}
+
+.navbar .navbar-menu-text {
+  flex: 1 1 auto;
+}
+
+.navbar .navbar-menu-item:hover,
+.navbar .navbar-menu-item:focus-visible,
+.navbar .navbar-menu-item.current {
+  background-color: var(--tint-faint-color);
+}
+
+.navbar .navbar-menu-item:hover .navbar-menu-icon,
+.navbar .navbar-menu-item:focus-visible .navbar-menu-icon,
+.navbar .navbar-menu-item.current .navbar-menu-icon {
+  color: var(--neutral-text-color);
+  background-color: var(--neutral-color);
+}
+
+.navbar .navbar-menu-divider {
+  @mixin menu-divider;
+}
+
+.navbar .navbar-menu-item:focus-visible {
+  @mixin focus-ring-inset;
+}
+
+/*
+ * On narrow screens the bar wraps: the items share each row evenly with less room around them, and a menu opens
+ * under the whole bar at its full width instead of under its item, where it would run off the screen.
+ */
+@media not all and (min-width: $breakpoint-md) {
+  .navbar {
+    position: relative;
+  }
+
+  .navbar .navbar-item {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+
+  .navbar .navbar-dropdown {
+    position: static;
+    flex: 1 1 auto;
+  }
+
+  .navbar .navbar-spacer {
+    display: none;
+  }
+
+  .navbar .navbar-menu,
+  .navbar .navbar-menu.end {
+    inset-inline: 0;
+    min-inline-size: 0;
+  }
+}

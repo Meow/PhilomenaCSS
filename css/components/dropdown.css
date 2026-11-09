@@ -1,0 +1,89 @@
+/*
+ * A dropdown: a menu under any trigger (a button, a link, an avatar). It opens while the .dropdown is hovered or
+ * has the focus inside, without a script, or with .open; .dropdown.manual only opens with .open, for a click toggle
+ * of your own. Markup:
+ *   <div class="dropdown">
+ *     <button type="button" class="button" aria-haspopup="true">Options</button>
+ *     <div class="dropdown-menu">
+ *       <a class="dropdown-item" href="…"><span class="dropdown-icon">…</span>Edit</a>
+ *       <hr class="dropdown-divider">
+ *       <a class="dropdown-item danger" href="…">Delete</a>
+ *     </div>
+ *   </div>
+ * .dropdown-menu.end aligns the menu with the end of the trigger, .up opens it above. The menus of a navbar are the
+ * same thing with an icon column (css/components/navbar.css).
+ */
+
+.dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  z-index: var(--z-combobox);
+  top: 100%;
+  inset-inline-start: 0;
+  min-inline-size: max(100%, var(--dropdown-min-width));
+  flex-flow: column;
+  box-sizing: border-box;
+  padding-block: var(--spacing-sm);
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border: var(--border-width) solid var(--tint-color);
+  border-radius: var(--border-radius-outer);
+  box-shadow:
+    var(--emphasis-shadow),
+    0 var(--spacing-sm) var(--spacing-lg) var(--shadow-color);
+}
+
+.dropdown .dropdown-menu.end {
+  inset-inline: auto 0;
+}
+
+.dropdown .dropdown-menu.up {
+  top: auto;
+  bottom: 100%;
+}
+
+.dropdown.open > .dropdown-menu {
+  display: flex;
+}
+
+.dropdown:not(.manual):hover > .dropdown-menu,
+.dropdown:not(.manual):focus-within > .dropdown-menu {
+  display: flex;
+}
+
+.dropdown .dropdown-item {
+  @mixin menu-item;
+  white-space: nowrap;
+}
+
+.dropdown .dropdown-item.danger {
+  color: var(--danger-tint-text-color);
+}
+
+.dropdown .dropdown-item:hover,
+.dropdown .dropdown-item:focus-visible,
+.dropdown .dropdown-item.current {
+  background-color: var(--tint-faint-color);
+}
+
+.dropdown .dropdown-item:focus-visible {
+  @mixin focus-ring-inset;
+}
+
+.dropdown .dropdown-icon {
+  @mixin menu-icon;
+}
+
+.dropdown .dropdown-item.danger .dropdown-icon {
+  color: inherit;
+}
+
+.dropdown .dropdown-divider {
+  @mixin menu-divider;
+  margin-block: var(--spacing-sm);
+}

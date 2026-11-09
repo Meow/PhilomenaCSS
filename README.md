@@ -9,7 +9,7 @@ No JavaScript components are included, the stateful components only ship the sty
 Use the compiled stylesheet:
 
 ```html
-<link rel="stylesheet" href="node_modules/@philomena/philomena-css/dist/philomena.css">
+<link rel="stylesheet" href="node_modules/@philomena/philomena-css/dist/philomena.css" />
 ```
 
 `dist/philomena.css` (and `.min.css`) works in browsers from September 2020 onwards: every color is computed at
@@ -17,24 +17,44 @@ build time. Everything is still controlled with custom properties, so single tok
 
 ```css
 :root {
-  --ht-value-button-border-radius: .5rem;    /* any value token */
-  --ht-color-card-bg-light: #fff;            /* any color token, per theme: -light / -dark */
-  --ht-value-spacing-2: .75em;               /* the .m-*, .p-* utilities follow --ht-value-spacing-* */
+  --border-radius-inner: 0.5rem; /* any value token */
+  --surface-color: #1a1a1a; /* any color token, for the dark theme (the default) */
+}
+
+/* The light theme's colors are set where the stylesheet sets them: for the system preference and for data-theme */
+:root[data-theme='light'] {
+  --surface-color: #fff;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --surface-color: #fff;
+  }
 }
 ```
 
 Token reference:
 
-| Property | Meaning |
-| --- | --- |
-| `--ht-value-*` | Sizes, spacing, radii, typography. Responsive ones have breakpoint overrides inside the stylesheet |
-| `--ht-color-*-light` / `--ht-color-*-dark` | Per-theme colors, `--ht-color-*` is the alias that follows the active theme |
-| `--ht-z-index-*` | Layering |
+| Property                                 | Meaning                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--*-color`                              | Colors, set per theme: the dark theme's on `:root` (the default), the light theme's for the system preference and for `data-theme="light"`                                                                                                                                                                                                                                                                                  |
+| `--{type}-*-color`                       | The roles of a semantic color, from the `type-color` mixin: `-color`, `-text-color`, `-border-color` (a button), `-tint-color`, `-tint-text-color` (alerts, badges, table rows), `-bar-color`, `-bar-text-color` (title bars), `-wash-color` (a card body), `-affix-color` (a badge's prefix, a pagination link's hover). The types are `neutral`, `primary`, `success`, `warning`, `danger`, `special`, `light` and `dark` |
+| `--tag-{category}-*-color`               | A tag category's `-color`, `-text-color` and `-affix-color`, from the `tag-color` mixin                                                                                                                                                                                                                                                                                                                                     |
+| `--*-font`                               | Font families: `--base-font`, `--mono-font`                                                                                                                                                                                                                                                                                                                                                                                 |
+| `--spacing-*`                            | The spacing scale: `tiny` .1rem, `small` .25rem, `medium` .4rem, `large` .8rem, `huge` 1.2rem, aliased as `xs`, `sm`, `md`, `lg`, `xl`. Every padding, margin and gap is a step of it, as are the `.m-{key}` / `.p-{key}` utilities                                                                                                                                                                                         |
+| `--block-spacing`, `--heading-spacing`   | The rhythm: significant blocks that follow each other (cards, tables, alerts, code blocks ...) and headings keep a large distance, controls (buttons, badges, form controls) and a run of alerts (`--alert-gap`) a medium one. The rules have no specificity, your own margins win                                                                                                                                          |
+| `--border-radius-*`                      | The radii: `none` 0, `inner` .15rem for controls inside a block, `outer` .25rem for cards and other blocks, `large` .5rem for badges                                                                                                                                                                                                                                                                                        |
+| `--border-width`, `--border-thick-width` | The border widths: .0625rem for borders and dividers, .125rem for emphasis                                                                                                                                                                                                                                                                                                                                                  |
+| `--base-font-size`, `--*-size`           | Philomena's font sizes: 14px text (every rem is a multiple of it), `--header-font-size` 16px for the header and navbar, `--heading-1-size` 1.75rem down to `--heading-6-size` 1rem. Headings are not bold                                                                                                                                                                                                                   |
+| `--*-line-height`                        | Philomena's line heights: `base` 1.15 for the page, `heading` 1.15, `text` 1.35 for paragraphs, alert text, FAQ bodies and code                                                                                                                                                                                                                                                                                             |
+| `--z-*`                                  | Layering                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| everything else                          | Sizes, typography and other values (`--button-padding-horizontal`). Responsive ones have breakpoint overrides inside the stylesheet                                                                                                                                                                                                                                                                                         |
 
-Themes are switched with `data-theme="light|dark"` on `:root` (defaults to `prefers-color-scheme`), RTL with
+Names are at most four words.
+
+Themes are switched with `data-theme="dark|light"` on `:root` (defaults to `prefers-color-scheme`, dark when the
+browser states no preference), RTL with
 `dir="rtl"`. To change a responsive value at one breakpoint, override the property inside your own `@media` rule.
-To retheme the alias `--ht-color-*` in the dark theme, set the `-dark` variant, or use a selector as specific as
-`:root[data-theme="dark"]`.
 
 ### Building from the sources (PostCSS)
 
@@ -55,52 +75,142 @@ they cannot go in the same file):
 
 ```css
 /* philomena-overrides.css */
-$brand-color: #e8590c;
+$base-color-dark: #99501e;
+$base-color-light: #e8590c;
+$primary-color: #7a3e9d;
 $breakpoint-md: 800px;
 $breakpoint-below-md: 799px;
 ```
 
 ```css
 /* your stylesheet */
-@import "@philomena/philomena-css/css/config.css";
-@import "./philomena-overrides.css";
-@import "@philomena/philomena-css/css/framework.css";
+@import '@philomena/philomena-css/css/config.css';
+@import './philomena-overrides.css';
+@import '@philomena/philomena-css/css/framework.css';
 ```
 
-See [`css/config.css`](css/config.css) for every setting. The colors derived from the brand color use relative
-color syntax on `$variables` (`hsl(from $brand-color h s min(l + 22, 100))`), which the plugin computes into a
-static color. Use `$variables` and not `var(--variables)` as the origin of a relative color: a `var()` can't be
-computed at build time and would be left for the browser, which older browsers don't understand.
+See [`css/config.css`](css/config.css) for every setting. The palette has a base color, a page color, a surface
+color, a text color and a link color per theme (`-light` / `-dark`), and the primary, success, danger, warning and
+special hues shared by both (special is Philomena's purple assistant color), plus the tag category hues. The defaults are Philomena's light-blue and dark-blue themes. The colors derived from them use relative color syntax on
+`$variables` (`hsl(from $base-color-light h calc(s - 28) 35%)`), which the plugin computes into a static color. Use
+`$variables` and not `var(--variables)` as the origin of a relative color: a `var()` can't be computed at build time
+and would be left for the browser, which older browsers don't understand.
+
+### Contrast
+
+The palette is laid out for contrast, measured with the WCAG 2 formula. Text and labels, the borders of controls, focus
+rings, and button text are at least **4.5:1** from what they sit on:
+
+- text, including placeholders, muted text, links and syntax colors, against its background (body text is over 9:1)
+- the borders of controls (inputs, the tag box) and focus rings against the surfaces they separate
+- button text against the button (the fill against the card is reported but not enforced: it clears 4.5:1 on the
+  light theme, the dark theme's fills deliberately sit closer to the card)
+
+Everything else keeps Philomena's tones: the page under the cards, inputs, badges, alerts and code are tints rather
+than contrasting blocks. Containers (cards, blocks, tables, alerts, code blocks, media boxes) have subtle borders in
+the tint of their title bar and are set apart by sharp 1px inset lines (`--emphasis-shadow`) instead. The `.button-light` and `.button-dark` variants are fixed colors for use on
+a contrasting background of your own and are not checked against the card.
+
+The lightness of every derived color is fixed, so the ratios hold for other base colors too, give or take a little.
+`pnpm run check:contrast` measures every pair in the built stylesheet (`pnpm run build` first) and fails when one is
+below 4.5:1; CI runs it on every pull request.
 
 The page background gradient is opt-in and off by default (the `dist/` stylesheets do not include it). Import
 `css/design/background-gradient.css` after the framework to enable it. Its colors and layout are the
-`bg-gradient-*` tokens (`--ht-color-bg-gradient-*`, `--ht-value-bg-gradient-*`). The middle of the gradient is the
-brand color, the start and end follow it too (a hue shift of the brand color) unless you override
-`--ht-color-bg-gradient-start-light`/`-dark` and `--ht-color-bg-gradient-end-light`/`-dark`.
+`gradient-*` tokens (`--gradient-start-color`, `--gradient-angle`, ...). The middle of the gradient is the
+base color of the theme, the start and end follow it too (a hue shift of the base color) unless you override
+`--gradient-start-color` and `--gradient-end-color` per theme.
 
 Single components can be used on their own, after the design layer:
 
 ```css
-@import "@philomena/philomena-css/css/config.css";
-@import "@philomena/philomena-css/css/design/index.css";
-@import "@philomena/philomena-css/css/components/button.css";
+@import '@philomena/philomena-css/css/config.css';
+@import '@philomena/philomena-css/css/design/index.css';
+@import '@philomena/philomena-css/css/components/button.css';
 ```
 
 The design layer also defines the mixins the framework is built with (`css/design/mixins.css`), for example
-`@mixin button-color-variation accent;` adds `.button.button-accent` from `--ht-color-button-accent-*` tokens, and
-`@mixin margin-utilities 5;` adds the margin utilities for a `--ht-value-spacing-5` token.
+`@mixin button-color-variation accent;` adds `.button.button-accent` from `--accent-color`, `--accent-text-color` and `--accent-border-color` tokens (`badge-color-variation`, `alert-color-variation`, `pagination-color-variation` and the other `*-color-variation` mixins do the same for the other components), and
+`@mixin margin-utilities xxl;` adds the margin utilities for a `--spacing-xxl` token.
 
 ## Markup notes
 
 The framework is plain CSS, so some structure is on you:
 
+- **Badge-sized buttons.** `.button-size-badge` on a `.button`, or on a `.button-group` to size every button in
+  it, gives buttons the size and shape of a badge (`--badge-*` sizes, `--border-radius-large`) for toolbars and
+  list rows.
+- **Media box actions.** `.media-box-header.actions` is the header of a Philomena image thumbnail: a row of
+  `.media-box-action` links with a kind (`.fave`, `.upvote`, `.downvote`, `.comments`, `.hide`) and a
+  `.media-box-score`. An action has the color of its kind, taken from the tag palette, and is filled with it when hovered or `.active`.
+- **Navbar.** `<nav class="navbar">` holds `.navbar-item` links (with an optional `.navbar-icon`). Wrap an item
+  and a `.navbar-menu` in a `.navbar-dropdown` for a menu of `.navbar-menu-item`s (a `.navbar-menu-icon` and a
+  `.navbar-menu-text` each, `<hr class="navbar-menu-divider">` between groups). Menus open on hover and on focus
+  without a script; toggle `.open` on the dropdown for touch screens. A `.navbar-spacer` pushes the items after it to the end
+  of the bar.
+- **Dropdowns.** A `.dropdown` wraps any trigger and a `.dropdown-menu` of `.dropdown-item`s. It opens on hover and
+  on focus without a script, `.open` holds it open and `.manual` turns the hover off.
+- **Burger menu.** A `.burger` panel slides in from the start side over a `.burger-overlay`. Toggle `.open` on
+  both, or put a `.burger-toggle` checkbox before them and use labels as the buttons for a script-free menu.
+- **Tabs.** `.tabs` holds `.tab` links, followed by one `.tab-panel` each. Your script moves `.selected` between
+  them.
+- **Toggle box.** `<input class="toggle-box" type="checkbox">`, a `.toggle-box-label` and a `.toggle-box-content`,
+  in that order, make a section that opens without a script.
+- **Spoiler text.** `<span class="spoiler">` is blacked out until hovered or focused, `.revealed` shows it for good.
+- **Separators.** `<hr>` and `.separator` draw a rule in the border tint, with `.thin` and `.vertical` variants.
+- **Sliders.** `<input class="slider" type="range">`. Set `--slider-fill` to the value as a percentage for a
+  filled track outside Firefox.
+- **Layout and visibility.** `.layout-columns` with `.layout-side` and `.layout-main`, `.layout-narrow`,
+  `.layout-center`, the `.flex` helpers and `.gap-{key}`, and `.hidden`, `.hidden-below-{breakpoint}`,
+  `.hidden-from-{breakpoint}` and `.hidden-print`.
+- **Avatars.** `.avatar` on an `<img>`, or on an element holding an image or initials, with a size: `.avatar-xs`
+  28px, `.avatar-sm` 50px, `.avatar-md` 100px, `.avatar-lg` 125px. `.square` and `.avatar-group` are variants.
+- **Clamped text.** Put `<input class="clamp-toggle" type="checkbox">` right before a `.clamp` element, and
+  `.clamp-more` / `.clamp-less` labels for it inside, to cut text off after `--clamp-max-height` (six lines by
+  default, any length works) behind a click, without a script. The label and a fade towards the cut only appear when
+  at least a line is cut. Set `--clamp-bg-color` when the text is not on the surface color.
+- **Communications.** `.communication` is a comment or post: a `.communication-body` with an avatar and a
+  `.communication-content` (a `.communication-author` with the name and role badges, then the text), over
+  `.communication-options` with two groups of links. Make the text a clamp (`.communication-text.clamp` after a
+  `.clamp-toggle`) to cut long comments; `--communication-max-height` sets their limit. On narrow screens the
+  avatar and author become a header row.
+- **Comboboxes.** `.form-control-combobox` on a `.form-control-select` with a text input and a
+  `.combobox-suggestions` list is styled only; your script filters, handles the keyboard and sets the state classes
+  (`.suggestions-open`, `.has-suggestions`, `.allow-typing`, `.selected` / `.highlighted` on items). Upstream's
+  `.has-combobox` is accepted but not needed here.
+- **Switches.** `<input class="form-switch-input" type="checkbox">` with a `.form-switch-label` in a
+  `.form-control-switch` is a checkbox drawn as a sliding toggle, an alternative to the regular checkbox. It needs
+  no wrapper or icon.
+- **Counters.** `<span class="counter">3</span>` is a small pill with a number, filled like a button of its color
+  (`.counter-{type}`). `.subtle` is a shaded chip for bars and buttons. In a `.counter-anchor`, a `.counter.corner`
+  is pinned to the corner of an icon as an unread badge.
+- **Pagination.** `<nav class="pagination">` holds `.pagination-link`s (`<a>`, or `<span>` when unavailable),
+  one of them `.current`, and `.pagination-gap` for skipped pages (`…`); `.pagination-icon` is a slot for a glyph or icon next to a link's text. `.pagination-{type}`
+  colors it, `.pagination-bar` lays it out next to a `.pagination-info` text. On narrow screens only the links with a
+  `.pagination-icon` (first, previous, next, last) and the current page show, in one row.
 - **Icons are slots, none are shipped.** `.form-checkbox-check-icon`, `.form-select-icon`, `.button-icon` and
   `.loading-icon` are positioned for a fixed-width icon (about `1.25em` wide, `1em` tall, e.g. an inline SVG
   or Font Awesome's `fa-fw`). A text glyph will not line up.
-- **Loading buttons need a `.loading-icon` element** placed before `.button-content` inside the button. The
-  gradient and the dimmed content come from it, `.loading` alone shows neither.
+- **Loading buttons need a `.loading-icon` element** placed before `.button-content` inside the button. The icon is
+  drawn over the content, which fades to 20%; `.loading` alone only changes the cursor.
 - **Radio controls:** before v0.1.2, whitespace between `.form-radio-input-wrap` and `.form-radio-label` pushed
   the label out of line with checkbox labels. From v0.1.2 the control is a flex row and formatting is free.
+- **Blockquotes stack bars.** `<blockquote>` (or `.blockquote`) draws a bar on the start side; a quote inside a quote
+  adds another bar, and from the seventh level on the gap to the text is small (`--blockquote-deep-gap`).
+- **Blocks are the sibling of cards with a bar instead of a heading band.** `.block` has a `.block-header` bar at text size (a `.block-header-title`,
+  bold links, a `.block-header-actions` slot) over `.block-content`; `.block-header.sub` is a lighter bar for a section
+  inside. `.block-{color}` works like `.card-{color}`.
+- **Media overlays are styling only.** `.media-box-overlay` strips (or several in `.media-box-overlays`) and the
+  `.media-box-veil` with the `.spoilered` blur are static; revealing a spoiler means removing them from your script.
+- **Media boxes are square.** `.media-box-content` is a square `aspect-ratio` area and the image is fitted inside
+  it like a thumbnail (`object-fit: contain`); add `.cover` to the box to crop it to fill the area instead.
+  `.media-list` fills the row with boxes at
+  least the thumbnail width (`--media-box-width`, 250px, 150px below the `md` breakpoint).
+- **Tag boxes are styling only.** `.tag-box` holds `.tag` elements (with an optional `.tag-remove` control) and an
+  `.input-field` that sizes to its placeholder and grows as you type (`field-sizing: content`; give it a `size`
+  attribute as the fallback for browsers without it). Adding and removing tags is your script's job.
+- **Tags are borderless.** Set `--tag-border` to a width (for example `.0625rem`) on `:root`, a `.tag-list` or a
+  single `.tag` to draw the border in the count color; the padding shrinks so the height stays the same.
 - **`<summary>` has no marker.** The CSS reset removes the disclosure marker, so give `<details>` toggles their own
   affordance (chevron, border, pointer cursor).
 
@@ -110,18 +220,27 @@ See the [documentation site](https://meow.github.io/PhilomenaCSS/) for rendered 
 
 Based on [HammerTimeCSS](https://github.com/WentTheFox/HammerTimeCSS) and adapted for use in the [Philomena](https://github.com/philomena-dev/philomena) project, work in progress. Documentation and live demo: <https://meow.github.io/PhilomenaCSS/> (source in [`docs/`](docs), an Astro site that is not part of the npm package).
 
+## Development
+
+`pnpm run build` builds `dist/`, `pnpm run check:contrast` measures the contrast pairs, `pnpm run lint` runs
+[oxlint](https://oxc.rs/docs/guide/usage/linter) over the scripts and [stylelint](https://stylelint.io) over the
+stylesheets, and `pnpm run fmt` formats everything with [Prettier](https://prettier.io) (`fmt:check` only checks).
+The configurations are Philomena's, adapted where this repository differs (`.oxlintrc.json`, `.stylelintrc.yml`,
+`.prettierrc.yml`, `.editorconfig`). CI runs the lint, the format check, the build and the contrast check on every
+pull request.
+
 ## Releases
 
 Releases are automatic. Commits to `main` follow [Conventional Commits](https://www.conventionalcommits.org/)
 (enforced by commitlint, locally through a Husky hook and in CI). On every push to `main` the next
 [semantic version](https://semver.org/) is computed from the commits since the last tag:
 
-| Commit | Release |
-| --- | --- |
-| `fix:` | patch |
-| `feat:` | minor |
-| `feat!:` / `BREAKING CHANGE:` | major |
-| `docs:`, `chore:`, `ci:`, `refactor:` ... | none |
+| Commit                                    | Release |
+| ----------------------------------------- | ------- |
+| `fix:`                                    | patch   |
+| `feat:`                                   | minor   |
+| `feat!:` / `BREAKING CHANGE:`             | major   |
+| `docs:`, `chore:`, `ci:`, `refactor:` ... | none    |
 
 The package is built and published to npm, then the `vX.Y.Z` tag and a GitHub release with the changelog are created.
 `package.json` always says `0.0.0`, the version only lives in the tag.

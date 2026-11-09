@@ -1,0 +1,6 @@
+# Build output and lockfiles
+dist
+docs/dist
+docs/.astro
+pnpm-lock.yaml
+docs/pnpm-lock.yaml

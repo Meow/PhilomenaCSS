@@ -1,3 +1,5 @@
-/* Docs-only: derive the palette from --ht-brand in the browser, so the playground can recolor it live */
-$default-brand-color: $brand-color;
-$brand-color: var(--ht-brand);
+/* Docs-only: derive the palette from --base-color-dark and --base-color-light in the browser, so the playground can recolor it live */
+$default-base-color-dark: $base-color-dark;
+$default-base-color-light: $base-color-light;
+$base-color-dark: var(--base-color-dark);
+$base-color-light: var(--base-color-light);

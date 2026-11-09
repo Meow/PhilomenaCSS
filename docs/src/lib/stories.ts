@@ -9,8 +9,17 @@ export interface Story {
   notes?: string[];
 }
 
-const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+const lorem =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 const ucfirst = (value: string) => value[0].toUpperCase() + value.slice(1);
+
+// Markup helpers for the pieces the stories repeat
+const button = (text: string, classes = '', attrs = '') =>
+  `<button type="button" class="button${classes ? ` ${classes}` : ''}"${attrs ? ` ${attrs}` : ''}><span class="button-content"><span class="button-text">${text}</span></span></button>`;
+const badge = (text: string, classes = '') =>
+  `<span class="badge${classes ? ` ${classes}` : ''}"><span class="badge-content">${text}</span></span>`;
+const block = (title: string, body: string) =>
+  `<section class="block"><header class="block-header"><span class="block-header-title">${title}</span></header><div class="block-content">${body}</div></section>`;
 
 const alerts = `<div class="alert info">
   <div class="alert-icon">i</div>
@@ -26,6 +35,27 @@ const alerts = `<div class="alert info">
     <div class="alert-text">${lorem}</div>
   </div>
 </div>
+<div class="alert success">
+  <div class="alert-icon">✓</div>
+  <div class="alert-content">
+    <div class="alert-title">Success alert</div>
+    <div class="alert-text">${lorem}</div>
+  </div>
+</div>
+<div class="alert danger">
+  <div class="alert-icon">×</div>
+  <div class="alert-content">
+    <div class="alert-title">Danger alert</div>
+    <div class="alert-text">${lorem}</div>
+  </div>
+</div>
+<div class="alert special">
+  <div class="alert-icon">★</div>
+  <div class="alert-content">
+    <div class="alert-title">Special alert</div>
+    <div class="alert-text">${lorem} <a href="#">A link</a>.</div>
+  </div>
+</div>
 <div class="alert">
   <div class="alert-content">
     <div class="alert-title">Plain alert</div>
@@ -36,22 +66,25 @@ const alerts = `<div class="alert info">
   <div class="alert-content">
     <div class="alert-title">Compact alert title</div>
     <div class="alert-text">Compact alert text</div>
-    <div class="alert-actions"><button type="button" class="button"><span class="button-content"><span class="button-text">Compact alert action</span></span></button></div>
+    <div class="alert-actions">${button('Compact alert action')}</div>
   </div>
 </div>`;
 
-const loadingIndicator = '<svg class="loading-indicator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1em" height="1em"><path d="M35 32a3.001 3.001 0 0 1-6 0l3-26.074L35 32Z" class="minute"/><path d="M35 32a3.001 3.001 0 0 1-6 0l3-13.037L35 32Z" class="hour"/><g class="base"><circle cx="32" cy="32" r="29" class="face"/><path d="M32 3v7m0 44v7m22-29h7M3 32h7" class="ticking"/></g></svg>';
+const loadingIndicator =
+  '<svg class="loading-indicator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1em" height="1em"><path d="M35 32a3.001 3.001 0 0 1-6 0l3-26.074L35 32Z" class="minute"/><path d="M35 32a3.001 3.001 0 0 1-6 0l3-13.037L35 32Z" class="hour"/><g class="base"><circle cx="32" cy="32" r="29" class="face"/><path d="M32 3v7m0 44v7m22-29h7M3 32h7" class="ticking"/></g></svg>';
 
 // With `spinner` the loading slot holds the set's spinning icon instead of the clock indicator
-const buttonRow = (set: IconSet, spinner = false) => (color?: string) => {
-  const loadingContent = spinner ? icon(set, 'spinner', 'docs-spin') : loadingIndicator;
-  const cls = color ? `button button-${color}` : 'button';
-  const label = color ?? 'default';
-  const btn = (extra: string, attrs: string, text: string, loading = false) =>
-    `  <button type="button" class="${cls}${extra}"${attrs}>${loading ? `<span class="loading-icon">${loadingContent}</span>` : ''}<span class="button-content"><span class="button-text">${text}</span></span></button>`;
-  const iconBtn = (extra: string, attrs: string, loading = false) =>
-    `  <button type="button" class="${cls} icon-only${extra}"${attrs} aria-label="${ucfirst(label)} icon-only button">${loading ? `<span class="loading-icon">${loadingContent}</span>` : ''}<span class="button-content"><span class="button-icon">${icon(set, 'clipboard')}</span></span></button>`;
-  return `<div class="button-group separated">
+const buttonRow =
+  (set: IconSet, spinner = false) =>
+  (color?: string) => {
+    const loadingContent = spinner ? icon(set, 'spinner', 'docs-spin') : loadingIndicator;
+    const cls = color ? `button button-${color}` : 'button';
+    const label = color ?? 'default';
+    const btn = (extra: string, attrs: string, text: string, loading = false) =>
+      `  <button type="button" class="${cls}${extra}"${attrs}>${loading ? `<span class="loading-icon">${loadingContent}</span>` : ''}<span class="button-content"><span class="button-text">${text}</span></span></button>`;
+    const iconBtn = (extra: string, attrs: string, loading = false) =>
+      `  <button type="button" class="${cls} icon-only${extra}"${attrs} aria-label="${ucfirst(label)} icon-only button">${loading ? `<span class="loading-icon">${loadingContent}</span>` : ''}<span class="button-content"><span class="button-icon">${icon(set, 'clipboard')}</span></span></button>`;
+    return `<div class="button-group separated">
 ${btn('', '', `${ucfirst(label)}`)}
 ${btn('', ' disabled', 'Disabled')}
 ${btn(' pressed', '', 'Pressed')}
@@ -60,11 +93,131 @@ ${iconBtn('', '')}
 ${iconBtn('', ' disabled')}
 ${iconBtn(' loading', ' disabled', true)}
 </div>`;
+  };
+
+const badgeSizedButtons = `<div class="docs-stack">
+<div class="button-group separated button-size-badge">
+  ${button('Default')}
+  ${button('Primary', 'button-primary')}
+  ${button('Success', 'button-success')}
+  ${button('Warning', 'button-warning')}
+  ${button('Danger', 'button-danger')}
+  ${button('Special', 'button-special')}
+  ${button('Disabled', '', 'disabled')}
+  <button type="button" class="button icon-only" aria-label="Copy"><span class="button-content"><span class="button-icon">${icon('fontawesome', 'clipboard')}</span></span></button>
+</div>
+<div class="button-group button-size-badge">
+  ${button('Newest')}
+  ${button('Score', 'pressed')}
+  ${button('Relevance')}
+  ${button('Random')}
+</div>
+<div class="button-group button-size-badge">
+  ${button('Upvote', 'button-primary')}
+  ${button('Fave', 'button-primary')}
+  ${button('Hide', 'button-primary')}
+</div>
+<div>
+  ${button('A single badge-sized button', 'button-size-badge button-special')}
+</div>
+</div>`;
+
+// Pagination: the links of a page in the middle, on the first page (First and Prev unavailable), colored, and with a count
+const pageLink = (n: number | string, current = false) =>
+  current
+    ? `<span class="pagination-link current" aria-current="page">${n}</span>`
+    : `<a class="pagination-link" href="#">${n}</a>`;
+const pagination = (type?: string, first = false) => {
+  const end = (text: string, glyph: string, after = false) => {
+    const slot = `<span class="pagination-icon">${glyph}</span>`;
+    const content = after ? `${text}${slot}` : `${slot}${text}`;
+    if (first && !after) return `<span class="pagination-link">${content}</span>`;
+    return `<a class="pagination-link" href="#">${content}</a>`;
+  };
+  const current = first ? 1 : 12;
+  const numbers = first
+    ? [pageLink(1, true), pageLink(2), pageLink(3), pageLink(4), pageLink(5)]
+    : [pageLink(10), pageLink(11), pageLink(12, true), pageLink(13), pageLink(14)];
+  return `<nav class="pagination${type ? ` pagination-${type}` : ''}" aria-label="Pages (${type ?? 'default'}, page ${current})">
+  ${end('First', '«')}
+  ${end('Prev', '‹')}
+  ${first ? '' : '<span class="pagination-gap">…</span>\n  '}${numbers.join('\n  ')}
+  <span class="pagination-gap">…</span>
+  ${end('Next', '›', true)}
+  ${end('Last', '»', true)}
+</nav>`;
+};
+const paginations = `<div class="docs-stack">
+${pagination()}
+${pagination(undefined, true)}
+<div class="pagination-bar">
+  ${pagination('primary').replaceAll('\n', '\n  ')}
+  <span class="pagination-info">Showing 276–300 of 1,234 results</span>
+</div>
+${pagination('success')}
+<div class="pagination-bar">
+  ${pagination('special').replaceAll('\n', '\n  ')}
+  <div class="button-group button-size-badge">
+    ${button('Newest', 'button-special')}
+    ${button('Score', 'button-special pressed')}
+  </div>
+  ${button('Jump to page', 'button-size-badge')}
+</div>
+</div>`;
+
+const comboboxItem = (main: string, state = '', addon?: string, mark?: string) => {
+  const text = mark ? main.replace(mark, `<mark>${mark}</mark>`) : main;
+  return `      <div class="combobox-suggestion-item${state}" role="option">
+        <div class="combobox-suggestion-item-label">
+          <span class="combobox-suggestion-item-text"><span class="combobox-suggestion-item-main-text">${text}</span></span>${
+            addon
+              ? `
+          <span class="combobox-suggestion-item-addon">${addon}</span>`
+              : ''
+          }
+        </div>
+      </div>`;
 };
 
-const buttonsFor = (set: IconSet) => [undefined, 'primary', 'success', 'danger', 'warning', 'light', 'dark'].map(buttonRow(set)).join('\n');
+const combobox = (set: IconSet = 'fontawesome') => `<div class="form-control-group vertical">
+  <div class="form-control-wrap has-combobox">
+    <div class="form-control">
+      <label class="form-control-label" for="combobox-closed">Closed (select only)</label>
+      <div class="form-control-select form-control-combobox full-width">
+        <input id="combobox-closed" class="form-select-input input-field full-width" type="text" role="combobox" aria-expanded="false" value="Europe/Warsaw" readonly>
+        <span class="form-select-icon">${icon(set, 'chevron-down')}</span>
+      </div>
+    </div>
+  </div>
+  <div class="form-control-wrap has-combobox">
+    <div class="form-control">
+      <label class="form-control-label" for="combobox-open">Open (typing allowed)</label>
+      <div class="form-control-select form-control-combobox allow-typing suggestions-open has-suggestions full-width">
+        <input id="combobox-open" class="form-select-input input-field full-width" type="text" role="combobox" aria-expanded="true" value="eu">
+        <span class="form-select-icon">${icon(set, 'chevron-down')}</span>
+        <div class="combobox-suggestions" role="listbox">
+          <div class="combobox-suggestion-header combobox-suggestion-header-overlay">Europe</div>
+${comboboxItem('Europe/London', '', 'UTC+0', 'Eu')}
+${comboboxItem('Europe/Warsaw', ' selected', 'UTC+1', 'Eu')}
+${comboboxItem('Europe/Berlin', ' highlighted', 'UTC+1', 'Eu')}
+${comboboxItem('Europe/Helsinki', '', 'UTC+2', 'Eu')}
+          <div class="combobox-suggestion-header">Other</div>
+${comboboxItem('Africa/Cairo', '', 'UTC+2')}
+${comboboxItem('America/Argentina/Buenos_Aires (Argentina Standard Time)', ' addon-mode-dynamic label-truncated', 'UTC-3')}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
 
-const formFields = (state: 'regular' | 'readonly' | 'disabled', set: IconSet = 'fontawesome', prefix: string = state) => {
+const buttonsFor = (set: IconSet) =>
+  `<div class="docs-stack">\n${[undefined, 'primary', 'success', 'danger', 'warning', 'special', 'light', 'dark'].map(buttonRow(set)).join('\n')}\n</div>`;
+
+const formFields = (
+  state: 'regular' | 'readonly' | 'disabled',
+  set: IconSet = 'fontawesome',
+  prefix: string = state,
+) => {
   const attr = state === 'regular' ? '' : ` ${state}`;
   return `<div class="form-control-group vertical">
   <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
@@ -95,6 +248,18 @@ const formFields = (state: 'regular' | 'readonly' | 'disabled', set: IconSet = '
     </div>
   </div>
   <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
+    <div class="form-control-switch">
+      <input id="${prefix}-switch-on" class="form-switch-input" type="checkbox" checked${state === 'regular' ? '' : ' disabled'}>
+      <label class="form-switch-label" for="${prefix}-switch-on">Switch, on</label>
+    </div>
+  </div>
+  <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
+    <div class="form-control-switch">
+      <input id="${prefix}-switch-off" class="form-switch-input" type="checkbox"${state === 'regular' ? '' : ' disabled'}>
+      <label class="form-switch-label" for="${prefix}-switch-off">Switch, off</label>
+    </div>
+  </div>
+  <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
     <div class="form-control-radio">
       <span class="form-radio-input-wrap">
         <input id="${prefix}-radio" class="form-radio-input" type="radio" name="${prefix}-radio" checked${state === 'regular' ? '' : ' disabled'}>
@@ -105,14 +270,391 @@ const formFields = (state: 'regular' | 'readonly' | 'disabled', set: IconSet = '
 </div>`;
 };
 
-const badgeColors = [undefined, 'green', 'blue', 'cyan', 'purple', 'red', 'yellow', 'muted'];
-const badgeGroup = (prefix?: string, suffix?: string) => `<span class="badge-group">
-${badgeColors.map(color => {
-  const label = `${color ? ucfirst(color) : 'Default'} badge`;
-  return `  <span class="badge${color ? ` badge-${color}` : ''}">${prefix ? `<span class="badge-prefix">${prefix}</span>` : ''}<span class="badge-content">${label}</span>${suffix ? `<span class="badge-suffix">${suffix}</span>` : ''}</span>`;
-}).join('\n')}
-</span>`;
+const tagCategories: [string | undefined, string, number][] = [
+  [undefined, 'space opera', 1234],
+  ['rating', 'safe', 987654],
+  ['spoiler', 'spoiler:season finale', 321],
+  ['origin', 'artist:drew struzan', 45],
+  ['oc', 'oc:captain nova', 6],
+  ['error', 'error', 7],
+  ['character', 'ellen ripley', 89012],
+  ['official', 'official art', 34],
+  ['fanmade', 'fan art', 56],
+  ['species', 'android', 7890],
+  ['body', 'cyborg', 123],
+];
+const tagList = () =>
+  tagCategories
+    .map(
+      ([cat, name, count]) =>
+        `  <span class="tag${cat ? ` tag-${cat}` : ''}"><a class="tag-name" href="#">${name}</a><span class="tag-count">${count}</span></span>`,
+    )
+    .join('\n');
 
+// Placeholder pictures for the media stories: an SVG gradient with the size written on it
+const picture = (w: number, h: number, from: string, to: string) =>
+  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="${Math.min(w, h) / 8}" fill="#fff" opacity=".85">${w} × ${h}</text></svg>`)}`;
+const mediaBoxes = (items: [string, number, number, string, string, string][]) =>
+  items
+    .map(([title, w, h, from, to, extra]) => {
+      const cls = extra.replace(' notitle', '');
+      const header = extra.includes('notitle')
+        ? ''
+        : `\n    <div class="media-box-header"><a href="#">${title}</a></div>`;
+      const badges = extra.includes('notitle')
+        ? '<span class="media-box-overlays"><span>12 comments</span><span class="primary">safe</span></span><span class="media-box-overlay bottom">★ 34</span>'
+        : '';
+      return `  <figure class="media-box${cls}">${header}
+    <a class="media-box-content" href="#"><img src="${picture(w, h, from, to)}" alt="${title}">${badges}</a>
+  </figure>`;
+    })
+    .join('\n');
+
+// A thumbnail as on Philomena: fave, upvote, score, downvote, comments and hide in the header
+const imageBox = (
+  w: number,
+  h: number,
+  from: string,
+  to: string,
+  faves: number,
+  score: number,
+  comments: number,
+  active = '',
+) => {
+  const fa = (name: Parameters<typeof icon>[1]) => icon('fontawesome', name);
+  const on = (kind: string) => (active === kind ? ' active' : '');
+  return `  <figure class="media-box">
+    <div class="media-box-header actions">
+      <a class="media-box-action fave${on('fave')}" href="#" title="Fave">${fa('star')}<span>${faves}</span></a>
+      <a class="media-box-action upvote${on('upvote')}" href="#" title="Upvote">${fa('arrow-up')}</a>
+      <span class="media-box-score" title="Score">${score}</span>
+      <a class="media-box-action downvote${on('downvote')}" href="#" title="Downvote">${fa('arrow-down')}</a>
+      <a class="media-box-action comments" href="#" title="Comments">${fa('comments')}<span>${comments}</span></a>
+      <a class="media-box-action hide${on('hide')}" href="#" title="Hide">${fa('eye-slash')}</a>
+    </div>
+    <a class="media-box-content" href="#"><img src="${picture(w, h, from, to)}" alt="A thumbnail"></a>
+  </figure>`;
+};
+
+// Philomena's navigation: the secondary header's links and their menus, and the user menu at the end, which is held
+// open with .open so that a menu shows in the docs
+type FaName = Parameters<typeof icon>[1];
+const navbar = (() => {
+  const fa = (name: FaName) => icon('fontawesome', name);
+  const entry = ([text, name]: [string, (FaName | '')?]) =>
+    `        <a class="navbar-menu-item" href="#">${name === undefined ? '' : `<span class="navbar-menu-icon">${name ? fa(name) : ''}</span>`}<span class="navbar-menu-text">${text}</span></a>`;
+  const dropdown = (
+    name: FaName,
+    text: string,
+    entries: [string, (FaName | '')?][],
+  ) => `    <div class="navbar-dropdown">
+      <a class="navbar-item caret" href="#" aria-haspopup="true"><span class="navbar-icon">${fa(name)}</span>${text}</a>
+      <div class="navbar-menu">
+${entries.map(entry).join('\n')}
+      </div>
+    </div>`;
+  return `<div style="min-height: 34rem">
+  <nav class="navbar" aria-label="Site">
+${dropdown('image', 'Images', [['Random']])}
+${dropdown('activity', 'Activity', [['Comments']])}
+${dropdown('comments', 'Forums', [
+  ['Site and Policy', ''],
+  ['General Discussion', ''],
+  ['Art Chat', ''],
+  ['Tagging Discussion', ''],
+  ['Post Search', 'search'],
+])}
+${dropdown('tags', 'Tags', [['Tag Changes']])}
+    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('video')}</span>Livestreams ${badge('3 live', 'badge-danger')}</a>
+    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('images')}</span>Galleries</a>
+    <a class="navbar-item" href="#"><span class="navbar-icon">${fa('palette')}</span>Commissions</a>
+    <span class="navbar-spacer"></span>
+    <a class="navbar-item" href="#" title="Notifications"><span class="navbar-icon counter-anchor">${fa('bell')}<span class="counter counter-danger corner">12</span></span></a>
+    <a class="navbar-item" href="#" title="Conversations"><span class="navbar-icon counter-anchor">${fa('envelope')}<span class="counter counter-danger corner">3</span></span></a>
+    <div class="navbar-dropdown open">
+      <a class="navbar-item caret" href="#" aria-haspopup="true" aria-expanded="true"><span class="navbar-icon">${fa('user')}</span>Username</a>
+      <div class="navbar-menu end">
+${(
+  [
+    ['Watched', 'eye'],
+    ['Faves', 'star'],
+    ['Upvotes', 'arrow-up'],
+    ['Galleries', 'image'],
+    ['Uploads', 'upload'],
+    ['Comments', 'comments'],
+    ['Posts', 'pen-square'],
+    ['Links', 'link'],
+    ['Settings', 'gear'],
+    ['Messages', 'envelope'],
+    ['Account', 'user'],
+  ] as [string, FaName][]
+)
+  .map(entry)
+  .join('\n')}
+        <hr class="navbar-menu-divider">
+${entry(['Logout', 'sign-out'])}
+      </div>
+    </div>
+  </nav>
+</div>`;
+})();
+
+// Stories for the navigation pieces and helpers that came from Philomena's general styles
+const fai = (name: FaName) => icon('fontawesome', name);
+const dropdownItem = ([text, name, extra]: [string, FaName, string?]) =>
+  `      <a class="dropdown-item${extra ?? ''}" href="#"><span class="dropdown-icon">${fai(name)}</span>${text}</a>`;
+const dropdowns = `<div class="flex flex-wrap gap-md" style="min-height: 13rem; align-items: flex-start">
+  <div class="dropdown">
+    ${button('Hover or focus me', '', 'aria-haspopup="true"')}
+    <div class="dropdown-menu">
+${(
+  [
+    ['Edit', 'pen'],
+    ['Copy link', 'link'],
+    ['Hide', 'eye-slash'],
+  ] as [string, FaName][]
+)
+  .map(dropdownItem)
+  .join('\n')}
+      <hr class="dropdown-divider">
+${dropdownItem(['Delete', 'trash', ' danger'])}
+    </div>
+  </div>
+  <div class="dropdown manual open">
+    ${button('Held open with .open', 'button-primary', 'aria-haspopup="true" aria-expanded="true"')}
+    <div class="dropdown-menu">
+      <a class="dropdown-item current" href="#">Newest first</a>
+      <a class="dropdown-item" href="#">Oldest first</a>
+      <a class="dropdown-item" href="#">Top rated</a>
+    </div>
+  </div>
+  <div class="dropdown">
+    <a href="#" aria-haspopup="true">A plain link as the trigger</a>
+    <div class="dropdown-menu end">
+      <a class="dropdown-item" href="#">Aligned to the end</a>
+      <a class="dropdown-item" href="#">of its trigger</a>
+    </div>
+  </div>
+</div>`;
+
+const burger = `<input class="burger-toggle" type="checkbox" id="burger-demo">
+<label class="button" for="burger-demo"><span class="button-content"><span class="button-icon">${fai('bars')}</span><span class="button-text">Open the menu</span></span></label>
+<nav class="burger" aria-label="Burger menu">
+  <div class="burger-header">Menu <label class="burger-close" for="burger-demo" aria-label="Close">×</label></div>
+${(
+  [
+    ['Images', 'image'],
+    ['Activity', 'activity'],
+    ['Forums', 'comments'],
+    ['Tags', 'tags'],
+    ['Livestreams', 'video'],
+    ['Galleries', 'images'],
+    ['Commissions', 'palette'],
+  ] as [string, FaName][]
+)
+  .map(([text, name]) => `  <a class="burger-item" href="#"><span class="burger-icon">${fai(name)}</span>${text}</a>`)
+  .join('\n')}
+  <hr class="burger-divider">
+  <a class="burger-item" href="#"><span class="burger-icon">${fai('gear')}</span>Settings</a>
+  <a class="burger-item" href="#"><span class="burger-icon">${fai('sign-out')}</span>Logout</a>
+</nav>
+<label class="burger-overlay" for="burger-demo"></label>`;
+
+const tabs = `<div class="docs-stack">
+<div>
+  <div class="tabs" role="tablist">
+    <a class="tab selected" href="#" role="tab" aria-selected="true" data-tab="tabs-demo-1">Comments <span class="counter subtle">12</span></a>
+    <a class="tab" href="#" role="tab" aria-selected="false" data-tab="tabs-demo-2">Favourites</a>
+    <a class="tab" href="#" role="tab" aria-selected="false" data-tab="tabs-demo-3">History</a>
+    <span class="tab disabled">Disabled</span>
+  </div>
+  <div id="tabs-demo-1" class="tab-panel selected" role="tabpanel"><p>The comments panel. ${lorem}</p></div>
+  <div id="tabs-demo-2" class="tab-panel" role="tabpanel"><p>The favourites panel.</p></div>
+  <div id="tabs-demo-3" class="tab-panel" role="tabpanel"><p>The history panel.</p></div>
+</div>
+<section class="block">
+  <header class="block-header"><span class="block-header-title">Tabs in a block</span></header>
+  <div class="tabs" role="tablist">
+    <a class="tab selected" href="#" role="tab" aria-selected="true" data-tab="tabs-block-1">Preview</a>
+    <a class="tab" href="#" role="tab" aria-selected="false" data-tab="tabs-block-2">Source</a>
+  </div>
+  <div id="tabs-block-1" class="tab-panel selected" role="tabpanel"><p>The block draws the frame, the tabs sit under its header.</p></div>
+  <div id="tabs-block-2" class="tab-panel" role="tabpanel"><pre class="code-block"><code>&lt;div class="tabs"&gt;…&lt;/div&gt;</code></pre></div>
+</section>
+</div>`;
+
+const toggleBox = `<div class="docs-stack">
+<div>
+  <input class="toggle-box" type="checkbox" id="toggle-box-demo-1">
+  <label class="toggle-box-label" for="toggle-box-demo-1">Advanced options</label>
+  <div class="toggle-box-content"><p>Hidden until the label is clicked. No script is involved, the label checks a hidden checkbox.</p></div>
+</div>
+<div>
+  <input class="toggle-box" type="checkbox" id="toggle-box-demo-2" checked>
+  <label class="toggle-box-label" for="toggle-box-demo-2">Open from the start</label>
+  <div class="toggle-box-content"><p>This one has the checked attribute. ${lorem}</p></div>
+</div>
+</div>`;
+
+const spoilers = `<p>The detective gathers everyone in the library and announces that the killer is <span class="spoiler" tabindex="0">the butler, who was <a href="#">seen in the garden</a></span>. Hover the bar, or focus it with the keyboard, to read it.</p>
+<p>Already revealed: <span class="spoiler revealed">the butler did it</span>.</p>
+<hr>
+<p>A separator above, a thin one below.</p>
+<hr class="separator thin">
+<div class="flex flex-center">
+  <a href="#">First</a><span class="separator vertical"></span><a href="#">Prev</a><span class="separator vertical"></span><a href="#">Next</a>
+</div>`;
+
+const sliders = `<div class="form-control-group vertical">
+  <div class="form-control-wrap">
+    <div class="form-control">
+      <label class="form-control-label" for="slider-demo-1">Volume</label>
+      <input id="slider-demo-1" class="slider" type="range" min="0" max="100" value="40" data-slider-fill>
+    </div>
+  </div>
+  <div class="form-control-wrap full-width">
+    <div class="form-control">
+      <label class="form-control-label" for="slider-demo-2">Full width, in steps</label>
+      <input id="slider-demo-2" class="slider full-width" type="range" min="0" max="10" step="1" value="7" data-slider-fill>
+    </div>
+  </div>
+  <div class="form-control-wrap">
+    <div class="form-control">
+      <label class="form-control-label" for="slider-demo-3">Disabled</label>
+      <input id="slider-demo-3" class="slider" type="range" value="25" style="--slider-fill: 25%" disabled>
+    </div>
+  </div>
+</div>`;
+
+const layoutHelpers = `<div class="docs-stack">
+<div class="layout-columns">
+  <aside class="layout-side">${block('.layout-side', `<p>A side column of a fixed width. It stacks over the main column on narrow screens.</p>`)}</aside>
+  <div class="layout-main">${block('.layout-main', `<p>${lorem} ${lorem}</p>`)}</div>
+</div>
+<div class="layout-narrow layout-center"><div class="alert"><div class="alert-content"><p>.layout-narrow .layout-center: a readable column, centered.</p></div></div></div>
+<div class="flex flex-wrap flex-center flex-between gap-md">
+  ${badge('.flex .flex-center .flex-between .gap-md')}
+  ${badge('second', 'badge-primary')}
+  ${badge('third', 'badge-success')}
+</div>
+<div class="flex flex-wrap gap-md">
+  ${badge('.hidden-below-md: wide screens only', 'badge-primary hidden-below-md')}
+  ${badge('.hidden-from-md: narrow screens only', 'badge-warning hidden-from-md')}
+  ${badge('.hidden-below-xl', 'badge-special hidden-below-xl')}
+  ${badge('.hidden-from-xl', 'badge-danger hidden-from-xl')}
+  ${badge('.hidden: never shown', 'hidden')}
+</div>
+</div>`;
+
+const face = (from: string, to: string) =>
+  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="100" height="100" fill="url(#g)"/><circle cx="50" cy="40" r="18" fill="#fff" opacity=".85"/><ellipse cx="50" cy="95" rx="32" ry="30" fill="#fff" opacity=".85"/></svg>`)}`;
+const avatars = `<div class="docs-stack">
+<div class="flex flex-wrap flex-center gap-lg">
+  <img class="avatar avatar-xs" src="${face('#4dabf7', '#1864ab')}" alt="28px avatar">
+  <img class="avatar avatar-sm" src="${face('#69db7c', '#2b8a3e')}" alt="50px avatar">
+  <img class="avatar avatar-md" src="${face('#ffa94d', '#d9480f')}" alt="100px avatar">
+  <img class="avatar avatar-lg" src="${face('#da77f2', '#862e9c')}" alt="125px avatar">
+</div>
+<div class="flex flex-wrap flex-center gap-lg">
+  <span class="avatar avatar-xs">A</span>
+  <span class="avatar avatar-sm">LF</span>
+  <span class="avatar avatar-sm square">LF</span>
+  <img class="avatar avatar-sm square" src="${face('#f783ac', '#a61e4d')}" alt="Square avatar">
+  <span class="counter-anchor"><img class="avatar avatar-sm" src="${face('#63e6be', '#087f5b')}" alt="Avatar with a badge"><span class="counter counter-danger corner">3</span></span>
+  <span class="avatar-group">
+    <img class="avatar avatar-sm" src="${face('#4dabf7', '#1864ab')}" alt="First">
+    <img class="avatar avatar-sm" src="${face('#ffa94d', '#d9480f')}" alt="Second">
+    <img class="avatar avatar-sm" src="${face('#da77f2', '#862e9c')}" alt="Third">
+    <span class="avatar avatar-sm">+5</span>
+  </span>
+</div>
+</div>`;
+
+// Comments: a short one (the "Show more" label stays out of sight), a long one cut after six lines, one cut after
+// three with --communication-max-height, and a deleted one
+const communication = (id: string, name: string, colors: [string, string], body: string, extra = '', style = '') =>
+  `<article class="communication${extra}"${style ? ` style="${style}"` : ''}>
+  <div class="communication-body">
+    <img class="avatar avatar-md square communication-avatar" src="${face(...colors)}" alt="">
+    <div class="communication-content">
+      <div class="communication-author">
+        <a class="communication-author-name" href="#">${name}</a>${extra ? '' : `\n        ${badge('Moderator', 'badge-success')}`}
+      </div>
+      <input class="clamp-toggle" type="checkbox" id="${id}">
+      <div class="communication-text clamp">
+${body}
+        <label class="clamp-more" for="${id}">Show more</label>
+        <label class="clamp-less" for="${id}">Show less</label>
+      </div>
+    </div>
+  </div>
+  <div class="communication-options">
+    <div>Posted 2 hours ago <a href="#">${fai('flag')}Report</a></div>
+    <div><a href="#">${fai('link')}Link</a><a href="#">${fai('quote')}Quote</a><a href="#">${fai('reply')}Reply</a></div>
+  </div>
+</article>`;
+const longText = `        <p>${lorem} ${lorem}</p>
+        <p>${lorem} ${lorem} ${lorem}</p>
+        <blockquote><p>A quote inside the comment. ${lorem}</p></blockquote>
+        <p>The last paragraph, which is only visible once the comment is expanded. ${lorem}</p>`;
+const communications = `<div class="docs-stack">
+${communication('communication-demo-1', 'Short comment', ['#4dabf7', '#1864ab'], '        <p>A short comment fits, so it is shown whole and no label appears, although the toggle is in the markup.</p>')}
+${communication('communication-demo-2', 'Long comment', ['#69db7c', '#2b8a3e'], longText)}
+${communication('communication-demo-3', 'Cut after three lines', ['#ffa94d', '#d9480f'], longText, '', '--communication-max-height: calc(3em * var(--text-line-height))')}
+${communication(
+  'communication-demo-4',
+  'Deleted comment',
+  ['#da77f2', '#862e9c'],
+  `        <p><strong>Deletion reason: Rule #1 (Moderator)</strong></p>
+        <p> ${lorem} ${lorem} ${lorem} ${lorem} ${lorem} ${lorem}</p>`,
+  ' deleted',
+)}
+</div>`;
+
+// Clamped text on its own: an image description in a block, cut after six lines, a short one, and one cut at 4rem
+const clampBox = (id: string, title: string, body: string, style = '') => `<section class="block">
+  <header class="block-header"><span class="block-header-title">${title}</span></header>
+  <div class="block-content">
+    <input class="clamp-toggle" type="checkbox" id="${id}">
+    <div class="clamp"${style ? ` style="${style}"` : ''}>
+${body}
+      <label class="clamp-more" for="${id}">Show more</label>
+      <label class="clamp-less" for="${id}">Show less</label>
+    </div>
+  </div>
+</section>`;
+const clamps = `<div class="docs-stack">
+${clampBox(
+  'clamp-demo-1',
+  'Description',
+  `      <p>Commissioned for the anniversary of the comic. ${lorem} ${lorem}</p>
+      <p>${lorem} ${lorem} ${lorem}</p>
+      <p>${lorem} ${lorem} ${lorem} ${lorem}</p>
+      <p>${lorem} ${lorem} ${lorem}</p>
+      <p>Source files and a timelapse are linked below. ${lorem} <a href="#">A link</a>.</p>`,
+)}
+${clampBox('clamp-demo-2', 'A short description', '      <p>Short text is shown whole. No label, no fade.</p>')}
+${clampBox('clamp-demo-3', 'Cut at 4rem', `      <p>${lorem} ${lorem} ${lorem} ${lorem} ${lorem} ${lorem}</p>`, '--clamp-max-height: 4rem')}
+</div>`;
+
+// Quotes nested `depth` levels deep, numbered from the outside in
+const nestedQuotes = (depth: number): string => {
+  let html = '';
+  for (let level = depth; level >= 1; level--) {
+    html = `<blockquote>\n  <p>Level ${level}${level >= 7 ? ', the gap is small from here on' : ''}.</p>\n${html}</blockquote>\n`;
+  }
+  return html.trimEnd();
+};
+
+const badgeColors = [undefined, 'primary', 'success', 'warning', 'danger', 'special', 'light', 'dark'];
+const badgeGroup = (prefix?: string, suffix?: string) => `<span class="badge-group">
+${badgeColors
+  .map(color => {
+    const label = `${color ? ucfirst(color) : 'Default'} badge`;
+    return `  <span class="badge${color ? ` badge-${color}` : ''}">${prefix ? `<span class="badge-prefix">${prefix}</span>` : ''}<span class="badge-content">${label}</span>${suffix ? `<span class="badge-suffix">${suffix}</span>` : ''}</span>`;
+  })
+  .join('\n')}
+</span>`;
 
 const iconStory = (set: IconSet): Story => ({
   id: `icons-${set}`,
@@ -123,40 +665,419 @@ ${buttonRow(set, true)('primary')}`,
 });
 
 export const stories: Story[] = [
-  { id: 'alerts', title: 'Alerts', description: 'Info and warning variants, plus a compact layout with actions.', html: alerts },
-  { id: 'buttons', title: 'Buttons', description: 'Every colour in the default, disabled, pressed and loading state. Icon-only variants (.icon-only with a .button-icon) follow. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the dimmed content, on a gradient in the button colour.', html: buttonsFor('fontawesome'), notes: ["Loading: put a <code class=\"code-span\">.loading-icon</code> element before <code class=\"code-span\">.button-content</code> inside the button. The gradient and the dimming of the content come from it, a button with only <code class=\"code-span\">.loading</code> shows no gradient. It is a slot for any icon or spinner. <code class=\"code-span\">.icon-only</code> buttons put their icon in <code class=\"code-span\">.button-icon</code>."] },
-  { id: 'forms-regular', title: 'Forms: regular', description: 'Input, select, checkbox and radio.', html: formFields('regular'), notes: [
-    "Icons are slots: the framework ships none. <code class=\"code-span\">.form-checkbox-check-icon</code> and <code class=\"code-span\">.form-select-icon</code> are positioned for a fixed-width icon (about 1.25em wide, 1em tall, such as Font Awesome's <code class=\"code-span\">fa-fw</code>), a text glyph will not line up.",
-    "Radio: before v0.1.2 any whitespace between <code class=\"code-span\">.form-radio-input-wrap</code> and <code class=\"code-span\">.form-radio-label</code> pushed the label out. From v0.1.2 the control is a flex row and the markup may be formatted freely.",
-  ] },
-  { id: 'forms-readonly', title: 'Forms: readonly', description: 'The same controls with the readonly attribute.', html: formFields('readonly') },
-  { id: 'forms-disabled', title: 'Forms: disabled', description: 'The same controls disabled.', html: formFields('disabled') },
+  {
+    id: 'alerts',
+    title: 'Alerts',
+    description:
+      'The plain alert (.info is the same), the success, danger, warning and special variants, plus a compact layout with actions.',
+    html: alerts,
+  },
+  {
+    id: 'buttons',
+    title: 'Buttons',
+    description:
+      'Every colour in the default, disabled, pressed and loading state. Buttons are flat: hovering darkens the fill a little, pressing (or .pressed) darkens it more. Icon-only variants (.icon-only with a .button-icon) follow. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the content, which fades to 20%.',
+    html: buttonsFor('fontawesome'),
+    notes: [
+      'Loading: put a <code class="code-span">.loading-icon</code> element before <code class="code-span">.button-content</code> inside the button. The dimming of the content comes from it, a button with only <code class="code-span">.loading</code> only changes the cursor. It is a slot for any icon or spinner. <code class="code-span">.icon-only</code> buttons put their icon in <code class="code-span">.button-icon</code>.',
+    ],
+  },
+  {
+    id: 'button-sizes',
+    title: 'Badge-sized buttons and groups',
+    description:
+      'Buttons the size and shape of a badge (and of pagination links), for toolbars and list rows: .button-size-badge on a button, or on a .button-group to size every button in it. A separated group of every colour, a joined group with a pressed option, a joined primary group and a single one.',
+    html: badgeSizedButtons,
+  },
+  {
+    id: 'pagination',
+    title: 'Pagination',
+    description:
+      "Philomena's pagination: a pill of bold links at badge size, the current page filled like a button, gaps where pages are skipped and the border of a button, so it lines up with badge-sized buttons. In order: a page in the middle, the first page (First and Prev are spans, so unavailable), a primary one in a .pagination-bar with a .pagination-info text, then success and special, the last one next to badge-sized buttons.",
+    html: paginations,
+    notes: [
+      'The glyphs in <code class="code-span">.pagination-icon</code> are plain text here; the slot takes an icon of about 1.25em too. A <code class="code-span">&lt;span class="pagination-link"&gt;</code> (no href) or <code class="code-span">.disabled</code> is an unavailable link.',
+    ],
+  },
+  {
+    id: 'navbar',
+    title: 'Navbar',
+    description:
+      "A navigation bar in the header colours with dropdown menus, here with Philomena's navigation: the site links with their menus, then (after a .navbar-spacer) notifications with a corner .counter, conversations and the user menu. Menus open while their .navbar-dropdown is hovered or has the focus inside, no script is needed; .open holds one open (as on the user menu here) for touch screens or a click toggle of your own. Menu items can have an icon column; an empty .navbar-menu-icon keeps a row without an icon aligned.",
+    html: navbar,
+    notes: [
+      'The bar works on its own or inside a <code class="code-span">.header</code>, where it fills the height. <code class="code-span">.navbar-menu.end</code> aligns a menu with the end of its item, for items near the end of the bar.',
+    ],
+  },
+  {
+    id: 'dropdown',
+    title: 'Dropdown',
+    description:
+      'A menu under any trigger. It opens while the .dropdown is hovered or has the focus inside, with no script; .open holds it open and .manual turns the hover off, for a click toggle of your own (the second one here). Items can have an icon, .danger colours one, .dropdown-menu.end aligns the menu with the end of its trigger and .up opens it above.',
+    html: dropdowns,
+  },
+  {
+    id: 'burger',
+    title: 'Burger menu',
+    description:
+      'A panel that slides in from the start side of the screen over a dimmed page. This one is toggled by a hidden checkbox (.burger-toggle) that the button, the close mark and the overlay are labels of, so it needs no script; .open on the panel and the overlay does the same from a script.',
+    html: burger,
+  },
+  {
+    id: 'tabs',
+    title: 'Tabs',
+    description:
+      "Philomena's tabbed headers: a row of .tab links over the .tab-panel of the selected one. The framework styles the states, moving .selected between tabs and panels is your script's job (this page does it for the demo). On their own they are framed, in a .block the block draws the frame.",
+    html: tabs,
+  },
+  {
+    id: 'toggle-box',
+    title: 'Toggle box',
+    description:
+      'A section that opens when its label is clicked, driven by a hidden checkbox, so it works without a script (unlike the collapsible). The checkbox, the label and the content have to follow each other in that order.',
+    html: toggleBox,
+  },
+  {
+    id: 'spoiler',
+    title: 'Spoiler text and separators',
+    description:
+      'Inline spoiler text is blacked out until it is hovered or focused; .revealed shows it for good (this page sets it on click). Below it: <hr> and .separator draw a rule in the border tint, .thin keeps a smaller distance and .vertical separates the items of a row.',
+    html: spoilers,
+  },
+  {
+    id: 'slider',
+    title: 'Slider',
+    description:
+      'A range input with a track in the input material and a knob filled like a button. Firefox fills the track up to the knob by itself; elsewhere --slider-fill does, set to the value as a percentage (this page keeps it up to date).',
+    html: sliders,
+  },
+  {
+    id: 'layout',
+    title: 'Layout and visibility helpers',
+    description:
+      'A side column next to a main one that stack on narrow screens, a readable centered column, the flex helpers with gaps from the spacing scale, and the visibility utilities: .hidden-below-{breakpoint} and .hidden-from-{breakpoint} for sm, md, lg, xl and xxl. Resize the window to see the badges in the last row swap.',
+    html: layoutHelpers,
+  },
+  {
+    id: 'forms-regular',
+    title: 'Forms: regular',
+    description:
+      'Input, select, checkbox, switch (a checkbox drawn as a sliding toggle, red when off and green when on) and radio.',
+    html: formFields('regular'),
+    notes: [
+      'Icons are slots: the framework ships none. <code class="code-span">.form-checkbox-check-icon</code> and <code class="code-span">.form-select-icon</code> are positioned for a fixed-width icon (about 1.25em wide, 1em tall, such as Font Awesome\'s <code class="code-span">fa-fw</code>), a text glyph will not line up.',
+      'Radio: before v0.1.2 any whitespace between <code class="code-span">.form-radio-input-wrap</code> and <code class="code-span">.form-radio-label</code> pushed the label out. From v0.1.2 the control is a flex row and the markup may be formatted freely.',
+    ],
+  },
+  {
+    id: 'combobox',
+    title: 'Forms: combobox',
+    description:
+      'A select-like input with a suggestion list. The framework only styles it: filtering, keyboard handling and toggling the state classes (.suggestions-open, .has-suggestions, .allow-typing, and .selected / .highlighted on items) is up to your script. Both controls here are static; the second one is shown open, with a selected item (filled like a primary button), a highlighted item (tinted, like a hovered one), matches wrapped in <mark>, addons and a truncated label (hover it to see the addon move into the corner).',
+    html: combobox(),
+    notes: [
+      'The suggestion list is absolutely positioned under the control and overlays what follows it, so leave room for it in your layout. Matching items (those containing a <code class="code-span">&lt;mark&gt;</code>) are sorted before the rest.',
+      '<code class="code-span">.allow-typing</code> is what makes the input editable-looking: without it the input gets a default cursor and no text selection. Put <code class="code-span">.combobox-suggestion-header-overlay</code> on a header to keep it sticky while the list scrolls.',
+      'Addons: <code class="code-span">.addon-mode-dynamic.label-truncated</code> on an item moves the addon into the corner on hover to give a truncated label the full width. Your script sets <code class="code-span">.label-truncated</code> when it detects the label overflowing, the last item in the demo has it set.',
+    ],
+  },
+  {
+    id: 'forms-readonly',
+    title: 'Forms: readonly',
+    description: 'The same controls with the readonly attribute.',
+    html: formFields('readonly'),
+  },
+  {
+    id: 'forms-disabled',
+    title: 'Forms: disabled',
+    description: 'The same controls disabled.',
+    html: formFields('disabled'),
+  },
   iconStory('fontawesome'),
   iconStory('lucide'),
-  { id: 'badges', title: 'Badges', description: 'Colours, with optional prefix and suffix.', html: [badgeGroup(), badgeGroup('Prefixed'), badgeGroup(undefined, 'Suffixed'), badgeGroup('Prefixed', 'Suffixed')].join('\n') },
-  { id: 'table', title: 'Table', description: 'Header, body header cell and footer. Add .responsive to the wrapper to scroll on narrow screens.', html: `<div class="table-wrap">
-  <table class="table">
+  {
+    id: 'badges',
+    title: 'Badges',
+    description:
+      'The default, primary, success, warning, danger and special colours plus the fixed light and dark ones, with optional prefix and suffix.',
+    html: `<div class="docs-stack">\n${[badgeGroup(), badgeGroup('Prefixed'), badgeGroup(undefined, 'Suffixed'), badgeGroup('Prefixed', 'Suffixed')].join('\n')}\n</div>`,
+  },
+  {
+    id: 'counters',
+    title: 'Counters',
+    description:
+      'A small pill with a number. It is filled like a button of its colour (.counter-{color}); .subtle is a shaded chip in the colour of what it sits on, for bars and buttons. In a .counter-anchor, .corner pins it to the corner of an icon as an unread badge.',
+    html: `<div class="docs-stack">
+<div class="badge-group">
+${badgeColors.map(color => `  <span class="counter${color ? ` counter-${color}` : ''}">${color === 'danger' ? '99+' : 7}</span>`).join('\n')}
+</div>
+<div class="button-group separated">
+  <button type="button" class="button"><span class="button-content"><span class="button-text">Inbox</span><span class="counter subtle">4</span></span></button>
+  <button type="button" class="button button-primary"><span class="button-content"><span class="button-text">Reports</span><span class="counter subtle">128</span></span></button>
+  <button type="button" class="button"><span class="button-content"><span class="button-text">Queue</span><span class="counter counter-danger">2</span></span></button>
+  <button type="button" class="button icon-only" aria-label="Notifications"><span class="button-content"><span class="button-icon counter-anchor">${icon('fontawesome', 'bell')}<span class="counter counter-danger corner">12</span></span></span></button>
+  <button type="button" class="button icon-only" aria-label="Messages"><span class="button-content"><span class="button-icon counter-anchor">${icon('fontawesome', 'envelope')}<span class="counter counter-success corner">3</span></span></span></button>
+</div>
+</div>`,
+  },
+  {
+    id: 'avatars',
+    title: 'Avatars',
+    description:
+      "A round picture or initials. The sizes are Philomena's: .avatar-xs 28px, .avatar-sm 50px, .avatar-md 100px and .avatar-lg 125px; the two large ones step down a size on narrow screens. .square takes the roundness off, a .counter can be pinned to one and .avatar-group overlaps a row of them.",
+    html: avatars,
+  },
+  {
+    id: 'clamp',
+    title: 'Clamped text',
+    description:
+      'Text that is cut off after a maximum height, with the rest behind a Show more label, for image descriptions and other text of unknown length. It works without a script, through a hidden checkbox right before the text. The limit is --clamp-max-height, six lines by default and 4rem on the last one here. The label and the fade only appear when at least a line is cut, so the short description is left alone.',
+    html: clamps,
+    notes: [
+      'The fade ends in the surface colour. On another background set <code class="code-span">--clamp-bg-color</code> to it. The communication below uses the same clamp for its text.',
+    ],
+  },
+  {
+    id: 'communication',
+    title: 'Communication',
+    description:
+      'A comment, post or message: an avatar next to the author and the text, over a bar of options, laid out as the comments on Philomena: a square avatar, the name over the role label, the time and Report on one side of the bar and the actions on the other. On narrow screens the avatar and the author become a header row over the text. Long text is cut off after --communication-max-height (six lines by default, three on the third one here) and the rest is behind a Show more label, which works without a script. The label only appears when the text is longer than the limit, as the first comment shows. .deleted tints a removed one.',
+    html: communications,
+    notes: [
+      'The cut works with the clamp: a hidden checkbox (<code class="code-span">.clamp-toggle</code>) right before <code class="code-span">.communication-text.clamp</code>, and the two labels inside the text. Leave them out and the text is never cut. The limit is a height, so any length works: <code class="code-span">--communication-max-height: 200px</code>.',
+    ],
+  },
+  {
+    id: 'tags',
+    title: 'Tags',
+    description:
+      'Tags: a bold name with an optional count, colored by category with .tag-{category}. They are borderless; set --tag-border to a width to draw a border in the count colour (the second list does, inline). Add .muted for spoilered or hidden tags.',
+    html: `<div class="docs-stack">
+<div class="tag-list">
+${tagList()}
+</div>
+<div class="tag-list" style="--tag-border: .0625rem">
+${tagList()}
+</div>
+<div class="tag-list">
+  <span class="tag tag-rating"><span class="tag-icon">${icon('fontawesome', 'check')}</span><a class="tag-name" href="#">with icon</a><span class="tag-count">12</span></span>
+  <span class="tag muted"><a class="tag-name" href="#">muted tag</a><span class="tag-count">3</span></span>
+  <span class="tag tag-origin"><a class="tag-name" href="#">no count</a></span>
+</div>
+</div>`,
+    notes: [
+      'The icon slot <code class="code-span">.tag-icon</code> is optional and sized for a fixed-width icon, like the other slots. The count is optional too.',
+    ],
+  },
+  {
+    id: 'tag-box',
+    title: 'Tag box',
+    description:
+      "An editable tag list in the input material, as Philomena's tags input: tags with a .tag-remove control and an .input-field that is as wide as its placeholder and grows as you type (field-sizing: content; browsers without it use the size attribute). It grows with its content up to a limit, then scrolls, and can be resized vertically. Styling only, removing and adding tags is your script's job.",
+    html: `<div class="tag-box">
+${tagCategories
+  .slice(0, 6)
+  .map(
+    ([cat, name]) =>
+      `  <span class="tag${cat ? ` tag-${cat}` : ''}"><a class="tag-name" href="#">${name}</a><button type="button" class="tag-remove" aria-label="Remove ${name}">×</button></span>`,
+  )
+  .join('\n')}
+  <input class="input-field" type="text" size="12" placeholder="Add a tag..." aria-label="Add a tag">
+</div>`,
+  },
+  {
+    id: 'table',
+    title: 'Table',
+    description:
+      'A framed table with the header row in the input material and thin row dividers. Add .striped for zebra rows and .hover to tint the row under the pointer, .numeric on a column aligns its numbers. Wrap it in .table-wrap, with .responsive to scroll sideways on narrow screens.',
+    html: `<div class="table-wrap responsive">
+  <table class="table striped hover">
     <thead>
-      <tr><th>Table header cell 1</th><th>Table header cell 2</th><th>Table header cell 3</th></tr>
+      <tr><th>Genre</th><th>Title</th><th class="numeric">Year</th></tr>
     </thead>
     <tbody>
-      <tr><td>Data cell 1 / 1</td><td>Data cell 1 / 2</td><td>Data cell 1 / 3</td></tr>
-      <tr><th>Body header cell 2 / 1</th><td>Data cell 2 / 2</td><td>Data cell 2 / 3</td></tr>
+      <tr><td>Space opera</td><td><a href="#">Dune</a></td><td class="numeric">1965</td></tr>
+      <tr><td>Cyberpunk</td><td><a href="#">Neuromancer</a></td><td class="numeric">1984</td></tr>
+      <tr><td>Hard SF</td><td><a href="#">The Martian</a></td><td class="numeric">2011</td></tr>
+      <tr><td>Fantasy</td><td><a href="#">The Hobbit</a></td><td class="numeric">1937</td></tr>
     </tbody>
     <tfoot>
-      <tr><td>Footer cell 1</td><td>Footer cell 2</td><td>Footer cell 3</td></tr>
+      <tr><td>4 genres</td><td>4 titles</td><td class="numeric">1937–2011</td></tr>
     </tfoot>
   </table>
-</div>` },
-  { id: 'collapsible', title: 'Collapsible', description: 'Styling hooks only: toggle .visible (and set an explicit height) from your own script. This demo toggles it with the button.', html: `<button type="button" class="button" data-demo-toggle="#collapsible-demo"><span class="button-content"><span class="button-text">Toggle visibility</span></span></button>
+</div>`,
+  },
+  {
+    id: 'table-colors',
+    title: 'Table colours',
+    description:
+      'The standard colours on tables: .table-{color} on the table colours its header, footer and frame, .{color} on a row or a cell colours just that. Links in a coloured row take the highlight colour.',
+    html: `<div class="table-wrap">
+  <table class="table table-success">
+    <thead>
+      <tr><th>Check</th><th>Result</th><th class="numeric">Time</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Build</td><td><a href="#">passed</a></td><td class="numeric">12 s</td></tr>
+      <tr class="warning"><td>Lint</td><td><a href="#">3 warnings</a></td><td class="numeric">4 s</td></tr>
+      <tr class="danger"><td>Tests</td><td><a href="#">1 failure</a></td><td class="numeric">48 s</td></tr>
+      <tr class="special"><td>Review</td><td>assistant approved</td><td class="numeric">—</td></tr>
+      <tr><td>Deploy</td><td class="primary">queued</td><td class="numeric light">—</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><td colspan="2">4 of 5 steps done</td><td class="numeric">64 s</td></tr>
+    </tfoot>
+  </table>
+</div>
+${['primary', 'warning', 'danger', 'special', 'light', 'dark']
+  .map(
+    c => `<div class="table-wrap">
+  <table class="table table-${c}">
+    <thead><tr><th>${c[0].toUpperCase() + c.slice(1)} table</th><th class="numeric">Count</th></tr></thead>
+    <tbody><tr><td>Row</td><td class="numeric">1</td></tr></tbody>
+  </table>
+</div>`,
+  )
+  .join('\n')}`,
+  },
+  {
+    id: 'collapsible',
+    title: 'Collapsible',
+    description:
+      'Styling hooks only: toggle .visible (and set an explicit height) from your own script. This demo toggles it with the button.',
+    html: `${button('Toggle visibility', '', 'data-demo-toggle="#collapsible-demo"')}
 <div id="collapsible-demo" class="collapsible animate visible">
   <div class="collapsible-inner">
     <p>This is the contents of the collapsible container.</p>
     <p>Visibility is controlled with the <code class="code-span">.visible</code> class.</p>
   </div>
-</div>`, notes: ["Details: the CSS reset removes the disclosure marker of <code class=\"code-span\">&lt;summary&gt;</code> (<code class=\"code-span\">list-style: none</code>), so a <code class=\"code-span\">&lt;details&gt;</code> toggle shows no hint that it can be clicked. Give <code class=\"code-span\">&lt;summary&gt;</code> its own affordance, such as a chevron, a border or a pointer cursor (see the &quot;HTML source&quot; toggles on this page). The framework only styles <code class=\"code-span\">.collapsible</code>, it never drives <code class=\"code-span\">.visible</code> for you."] },
-  { id: 'card', title: 'Card', description: 'A container with an optional header.', html: `<article class="card">
+</div>`,
+    notes: [
+      'Details: the CSS reset removes the disclosure marker of <code class="code-span">&lt;summary&gt;</code> (<code class="code-span">list-style: none</code>), so a <code class="code-span">&lt;details&gt;</code> toggle shows no hint that it can be clicked. Give <code class="code-span">&lt;summary&gt;</code> its own affordance, such as a chevron, a border or a pointer cursor (see the &quot;HTML source&quot; toggles on this page). The framework only styles <code class="code-span">.collapsible</code>, it never drives <code class="code-span">.visible</code> for you.',
+    ],
+  },
+  {
+    id: 'code',
+    title: 'Code',
+    description:
+      'Inline code spans and code blocks share the input material, as in Philomena. A block scrolls horizontally, add .wrap to wrap long lines instead.',
+    html: `<p>Inline <code class="code-span">.code-span</code> next to text, also in <code class="code-span base-font">.base-font</code> and <code class="code-span small">.small</code>.</p>
+<pre class="code-block"><code>@import "@philomena/philomena-css/css/config.css";
+$base-color-light: #e8590c;
+@import "@philomena/philomena-css/css/framework.css";</code></pre>
+<pre class="code-block wrap"><code>A wrapping block: ${lorem} ${lorem}</code></pre>`,
+  },
+  {
+    id: 'media',
+    title: 'Media boxes and lists',
+    description:
+      "A media box holds an image in a square area (fitted inside it like a thumbnail, .cover crops it to fill) with an optional title bar and overlay badges; .media-{color} colours the bar and border, .muted fades spoilered media. A media list fills the row with as many boxes as fit, at least the thumbnail width (250px, 150px on small screens) each; .small uses the 150px width. The pictures are the sizes Philomena's thumbnailer produces: a 250 × 250 box with wider or taller images fitted inside, and 150 × 150 for the small ones. The last row is Philomena's image thumbnail: a .media-box-header.actions row with fave, upvote, score, downvote, comments and hide (.media-box-action with its kind, filled when hovered or .active).",
+    html: `<div class="media-list">
+${mediaBoxes([
+  ['A wide picture', 250, 141, '#5c7cfa', '#364fc7', ''],
+  ['A tall picture', 141, 250, '#f783ac', '#a61e4d', ''],
+  ['A square one', 250, 250, '#63e6be', '#087f5b', ' media-success'],
+  ['Cropped to fill', 250, 141, '#ffd43b', '#e67700', ' cover'],
+  ['Spoilered', 250, 250, '#845ef7', '#5f3dc4', ' muted'],
+  ['Untitled, with badges', 250, 250, '#ff922b', '#d9480f', ' notitle'],
+])}
+</div>
+<div class="media-list small">
+${mediaBoxes([
+  ['Small', 150, 150, '#4dabf7', '#1864ab', ''],
+  ['Wide', 150, 84, '#69db7c', '#2b8a3e', ''],
+  ['Tall', 84, 150, '#ffa94d', '#d9480f', ''],
+  ['Boxes', 150, 150, '#da77f2', '#862e9c', ''],
+])}
+</div>
+<div class="media-list">
+${[
+  imageBox(250, 250, '#3bc9db', '#0b7285', 12, 34, 5),
+  imageBox(250, 141, '#9775fa', '#5f3dc4', 87, 412, 31, 'fave'),
+  imageBox(141, 250, '#ff8787', '#c92a2a', 3, 9, 0, 'upvote'),
+  imageBox(250, 250, '#a9e34b', '#5c940d', 0, -2, 1, 'downvote'),
+].join('\n')}
+</div>`,
+  },
+  {
+    id: 'media-overlays',
+    title: 'Media overlays',
+    description:
+      'Overlays as Philomena marks its thumbnails: a .media-box-overlay label across the top of the image (.bottom for the bottom), several stacked in a .media-box-overlays wrapper, .{color} for the palette. A .media-box-veil covers the image with a centered label and .spoilered on the box blurs the image under it; your script removes them to reveal.',
+    html: `<div class="media-list">
+  <figure class="media-box">
+    <div class="media-box-header"><a href="#">Video</a></div>
+    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#4dabf7', '#1864ab')}" alt="Video"><span class="media-box-overlay primary">WebM</span></a>
+  </figure>
+  <figure class="media-box spoilered">
+    <div class="media-box-header"><a href="#">Spoilered</a></div>
+    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#f783ac', '#a61e4d')}" alt="Spoilered"><span class="media-box-veil">Spoiler: season finale</span></a>
+  </figure>
+  <figure class="media-box media-danger">
+    <div class="media-box-header"><a href="#">Deleted</a></div>
+    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#868e96', '#343a40')}" alt="Deleted"><span class="media-box-overlay danger">Deleted: rule violation</span></a>
+  </figure>
+  <figure class="media-box">
+    <div class="media-box-header"><a href="#">Stacked</a></div>
+    <a class="media-box-content" href="#"><img src="${picture(250, 250, '#ffd43b', '#e67700')}" alt="Stacked"><span class="media-box-overlays"><span class="warning">Marked duplicate</span><span class="primary">WebM</span><span>1920 × 1080</span></span><span class="media-box-overlay bottom special">★ featured</span></a>
+  </figure>
+</div>`,
+  },
+  {
+    id: 'blockquote',
+    title: 'Blockquote',
+    description:
+      'Quoted text and reply threads: a bar on the start side with a large gap to the text. A quote inside a quote adds another bar, so the depth of a thread shows as a row of bars; from the seventh level on the gap becomes small so that deep threads keep room for the text. <blockquote> and .blockquote both work.',
+    html: `<blockquote>
+  <p>A quoted paragraph. ${lorem}</p>
+  <p>A second paragraph in the same quote.</p>
+</blockquote>
+${nestedQuotes(8)}`,
+  },
+  {
+    id: 'block',
+    title: 'Block',
+    description:
+      'A block as on Philomena: a tinted header bar at text size, with a plain title, bold links and room for actions, over bordered content. .block-header.sub is a lighter bar for a section inside, .block-{color} colours the bar, the border and the content links.',
+    html: `<section class="block">
+  <header class="block-header"><span class="block-header-title">Recent uploads</span><a href="#">View all</a><div class="block-header-actions"><a href="#">Refresh</a></div></header>
+  <div class="block-content"><p>${lorem} <a href="#">A link</a>.</p></div>
+  <header class="block-header sub"><a href="#">Comments</a><a href="#">Favourites</a><a href="#">History</a></header>
+  <div class="block-content"><p>${lorem}</p></div>
+</section>
+<div class="docs-playground-grid">
+${['primary', 'success', 'warning', 'danger', 'special', 'light', 'dark']
+  .map(
+    c => `  <section class="block block-${c}">
+    <header class="block-header"><span class="block-header-title">${c[0].toUpperCase() + c.slice(1)} block</span><a href="#">Link</a></header>
+    <div class="block-content"><p>Content with <a href="#">a link</a>.</p></div>
+  </section>`,
+  )
+  .join('\n')}
+</div>`,
+  },
+  {
+    id: 'card',
+    title: 'Card',
+    description:
+      'A container with an optional header band, separated from the body by the card border. Links in the body use the link colour; .card-{color} colours the band, the border, the links and the default buttons with the standard palette and tints the body faintly.',
+    html: `<article class="card">
   <header class="card-header"><h2>Card title</h2></header>
-  <p>${lorem}</p>
-</article>` },
+  <p>${lorem} <a href="#">A link</a>.</p>
+</article>
+<div class="docs-playground-grid">
+${['primary', 'success', 'warning', 'danger', 'special', 'light', 'dark']
+  .map(
+    c => `  <article class="card card-${c}">
+    <header class="card-header"><h3>${c[0].toUpperCase() + c.slice(1)} card</h3></header>
+    <p>A card with the ${c} header and <a href="#">a link</a> in its colour.</p>
+    ${button('Button')}
+  </article>`,
+  )
+  .join('\n')}
+</div>
+<article class="card">
+  <header class="card-header"><h2>Header only</h2></header>
+</article>`,
+  },
 ];

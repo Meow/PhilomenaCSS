@@ -1,18 +1,18 @@
 .code-span {
-  padding: var(--ht-value-code-padding-vertical) var(--ht-value-code-padding-horizontal);
-  line-height: var(--ht-value-code-line-height);
-  border-radius: var(--ht-value-code-border-radius);
-  color: var(--ht-color-code-color);
-  background-color: var(--ht-color-code-bg);
+  padding: var(--code-padding-vertical) var(--code-padding-horizontal);
+  line-height: var(--code-line-height);
+  border-radius: var(--border-radius-inner);
+  color: var(--text-color);
+  background-color: var(--well-color);
   box-sizing: border-box;
-  border: var(--ht-value-code-border) solid var(--ht-color-code-border);
-  font-family: var(--ht-value-font-family-mono);
+  border: var(--border-width) solid var(--tint-color);
+  font-family: var(--mono-font);
 }
 
 .code-span.base-font {
-  font-family: var(--ht-value-font-family-base);
+  font-family: var(--base-font);
 }
 
 .code-span.small {
-  font-size: var(--ht-value-code-small-font-size);
+  font-size: var(--code-small-font-size);
 }

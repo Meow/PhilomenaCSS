@@ -1,26 +1,29 @@
 /*
  * The page background gradient, opt-in: import this file after the framework to paint it behind the page
- * (a fixed `body::before` layer). Its colors and layout are the bg-gradient-* tokens; the middle is the brand color,
- * override --ht-color-bg-gradient-start-light/-dark and --ht-color-bg-gradient-end-light/-dark to change the ends.
+ * (a fixed `body::before` layer). Its colors and layout are the gradient-* tokens; the middle is the base color,
+ * override --gradient-start-color-light/-dark and --gradient-end-color-light/-dark to change the ends.
  */
+
 body {
-  --bg-gradient-angle: var(--ht-value-bg-gradient-angle);
-  --bg-gradient-start: var(--ht-color-bg-gradient-start);
-  --bg-gradient-mid: var(--ht-color-bg-gradient-mid);
-  --bg-gradient-end: var(--ht-color-bg-gradient-end);
+  --bg-gradient-angle: var(--gradient-angle);
+  --bg-gradient-start: var(--gradient-start-color);
+  --bg-gradient-mid: var(--gradient-mid-color);
+  --bg-gradient-end: var(--gradient-end-color);
 }
 
 body:before {
   content: "";
   display: block;
   position: fixed;
-  z-index: var(--ht-z-index-background);
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: var(--ht-value-bg-gradient-opacity);
-  background-image: linear-gradient(calc(180deg - var(--bg-gradient-angle)), var(--bg-gradient-start) var(--ht-value-bg-gradient-start-position), var(--bg-gradient-mid) var(--ht-value-bg-gradient-mid-position), var(--bg-gradient-end) var(--ht-value-bg-gradient-end-position));
+  z-index: var(--z-background);
+  inset: 0;
+  opacity: var(--gradient-opacity);
+  background-image: linear-gradient(
+    calc(180deg - var(--bg-gradient-angle)),
+    var(--bg-gradient-start) var(--gradient-start-position),
+    var(--bg-gradient-mid) var(--gradient-mid-position),
+    var(--bg-gradient-end) var(--gradient-end-position)
+  );
   background-repeat: no-repeat;
   background-attachment: fixed;
   pointer-events: none;
@@ -32,6 +35,6 @@ body:before {
   }
 }
 
-:root[dir=rtl] body {
-  --bg-gradient-angle: calc(-1 * var(--ht-value-bg-gradient-angle));
+:root[dir="rtl"] body {
+  --bg-gradient-angle: calc(-1 * var(--gradient-angle));
 }

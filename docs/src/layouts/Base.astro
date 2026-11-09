@@ -2,16 +2,22 @@
 import '../styles/philomena.css';
 import '../styles/docs.css';
 
-interface Props { title: string }
+interface Props {
+  title: string;
+}
 const { title } = Astro.props;
 ---
+
 <!doctype html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <meta name="description" content="Documentation and live demo for PhilomenaCSS, the HTML/CSS-only design framework based on HammerTimeCSS and adapted for use in the Philomena project.">
+    <meta
+      name="description"
+      content="Documentation and live demo for PhilomenaCSS, the HTML/CSS-only design framework based on HammerTimeCSS and adapted for use in the Philomena project."
+    />
   </head>
   <body>
     <slot />

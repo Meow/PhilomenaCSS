@@ -1,0 +1,106 @@
+/*
+ * Layout helpers.
+ *  .layout-columns   a side column (.layout-side, --layout-side-width wide) next to the main one (.layout-main);
+ *                    below the md breakpoint they stack. Put .layout-side after .layout-main for a column at the end
+ *  .layout-narrow    a column of readable width (--layout-narrow-width), .layout-center centers a block in its row
+ *  .flex             a flex row; .flex-column, .flex-wrap, .flex-center (cross axis), .flex-middle (both axes),
+ *                    .flex-between, .flex-end, and on items .flex-grow and .flex-fixed
+ *  .gap-{key}        the gap of a flex or grid container, a step of the spacing scale
+ */
+
+.layout-columns {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  gap: var(--block-spacing);
+}
+
+.layout-columns > .layout-side {
+  flex: 0 0 auto;
+  inline-size: var(--layout-side-width);
+  overflow-wrap: break-word;
+}
+
+.layout-columns > .layout-main {
+  flex: 1 1 auto;
+  /* Lets long words and wide tables shrink instead of pushing the side column out */
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+}
+
+@media not all and (min-width: $breakpoint-md) {
+  .layout-columns {
+    flex-flow: column nowrap;
+    align-items: stretch;
+  }
+
+  .layout-columns > .layout-side {
+    inline-size: auto;
+  }
+}
+
+.layout-narrow {
+  max-inline-size: var(--layout-narrow-width);
+}
+
+.layout-center {
+  margin-inline: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-center {
+  align-items: center;
+}
+
+.flex-middle {
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-grow {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.flex-fixed {
+  flex: 0 0 auto;
+}
+
+.gap-xs {
+  gap: var(--spacing-xs);
+}
+
+.gap-sm {
+  gap: var(--spacing-sm);
+}
+
+.gap-md {
+  gap: var(--spacing-md);
+}
+
+.gap-lg {
+  gap: var(--spacing-lg);
+}
+
+.gap-xl {
+  gap: var(--spacing-xl);
+}
