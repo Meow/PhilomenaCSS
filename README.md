@@ -178,6 +178,7 @@ The framework is plain CSS, so some structure is on you:
 - **Separators.** `<hr>` and `.separator` draw a rule in the border tint, with `.thin` and `.vertical` variants.
 - **Sliders.** `<input class="slider" type="range">`. Set `--slider-fill` to the value as a percentage for a
   filled track outside Firefox.
+- **Selection.** `.user-select-none` stops text from being selected, `.user-select-all` selects it as a whole.
 - **Layout and visibility.** `.layout-columns` with `.layout-side` and `.layout-main`, `.layout-narrow`,
   `.layout-center`, the `.flex` helpers and `.gap-{key}`, and `.hidden`, `.hidden-below-{breakpoint}`,
   `.hidden-from-{breakpoint}` and `.hidden-print`.

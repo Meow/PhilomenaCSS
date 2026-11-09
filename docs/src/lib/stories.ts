@@ -294,6 +294,13 @@ const tagList = () =>
 // Placeholder pictures for the media stories: an SVG gradient with the size written on it
 const picture = (w: number, h: number, from: string, to: string) =>
   `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="${Math.min(w, h) / 8}" fill="#fff" opacity=".85">${w} × ${h}</text></svg>`)}`;
+// A spoiler image as Philomena's tags have: an SVG emblem that is shown instead of the thumbnail
+const spoilerImage = (name: Parameters<typeof icon>[1], bg: string, fg: string) => {
+  const [, viewBox, path] = icon('fontawesome', name).match(/viewBox="([^"]+)".*<path d="([^"]+)"/)!;
+  const [, , w, h] = viewBox.split(' ').map(Number);
+  const scale = 110 / Math.max(w, h);
+  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250"><rect width="250" height="250" fill="${bg}"/><path transform="translate(${125 - (w * scale) / 2} ${125 - (h * scale) / 2}) scale(${scale})" fill="${fg}" d="${path}"/></svg>`)}`;
+};
 const mediaBoxes = (items: [string, number, number, string, string, string][]) =>
   items
     .map(([title, w, h, from, to, extra]) => {
@@ -798,7 +805,7 @@ const utilities = `<div class="docs-stack">
   <div class="grid-flex-item flex-basis-30">${badge('.flex-basis-30', 'badge-primary')}</div>
   <div class="grid-flex-item flex-basis-40">${badge('.flex-basis-40', 'badge-success')}</div>
 </div>
-<p class="text-center">.text-center, <span class="cursor-help">.cursor-help</span>, <span class="cursor-pointer">.cursor-pointer</span></p>
+<p class="text-center">.text-center, <span class="cursor-help">.cursor-help</span>, <span class="cursor-pointer">.cursor-pointer</span>, <span class="user-select-none">.user-select-none</span>, <span class="user-select-all">.user-select-all</span></p>
 <p class="text-right">.text-right</p>
 </div>`;
 
@@ -1322,7 +1329,7 @@ ${[
     id: 'media-overlays',
     title: 'Media overlays',
     description:
-      'Overlays as Philomena marks its thumbnails: a .media-box-overlay label across the top of the image (.bottom for the bottom), several stacked in a .media-box-overlays wrapper, .media-{color} for the palette. A .media-box-veil covers the image with a centered label and .spoilered on the box blurs the image under it; your script removes them to reveal.',
+      'Overlays as Philomena marks its thumbnails: a .media-box-overlay label across the top of the image (.bottom for the bottom), several stacked in a .media-box-overlays wrapper, .media-{color} for the palette. A .media-box-veil covers the image with a centered label and .spoilered on the box blurs the image under it, for sites without spoiler artwork. The third box is how Philomena spoilers: the thumbnail is swapped for the SVG spoiler image of the tag, with the tag named in an overlay; your script removes them to reveal.',
     html: `<div class="media-list">
   <figure class="media-box">
     <div class="media-box-header"><a href="#">Video</a></div>
@@ -1331,6 +1338,10 @@ ${[
   <figure class="media-box spoilered">
     <div class="media-box-header"><a href="#">Spoilered</a></div>
     <a class="media-box-content" href="#"><img src="${picture(250, 250, '#f783ac', '#a61e4d')}" alt="Spoilered"><span class="media-box-veil">Spoiler: season finale</span></a>
+  </figure>
+  <figure class="media-box">
+    <div class="media-box-header"><a href="#">Spoiler image</a></div>
+    <a class="media-box-content" href="#"><img src="${spoilerImage('eye-slash', '#2b2140', '#b197fc')}" alt="Spoilered: season finale"><span class="media-box-overlay">season finale</span></a>
   </figure>
   <figure class="media-box media-danger">
     <div class="media-box-header"><a href="#">Deleted</a></div>
@@ -1386,7 +1397,7 @@ ${['primary', 'success', 'warning', 'danger', 'special', 'light', 'dark']
     id: 'utilities',
     title: 'Utilities',
     description:
-      'Padding and margin utilities for every step of the spacing scale (.p-{key}, .m-{key} and the per-side forms), size utilities (.s-{step}, .fs-{step}), the older .grid-flex with .flex-basis-{n}, text alignment and cursors. The layout and visibility helpers have their own story.',
+      'Padding and margin utilities for every step of the spacing scale (.p-{key}, .m-{key} and the per-side forms), size utilities (.s-{step}, .fs-{step}), the older .grid-flex with .flex-basis-{n}, text alignment, cursors and text selection (.user-select-none, .user-select-all). The layout and visibility helpers have their own story.',
     html: utilities,
   },
   {
