@@ -143,9 +143,11 @@ $flow-text: p, ul, ol;
   margin-top: var(--spacing-md);
 }
 
-/* Form controls that are stacked without a .form-control-group, and the submit row after them, keep the form distance */
+/* Form controls that are stacked without a .form-control-group, the submit row after them and the blocks among them
+   (an alert over a field) keep the form distance */
 /* prettier-ignore */
-:where($(flow-containers)) > :where(.form-control-wrap, .form-control, .form-control-group) + :where(.form-control-wrap, .form-control, .form-control-submit, .from-control-submit) {
+:where($(flow-containers)) > :where(.form-control-wrap, .form-control, $(flow-blocks)) + :where(.form-control-wrap, .form-control, .form-control-submit, .from-control-submit),
+:where($(flow-containers)) > :where(.form-control-wrap, .form-control) + :where($(flow-blocks)) {
   margin-top: var(--form-control-spacing);
 }
 
