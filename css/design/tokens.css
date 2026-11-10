@@ -303,8 +303,8 @@ $_syntax-punctuation: #6b6d78;
   --block-spacing: var(--spacing-lg);
   --heading-spacing: var(--spacing-lg);
   /* The border radii: outer for cards and other blocks, inner for the controls inside them, large for badges */
-  --border-radius-inner: 0.15rem;
-  --border-radius-outer: 0.25rem;
+  --border-radius-inner: 0.2rem;
+  --border-radius-outer: 0.3rem;
   --border-radius-large: 0.5rem;
   /* Border widths: the regular one for borders and dividers, the thick one for emphasis (popups, table header rules) */
   --border-width: 1px;
