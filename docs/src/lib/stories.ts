@@ -781,6 +781,22 @@ const headers = `<div class="docs-stack">
   </header>
 </div>
 <div>
+  <header class="header" style="position: relative">
+    <a class="header-brand" href="#"><span class="header-brand-text">Brand</span></a>
+    <form class="header-field" role="search" action="#">
+      <input class="header-field-input" type="search" name="q" placeholder="Search" aria-label="Search">
+      <button class="header-field-button" type="submit" aria-label="Search">${icon('fontawesome', 'search')}</button>
+      <a class="header-field-button" href="#" title="Search syntax" aria-label="Search syntax">${icon('fontawesome', 'question')}</a>
+    </form>
+    <form class="header-field" action="#">
+      <select class="header-field-input" name="filter" aria-label="Filter">
+        <option>Default filter</option>
+        <option>Everything</option>
+      </select>
+    </form>
+  </header>
+</div>
+<div>
   <header class="header borderless" style="position: relative">
     <a class="header-brand" href="#"><span class="header-brand-text">Brand</span></a>
     <nav class="nav" aria-label="Account"><a class="nav-link" href="#">Sign in</a></nav>
@@ -1038,7 +1054,7 @@ export const stories: Story[] = [
     id: 'header',
     title: 'Header',
     description:
-      'The bar across the top of a site: a .header-brand, then whatever follows, pushed to the other side. It is sticky by default and .non-stick makes it absolute; .borderless takes the line along its bottom off, for a header with a navbar right under it (the second one here). A .nav in it becomes a row in the header colours; a .navbar fills its height, and collapses to its burger and pinned items below the md breakpoint. This page uses a header as its own.',
+      'The bar across the top of a site: a .header-brand, then whatever follows, pushed to the other side. It is sticky by default and .non-stick makes it absolute; .borderless takes the line along its bottom off, for a header with a navbar right under it (the third one here). A .header-field is a row of joined controls in the field color of the bar, a search or a quick select (the second one). A .nav in it becomes a row in the header colours; a .navbar fills its height, and collapses to its burger and pinned items below the md breakpoint. This page uses a header as its own.',
     html: headers,
     notes: ['The demos keep the header in the flow with an inline <code class="code-span">position: relative</code>.'],
   },
