@@ -204,6 +204,7 @@ The framework is plain CSS, so some structure is on you:
     `--grid-auto-column-width` as fit), `.col-span-{1-6|12}`, `.col-span-full`, `.place-items-center`.
   - Text size: `.text-xs`, `.text-sm`, `.text-base`, `.text-lg`, `.text-xl`, `.text-2xl`, `.text-3xl`, from the
     `--text-size-{key}` tokens (in rem).
+  - Text alignment: `.text-left`, `.text-center`, `.text-right`, also on the cells of a table.
 
   There are no responsive (`md:`) or state (`hover:`) variants; use the `.hidden-*` utilities and your own CSS
   for those.
