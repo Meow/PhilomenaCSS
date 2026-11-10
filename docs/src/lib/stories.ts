@@ -780,6 +780,17 @@ const headers = `<div class="docs-stack">
     <nav class="nav" aria-label="Header"><a class="nav-link current" href="#">Home</a><a class="nav-link" href="#">About</a><a class="nav-link" href="#">Contact</a></nav>
   </header>
 </div>
+<div>
+  <header class="header borderless" style="position: relative">
+    <a class="header-brand" href="#"><span class="header-brand-text">Brand</span></a>
+    <nav class="nav" aria-label="Account"><a class="nav-link" href="#">Sign in</a></nav>
+  </header>
+  <nav class="navbar flush" aria-label="Under a borderless header">
+    <a class="navbar-item navbar-pinned current" href="#"><span class="navbar-icon">${icon('fontawesome', 'image')}</span>Images</a>
+    <a class="navbar-item navbar-pinned" href="#"><span class="navbar-icon">${icon('fontawesome', 'comments')}</span>Forums</a>
+    <a class="navbar-item navbar-pinned" href="#"><span class="navbar-icon">${icon('fontawesome', 'tags')}</span>Tags</a>
+  </nav>
+</div>
 <div style="position: relative; min-height: 9rem">
   <input class="burger-toggle" type="checkbox" id="header-burger">
   <header class="header non-stick" style="position: relative">
@@ -1027,7 +1038,7 @@ export const stories: Story[] = [
     id: 'header',
     title: 'Header',
     description:
-      'The bar across the top of a site: a .header-brand, then whatever follows, pushed to the other side. It is sticky by default and .non-stick makes it absolute. A .nav in it becomes a row in the header colours; a .navbar fills its height, and collapses to its burger and pinned items below the md breakpoint. This page uses a header as its own.',
+      'The bar across the top of a site: a .header-brand, then whatever follows, pushed to the other side. It is sticky by default and .non-stick makes it absolute; .borderless takes the line along its bottom off, for a header with a navbar right under it (the second one here). A .nav in it becomes a row in the header colours; a .navbar fills its height, and collapses to its burger and pinned items below the md breakpoint. This page uses a header as its own.',
     html: headers,
     notes: ['The demos keep the header in the flow with an inline <code class="code-span">position: relative</code>.'],
   },

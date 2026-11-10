@@ -153,7 +153,8 @@ The framework is plain CSS, so some structure is on you:
   to the end. The bar is one row and never wraps: below the `md` breakpoint only the `.navbar-burger` item (the
   label that opens a burger menu) and `.navbar-pinned` items stay. If your bar is too long for tablets, hide the text
   of secondary items there with `.hidden-below-lg` or `.hidden-below-xl`. A `.header` runs from edge to edge of the screen,
-  so it keeps only the bottom line of the inset shadow; `.navbar.flush` does the same for a bar outside a header.
+  so it keeps only the bottom line of the inset shadow; `.navbar.flush` does the same for a bar outside a header. `.header.borderless` has no line along its bottom, for a header with a
+  navbar (or another bar) stacked right under it.
 - **Color variants** are always `{component}-{type}`: `.button-primary`, `.alert-danger`, `.progress-success`,
   `.table-warning` (on a table, a row or a cell), `.media-danger` (on a media box or an overlay),
   `.dropdown-danger` on a dropdown item, and so on.
