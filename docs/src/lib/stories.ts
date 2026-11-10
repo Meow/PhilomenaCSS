@@ -1266,12 +1266,12 @@ ${badgeColors.map(color => `  <span class="counter${color ? ` counter-${color}` 
     id: 'tags',
     title: 'Tags',
     description:
-      'Tags: a bold name with an optional count, colored by category with .tag-{category}. They are borderless; set --tag-border to a width to draw a border in the count colour (the second list does, inline). Add .muted for spoilered or hidden tags.',
+      'Tags: a bold name with an optional count, colored by category with .tag-{category}. They are borderless; set --tag-border to a width to draw a border in the count colour and --tag-border-radius for other corners (the second list does both, inline, with square corners). Add .muted for spoilered or hidden tags.',
     html: `<div class="docs-stack">
 <div class="tag-list">
 ${tagList()}
 </div>
-<div class="tag-list" style="--tag-border: .0625rem">
+<div class="tag-list" style="--tag-border: .0625rem; --tag-border-radius: 0">
 ${tagList()}
 </div>
 <div class="tag-list">
