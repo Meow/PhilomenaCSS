@@ -242,6 +242,10 @@ The framework is plain CSS, so some structure is on you:
   or Font Awesome's `fa-fw`). A text glyph will not line up.
 - **Loading buttons need a `.loading-icon` element** placed before `.button-content` inside the button. The icon is
   drawn over the content, which fades to 20%; `.loading` alone only changes the cursor.
+- **Horizontal forms.** `.form-control.horizontal` puts the label in a column beside its field from the `md`
+  breakpoint up (`--form-label-width`, 30%, with the text against the field); below it the label is over the field as
+  usual. The `.form-message` texts after the field stay under it, and a horizontal control with a single child (a
+  checkbox, a button) lines up with the fields above it.
 - **Radio controls:** before v0.1.2, whitespace between `.form-radio-input-wrap` and `.form-radio-label` pushed
   the label out of line with checkbox labels. From v0.1.2 the control is a flex row and formatting is free.
 - **Blockquotes stack bars.** `<blockquote>` (or `.blockquote`) draws a bar on the start side; a quote inside a quote

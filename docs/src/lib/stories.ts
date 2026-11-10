@@ -1139,6 +1139,41 @@ export const stories: Story[] = [
     ],
   },
   {
+    id: 'forms-horizontal',
+    title: 'Forms: horizontal',
+    description:
+      'Controls with .horizontal have the label in a column beside the field, --form-label-width (30%) wide, from the md breakpoint up; below it the label is over the field. A .form-message stays under its field. The checkbox is the only child of its control, so it lines up with the fields. Narrow the window to see them stack.',
+    html: `<div class="content">
+  <div class="form-control horizontal">
+    <label class="form-control-label" for="horizontal-name">Name</label>
+    <input id="horizontal-name" class="input-field" type="text" value="Rarity">
+    <span class="form-message form-message-description">The name shown on the staff page.</span>
+  </div>
+  <div class="form-control horizontal">
+    <label class="form-control-label" for="horizontal-role">Role</label>
+    <div class="form-control-select">
+      <select id="horizontal-role" class="form-select-input input-field">
+        <option>Moderator</option>
+        <option>Assistant</option>
+      </select>
+      <span class="form-select-icon">${icon('fontawesome', 'chevron-down')}</span>
+    </div>
+  </div>
+  <div class="form-control horizontal">
+    <div class="form-control-checkbox">
+      <span class="form-checkbox-input-wrap">
+        <input id="horizontal-check" class="form-checkbox-input" type="checkbox" checked>
+        ${icon('fontawesome', 'check', 'form-checkbox-check-icon')}
+      </span>
+      <label class="form-checkbox-label" for="horizontal-check">Senior staff</label>
+    </div>
+  </div>
+  <div class="form-control horizontal">
+    ${button('Save', 'button-primary')}
+  </div>
+</div>`,
+  },
+  {
     id: 'input-field',
     title: 'Input fields, groups and messages',
     description:
