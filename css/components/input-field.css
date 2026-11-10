@@ -30,6 +30,14 @@
   padding: var(--input-padding);
 }
 
+/* Read-only: a flat field on the surface with a dashed border, since its text can be selected but not edited */
+/* The field of a select-only combobox is read-only too, but still a control, and keeps the regular look */
+.input-field[readonly]:not([type="color"]):where(:not(.form-select-input)) {
+  background-color: transparent;
+  border-style: dashed;
+  box-shadow: none;
+}
+
 .input-field:not([type="color"])::placeholder {
   color: var(--placeholder-color);
 }

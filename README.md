@@ -155,7 +155,8 @@ The framework is plain CSS, so some structure is on you:
   `.table-warning` (on a table, a row or a cell), `.media-danger` (on a media box or an overlay),
   `.dropdown-danger` on a dropdown item, and so on.
 - **Invalid inputs.** An `.input-field` turns red once the user has edited it into an invalid state, not while a
-  required field is still empty. Add `.invalid` to mark one from your script or server.
+  required field is still empty. Add `.invalid` to mark one from your script or server. A `readonly` text field or
+  textarea is flat with a dashed border; other controls have no read-only state, disable them instead.
 - **Scrollbars** are thin and tinted for the theme everywhere, through `--scrollbar-thumb-color` and
   `--scrollbar-track-color`.
 - **Accordion, nav, progress.** `.accordion` frames `.accordion-item`s with an `.accordion-item-header` and an

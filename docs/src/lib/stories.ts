@@ -172,11 +172,7 @@ ${comboboxItem('America/Argentina/Buenos_Aires (Argentina Standard Time)', ' add
 const buttonsFor = (set: IconSet) =>
   `<div class="docs-stack">\n${[undefined, 'primary', 'success', 'danger', 'warning', 'special'].map(buttonRow(set)).join('\n')}\n</div>`;
 
-const formFields = (
-  state: 'regular' | 'readonly' | 'disabled',
-  set: IconSet = 'fontawesome',
-  prefix: string = state,
-) => {
+const formFields = (state: 'regular' | 'disabled', set: IconSet = 'fontawesome', prefix: string = state) => {
   const attr = state === 'regular' ? '' : ` ${state}`;
   return `<div class="form-control-group vertical">
   <div class="form-control-wrap${state === 'disabled' ? ' disabled' : ''}">
@@ -228,6 +224,21 @@ const formFields = (
   </div>
 </div>`;
 };
+
+const readonlyFields = `<div class="form-control-group vertical">
+  <div class="form-control-wrap">
+    <div class="form-control">
+      <label class="form-control-label" for="readonly-text">Text input</label>
+      <input id="readonly-text" class="input-field" type="text" value="Hello" readonly>
+    </div>
+  </div>
+  <div class="form-control-wrap">
+    <div class="form-control">
+      <label class="form-control-label" for="readonly-textarea">Textarea</label>
+      <textarea id="readonly-textarea" class="input-field" rows="3" cols="40" readonly>${lorem}</textarea>
+    </div>
+  </div>
+</div>`;
 
 const tagCategories: [string | undefined, string, number][] = [
   [undefined, 'space opera', 1234],
@@ -1024,8 +1035,9 @@ export const stories: Story[] = [
   {
     id: 'forms-readonly',
     title: 'Forms: readonly',
-    description: 'The same controls with the readonly attribute.',
-    html: formFields('readonly'),
+    description:
+      'Read-only fields: their text can be focused, selected and copied, and is submitted, but not edited. They are flat, with a dashed border. Only text inputs and textareas can be read-only; a select, checkbox, switch or radio that must not change is disabled instead.',
+    html: readonlyFields,
   },
   {
     id: 'forms-disabled',
