@@ -189,6 +189,24 @@ The framework is plain CSS, so some structure is on you:
 - **Sliders.** `<input class="slider" type="range">`. Set `--slider-fill` to the value as a percentage for a
   filled track outside Firefox.
 - **Selection.** `.user-select-none` stops text from being selected, `.user-select-all` selects it as a whole.
+- **Utilities, named as in Tailwind.** They use the framework's own scales and are `!important`, so they win over
+  a component's styles.
+  - Spacing: `.p-{key}`, `.px-`, `.py-`, `.pt-`, `.pb-`, `.pl-`, `.pr-`, `.ps-`, `.pe-` and the same with `m`, for
+    the keys `0`, `xs`, `sm`, `md`, `lg`, `xl` of the spacing scale; `.m-auto`, `.mx-auto`, `.ms-auto` and the
+    other sides take the free space.
+  - Gap: `.gap-{key}`, `.gap-x-{key}`, `.gap-y-{key}`.
+  - Flex: `.flex`, `.inline-flex`, `.flex-row`, `.flex-col` (and `-reverse`), `.flex-wrap`, `.flex-nowrap`,
+    `.items-{start|center|end|stretch|baseline}`, `.justify-{start|center|end|between|around|evenly}`,
+    `.self-{start|center|end|stretch}`, `.flex-1`, `.flex-auto`, `.flex-none`, `.grow`, `.grow-0`, `.shrink`,
+    `.shrink-0`.
+  - Grid: `.grid`, `.inline-grid`, `.grid-cols-{1-6|12}`, `.grid-cols-auto` (as many columns of at least
+    `--grid-auto-column-width` as fit), `.col-span-{1-6|12}`, `.col-span-full`, `.place-items-center`.
+  - Text size: `.text-xs`, `.text-sm`, `.text-base`, `.text-lg`, `.text-xl`, `.text-2xl`, `.text-3xl`, from the
+    `--text-size-{key}` tokens (in rem).
+
+  There are no responsive (`md:`) or state (`hover:`) variants; use the `.hidden-*` utilities and your own CSS
+  for those.
+
 - **Layout and visibility.** `.layout-columns` with `.layout-side` and `.layout-main`, `.layout-narrow`,
   `.layout-center`, the `.flex` helpers and `.gap-{key}`, and `.hidden`, `.hidden-below-{breakpoint}`,
   `.hidden-from-{breakpoint}` and `.hidden-print`.

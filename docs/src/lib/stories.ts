@@ -844,6 +844,45 @@ const utilities = `<div class="docs-stack">
 <p class="text-right">.text-right</p>
 </div>`;
 
+const cell = (text: string, extra = '') => `<div class="alert${extra ? ` ${extra}` : ''}">${text}</div>`;
+const tailwindUtilities = `<div class="docs-stack">
+<div class="flex flex-wrap items-baseline gap-x-lg gap-y-sm">
+  ${['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl'].map(key => `<span class="text-${key}">.text-${key}</span>`).join('\n  ')}
+</div>
+<div class="flex items-center gap-md">
+  ${cell('.flex-none', 'flex-none')}
+  ${cell('.flex-1, shares the room', 'flex-1 alert-primary')}
+  ${cell('.flex-1', 'flex-1 alert-primary')}
+  ${cell('.shrink-0', 'shrink-0')}
+</div>
+<div class="flex flex-wrap justify-between items-center gap-sm">
+  ${badge('.justify-between')}${badge('.items-center', 'badge-primary')}${badge('.flex-wrap', 'badge-success')}
+</div>
+<div class="flex gap-sm">
+  ${badge('first')}${badge('.ms-auto pushes the rest to the end', 'badge-special ms-auto')}${badge('last')}
+</div>
+<div class="flex flex-col items-start gap-xs">
+  ${badge('.flex-col')}${badge('.items-start', 'badge-primary')}${badge('.gap-xs', 'badge-success')}
+</div>
+<div class="grid grid-cols-4 gap-md">
+  ${cell('.col-span-2', 'col-span-2 alert-primary')}
+  ${cell('1')}
+  ${cell('1')}
+  ${cell('1')}
+  ${cell('.col-span-3', 'col-span-3 alert-success')}
+  ${cell('.col-span-full', 'col-span-full alert-special')}
+</div>
+<div class="grid grid-cols-auto gap-x-md gap-y-sm">
+  ${[1, 2, 3, 4, 5].map(n => cell(`.grid-cols-auto ${n}`)).join('\n  ')}
+</div>
+<div class="grid grid-cols-3 gap-md">
+  ${cell('.p-0', 'p-0')}
+  ${cell('.px-xl .py-xs', 'px-xl py-xs')}
+  ${cell('.pl-xl', 'pl-xl')}
+</div>
+<div class="alert mx-auto text-center" style="inline-size: 60%">.mx-auto centers a block</div>
+</div>`;
+
 const buttonLayouts = `<div class="docs-stack">
 <div class="button-group">
   ${button('Joined', 'button-primary')}${button('group')}${button('of buttons')}
@@ -1437,6 +1476,16 @@ ${['primary', 'success', 'warning', 'danger', 'special']
     description:
       'Centers its content up to a maximum width and spaces the direct children of .content apart. Inside this page the maximum is not reached.',
     html: contentContainer,
+  },
+  {
+    id: 'tailwind-utilities',
+    title: 'Utilities: spacing, flex, grid and text size',
+    description:
+      'Utilities named as in Tailwind, on the scales of the framework: text sizes (.text-xs to .text-3xl), flex containers and items (.flex, .flex-col, .items-*, .justify-*, .flex-1, .shrink-0 ...), gaps (.gap-{key}, .gap-x-, .gap-y-), grids (.grid, .grid-cols-{n}, .grid-cols-auto, .col-span-{n}), and padding and margin for a side, an axis or all sides (.p-, .px-, .pl- ..., .mx-auto, .ms-auto). They are !important, so they win over the styles of a component.',
+    html: tailwindUtilities,
+    notes: [
+      'The keys are the steps of the spacing scale (<code class="code-span">0</code>, <code class="code-span">xs</code>, <code class="code-span">sm</code>, <code class="code-span">md</code>, <code class="code-span">lg</code>, <code class="code-span">xl</code>), not the numbers of Tailwind. There are no responsive or state variants.',
+    ],
   },
   {
     id: 'utilities',

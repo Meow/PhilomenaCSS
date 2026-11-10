@@ -322,6 +322,7 @@ $_syntax-punctuation: #6b6d78;
   --button-font-size: 1rem;
   --button-content-gap: var(--spacing-xs);
   --grid-column-gap: 0;
+  --grid-auto-column-width: 12rem;
   --popup-max-width: 400px;
   --popup-wide-max-width: 40em;
   --card-padding: var(--spacing-lg);
@@ -451,6 +452,14 @@ $_syntax-punctuation: #6b6d78;
   --accordion-line-height: var(--text-line-height);
   /* Scrollbars: thin, in the tints of the theme */
   --scrollbar-size: 0.6rem;
+  /* The text scale of the .text-{key} utilities, around the base size; 3xl is the size of a first heading */
+  --text-size-xs: 0.75rem;
+  --text-size-sm: 0.875rem;
+  --text-size-base: 1rem;
+  --text-size-lg: 1.125rem;
+  --text-size-xl: 1.25rem;
+  --text-size-2xl: 1.5rem;
+  --text-size-3xl: 1.75rem;
   --size-10: 1em;
   --size-15: 1.5em;
   --size-20: 2em;
