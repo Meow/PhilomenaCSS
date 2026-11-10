@@ -215,10 +215,10 @@ $bar-controls: .button, .tag a, .badge a, .dropdown-item, .pagination-link;
 
 /* Tables: .table-{type} on the table colors the header, footer and frame, on a tr, th or td that row or cell */
 @define-mixin table-color-variation $type {
-  .table.table-$(type) thead th,
-  .table.table-$(type) thead td,
-  .table.table-$(type) tfoot th,
-  .table.table-$(type) tfoot td {
+  .table.table-$(type) > thead th,
+  .table.table-$(type) > thead td,
+  .table.table-$(type) > tfoot th,
+  .table.table-$(type) > tfoot td {
     color: var(--$(type)-bar-text-color);
     background-color: var(--$(type)-bar-color);
     border-color: var(--$(type)-bar-color);
