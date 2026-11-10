@@ -211,8 +211,9 @@ The framework is plain CSS, so some structure is on you:
 - **Layout and visibility.** `.layout-columns` with `.layout-side` and `.layout-main`, `.layout-narrow`,
   `.layout-center`, the `.flex` helpers and `.gap-{key}`, and `.hidden`, `.hidden-below-{breakpoint}`,
   `.hidden-from-{breakpoint}` and `.hidden-print`.
-- **Avatars.** `.avatar` on an `<img>`, or on an element holding an image or initials, with a size: `.avatar-xs`
-  28px, `.avatar-sm` 50px, `.avatar-md` 100px, `.avatar-lg` 125px. `.square` and `.avatar-group` are variants.
+- **Avatars.** `.avatar` on an `<img>`, or on an element holding an image, an inline `<svg>` or initials, with a
+  size: `.avatar-xs` 28px, `.avatar-sm` 50px, `.avatar-md` 100px, `.avatar-lg` 125px. `.square` and `.avatar-group`
+  are variants.
 - **Clamped text.** Put `<input class="clamp-toggle" type="checkbox">` right before a `.clamp` element, and
   `.clamp-more` / `.clamp-less` labels for it inside, to cut text off after `--clamp-max-height` (six lines by
   default, any length works) behind a click, without a script. The label and a fade towards the cut only appear when

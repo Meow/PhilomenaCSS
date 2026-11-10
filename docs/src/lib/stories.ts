@@ -599,6 +599,7 @@ const avatars = `<div class="docs-stack">
   <span class="avatar avatar-xs">A</span>
   <span class="avatar avatar-sm">LF</span>
   <span class="avatar avatar-sm square">LF</span>
+  <span class="avatar avatar-sm" role="img" aria-label="Generated avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 5"><rect width="5" height="5" fill="#e7f5ff"/><path d="M1 0h1v2H1zM3 0h1v2H3zM0 2h5v1H0zM1 3h1v2H1zM3 3h1v2H3z" fill="#1971c2"/></svg></span>
   <img class="avatar avatar-sm square" src="${face('#f783ac', '#a61e4d')}" alt="Square avatar">
   <span class="counter-anchor"><img class="avatar avatar-sm" src="${face('#63e6be', '#087f5b')}" alt="Avatar with a badge"><span class="counter counter-danger corner">3</span></span>
   <span class="avatar-group">
@@ -1217,7 +1218,7 @@ ${badgeColors.map(color => `  <span class="counter${color ? ` counter-${color}` 
     id: 'avatars',
     title: 'Avatars',
     description:
-      "A round picture or initials. The sizes are Philomena's: .avatar-xs 28px, .avatar-sm 50px, .avatar-md 100px and .avatar-lg 125px; the two large ones step down a size on narrow screens. .square takes the roundness off, a .counter can be pinned to one and .avatar-group overlaps a row of them.",
+      "A round picture or initials. The sizes are Philomena's: .avatar-xs 28px, .avatar-sm 50px, .avatar-md 100px and .avatar-lg 125px; the two large ones step down a size on narrow screens. .square takes the roundness off, a .counter can be pinned to one and .avatar-group overlaps a row of them. An avatar can hold an image, initials or an inline SVG, such as a generated pattern, which fills it.",
     html: avatars,
   },
   {
