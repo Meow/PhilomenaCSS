@@ -251,6 +251,8 @@ The framework is plain CSS, so some structure is on you:
   bold links, a `.block-header-actions` slot) over `.block-content`; `.block-header.sub` is a lighter bar for a section
   inside. `.block-{color}` works like `.card-{color}`. A block clips what is inside it to its rounded corners; add
   `.allow-overflow` (also on a `.communication`) when a dropdown in it has to open beyond its edges.
+- **Table frames clip.** A `.table-wrap` clips the table to its rounded frame; `.allow-overflow` lets a dropdown in a
+  cell open beyond it. On a `.responsive` wrap that is from the `md` breakpoint up, below it the wrap scrolls.
 - **Media overlays are styling only.** `.media-box-overlay` strips (or several in `.media-box-overlays`) and the
   `.media-box-veil` with the `.spoilered` blur are static; revealing a spoiler means removing them from your script.
 - **Media boxes are square.** `.media-box-content` is a square `aspect-ratio` area and the image is fitted inside

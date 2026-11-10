@@ -1304,7 +1304,7 @@ ${tagCategories
     id: 'table',
     title: 'Table',
     description:
-      'A framed table with the header row in the input material and thin row dividers. Add .striped for zebra rows and .hover to tint the row under the pointer, .numeric on a column aligns its numbers. Wrap it in .table-wrap, with .responsive to scroll sideways on narrow screens.',
+      'A framed table with the header row in the input material and thin row dividers. Add .striped for zebra rows and .hover to tint the row under the pointer, .numeric on a column aligns its numbers. Wrap it in .table-wrap, with .responsive to scroll sideways on narrow screens and .allow-overflow to let a menu in a cell open beyond the frame (the second table, from the md breakpoint up).',
     html: `<div class="table-wrap responsive">
   <table class="table striped hover">
     <thead>
@@ -1319,6 +1319,25 @@ ${tagCategories
     <tfoot>
       <tr><td>4 genres</td><td>4 titles</td><td class="numeric">1937–2011</td></tr>
     </tfoot>
+  </table>
+</div>
+<div class="table-wrap responsive allow-overflow" style="margin-bottom: 7rem">
+  <table class="table">
+    <thead>
+      <tr><th>Title</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><a href="#">Dune</a></td><td>
+        <div class="dropdown manual open">
+          ${button('Options', 'button-size-badge', 'aria-haspopup="true" aria-expanded="true"')}
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Edit</a>
+            <a class="dropdown-item" href="#">Copy link</a>
+            <a class="dropdown-item dropdown-danger" href="#">Delete</a>
+          </div>
+        </div>
+      </td></tr>
+    </tbody>
   </table>
 </div>`,
   },
