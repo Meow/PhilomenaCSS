@@ -256,7 +256,8 @@ The framework is plain CSS, so some structure is on you:
   it like a thumbnail (`object-fit: contain`); add `.cover` to the box to crop it to fill the area instead.
   `.scale-down` fits a larger picture but leaves a smaller one at its size, centered, instead of enlarging it.
   `.media-list` fills the row with boxes at
-  least the thumbnail width (`--media-box-width`, 250px, 150px below the `md` breakpoint).
+  least the thumbnail width (`--media-box-width`, 250px, 150px below the `md` breakpoint); `.fixed` keeps them at
+  that width, for a short row that should not stretch.
 - **Tag boxes are styling only.** `.tag-box` holds `.tag` elements (with an optional `.tag-remove` control) and an
   `.input-field` that sizes to its placeholder and grows as you type (`field-sizing: content`; give it a `size`
   attribute as the fallback for browsers without it). Adding and removing tags is your script's job.

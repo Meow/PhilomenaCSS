@@ -1423,14 +1423,20 @@ ${[
   },
   {
     id: 'media-fits',
-    title: 'Media box fits',
+    title: 'Media box fits and fixed lists',
     description:
-      '.scale-down on a media box fits a picture without enlarging it, so that a small one (the 100 × 60 and 60 × 100 pictures here) keeps its size, centered in the area, while a large one is fitted as usual.',
+      '.scale-down on a media box fits a picture without enlarging it, so that a small one (the 100 × 60 and 60 × 100 pictures here) keeps its size, centered in the area, while a large one is fitted as usual. Under them a .media-list.small.fixed, whose boxes keep the small width instead of stretching across the row.',
     html: `<div class="media-list">
 ${mediaBoxes([
   ['Scaled down', 100, 60, '#da77f2', '#862e9c', ' scale-down'],
   ['Scaled down, tall', 60, 100, '#f783ac', '#a61e4d', ' scale-down'],
   ['Scaled down, large', 400, 300, '#63e6be', '#087f5b', ' scale-down'],
+])}
+</div>
+<div class="media-list small fixed">
+${mediaBoxes([
+  ['Fixed', 150, 150, '#4dabf7', '#1864ab', ''],
+  ['Width', 150, 84, '#69db7c', '#2b8a3e', ''],
 ])}
 </div>`,
   },
