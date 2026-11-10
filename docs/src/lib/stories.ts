@@ -1463,12 +1463,15 @@ ${nestedQuotes(8)}`,
     id: 'block',
     title: 'Block',
     description:
-      'A block as on Philomena: a tinted header bar at text size, with a plain title, bold links and room for actions, over bordered content. .block-header.sub is a lighter bar for a section inside, .block-{color} colours the bar, the border and the content links.',
+      'A block as on Philomena: a tinted header bar at text size, with a plain title, bold links and room for actions, over bordered content. .block-header.sub is a lighter bar for a section inside, .block-{color} colours the bar, the border and the content links. Controls that style their own links, such as the pagination here, keep their look.',
     html: `<section class="block">
   <header class="block-header"><span class="block-header-title">Recent uploads</span><a href="#">View all</a><div class="block-header-actions"><a href="#">Refresh</a></div></header>
   <div class="block-content"><p>${lorem} <a href="#">A link</a>.</p></div>
   <header class="block-header sub"><a href="#">Comments</a><a href="#">Favourites</a><a href="#">History</a></header>
-  <div class="block-content"><p>${lorem}</p></div>
+  <div class="block-content">
+    <p>${lorem}</p>
+    ${pagination().replaceAll('\n', '\n    ')}
+  </div>
 </section>
 <div class="docs-playground-grid">
 ${['primary', 'success', 'warning', 'danger', 'special']

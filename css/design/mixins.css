@@ -8,9 +8,9 @@
  * and in a title bar. Used as `a:where(:not($(content-controls)))`.
  */
 /* prettier-ignore */
-$content-controls: .button, .nav-link, .tag a, .badge a, .alert a;
+$content-controls: .button, .nav-link, .tag a, .badge a, .alert a, .dropdown-item, .pagination-link, .tab;
 /* prettier-ignore */
-$bar-controls: .button, .tag a, .badge a;
+$bar-controls: .button, .tag a, .badge a, .dropdown-item, .pagination-link;
 
 /* The semantic types that have a .{component}-{type} variant; neutral is the look without a class */
 @define-mixin each-type $variation {
