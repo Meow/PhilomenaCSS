@@ -50,7 +50,7 @@ $tag-fanmade-color: #cc8eb5;
 $tag-species-color: #b16b50;
 $tag-body-color: #b8b8b8;
 
-/* Breakpoints for the responsive tokens and media queries; the -below variants are one pixel less, for max-width */
+/* Breakpoints for the responsive tokens and media queries */
 $breakpoint-sm: 400px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;

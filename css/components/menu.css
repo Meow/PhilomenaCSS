@@ -81,8 +81,7 @@ label.navbar-menu-item {
 
 /* A row whose control is disabled is faded and italic, as a disabled button, and does not react to the pointer */
 /* Add .disabled to the row for browsers without :has(), where only the control fades */
-label.dropdown-item:has(:disabled),
-label.navbar-menu-item:has(:disabled),
+/* The two are separate rules, since such a browser drops a whole rule that has :has() in its selector */
 label.dropdown-item.disabled,
 label.navbar-menu-item.disabled {
   pointer-events: none;
@@ -90,6 +89,17 @@ label.navbar-menu-item.disabled {
   @mixin faded;
 }
 
-label:is(:has(:disabled), .disabled) > :is(.menu-check-box, .form-switch-input:disabled) {
+label.dropdown-item:has(:disabled),
+label.navbar-menu-item:has(:disabled) {
+  pointer-events: none;
+  font-style: italic;
+  @mixin faded;
+}
+
+label.disabled > :is(.menu-check-box, .form-switch-input:disabled) {
+  opacity: 1;
+}
+
+label:has(:disabled) > :is(.menu-check-box, .form-switch-input:disabled) {
   opacity: 1;
 }

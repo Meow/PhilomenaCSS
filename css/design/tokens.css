@@ -303,7 +303,6 @@ $_syntax-punctuation: #6b6d78;
   --block-spacing: var(--spacing-lg);
   --heading-spacing: var(--spacing-lg);
   /* The border radii: outer for cards and other blocks, inner for the controls inside them, large for badges */
-  --border-radius-none: 0;
   --border-radius-inner: 0.15rem;
   --border-radius-outer: 0.25rem;
   --border-radius-large: 0.5rem;
@@ -336,11 +335,11 @@ $_syntax-punctuation: #6b6d78;
      can transition into the other */
   --emphasis-shadow: inset 1px 1px 0 var(--inset-highlight-color), inset -1px -1px 0 var(--raised-inset-color);
   --well-shadow: inset 1px 1px 0 var(--inset-shadow-color), inset -1px -1px 0 var(--inset-highlight-color);
+  /* The bevel of a piece with a strong fill (a navbar, a counter), where the light theme's highlight is too bright */
+  --fill-bevel-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.14), inset -1px -1px 0 rgba(0, 0, 0, 0.14);
   /* The dark line of a raised piece is inside its bottom and right edges on the light theme (--raised-inset-color)
      and outside them on the dark theme (--raised-shadow-color). The light theme has a very light line in the base
      color outside instead, lighter than the borders */
-  /* The bevel of a piece with a strong fill (a navbar, a counter), where the light theme's highlight is too bright */
-  --fill-bevel-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.14), inset -1px -1px 0 rgba(0, 0, 0, 0.14);
   --raised-shadow: 1px 1px 0 var(--raised-shadow-color);
   /* The same line for containers (cards, blocks, tables, media boxes ...), stronger on the dark theme */
   --container-shadow: 1px 1px 0 var(--container-shadow-color);

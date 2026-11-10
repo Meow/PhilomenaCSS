@@ -1,5 +1,8 @@
 .input-field {
   display: block;
+  box-sizing: border-box;
+  /* A field with a size or cols attribute is never wider than its column */
+  max-inline-size: 100%;
   border: var(--border-width) solid var(--control-border-color);
   border-radius: var(--border-radius-inner);
   box-shadow: var(--well-shadow);
@@ -11,7 +14,7 @@
   border-color: var(--text-color);
 }
 
-/* A textarea is resized by its lower edge only, so that it never outgrows its column */
+/* A textarea is resized by its lower edge only */
 textarea.input-field {
   min-block-size: calc(2em * var(--text-line-height) + 2 * var(--input-padding));
   line-height: var(--text-line-height);

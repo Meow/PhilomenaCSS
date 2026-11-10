@@ -193,6 +193,10 @@
     grid-area: 1 / 2;
     align-self: center;
     margin: var(--spacing-md);
+  }
+
+  /* The avatar brings the distance between the two */
+  .communication .communication-avatar + .communication-content > .communication-author {
     margin-inline-start: 0;
   }
 

@@ -178,7 +178,7 @@
  * Overlays: labels over the image, as Philomena's "WebM", "Spoiler: …" or "Deleted" markers. A label is a rounded,
  * centered bar spanning the image minus a large inset on both sides. A single .media-box-overlay sits at the top
  * (.bottom: at the bottom), several go in a .media-box-overlays wrapper, which stacks them with a small gap.
- * .{color} on a label gives it the palette color.
+ * .media-{color} on a label gives it the palette color.
  */
 
 .media-box .media-box-overlay,

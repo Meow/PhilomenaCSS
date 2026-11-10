@@ -3,6 +3,8 @@
   --_shade: transparent;
   --_bevel: var(--emphasis-shadow);
   --_drop: var(--raised-shadow-color);
+  /* A long label is cut off (or wraps, with .allow-overflow) instead of widening the page */
+  max-inline-size: 100%;
   --_hover-shade: var(--neutral-button-hover-color);
   --_active-shade: var(--neutral-button-active-color);
   position: relative;
@@ -59,7 +61,8 @@
   padding-inline-end: 0.15em;
 }
 
-.button:not(:disabled):hover {
+/* A pressed button keeps its darker shade under the pointer */
+.button:not(:disabled, .pressed):hover {
   --_shade: var(--_hover-shade);
 }
 

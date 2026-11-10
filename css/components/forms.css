@@ -13,6 +13,9 @@
 .form-control-wrap {
   display: block;
   flex: 1 1 auto;
+  /* Never wider than the group, whatever the size of the control inside */
+  box-sizing: border-box;
+  max-inline-size: 100%;
 }
 
 /* Every disabled control shows the not-allowed cursor, on its own or in a disabled wrapper (over its label too) */
@@ -367,11 +370,6 @@
   cursor: pointer;
   justify-content: space-between;
   position: relative;
-  order: 2;
-}
-
-.combobox-suggestions .combobox-suggestion-item:has(mark) {
-  order: 1;
 }
 
 .combobox-suggestions .combobox-suggestion-item mark {

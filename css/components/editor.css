@@ -32,6 +32,10 @@
   transition: border-color 0.1s;
 }
 
+.editor.invalid {
+  border-color: var(--danger-tint-text-color);
+}
+
 /* The frame is the field: it reacts to the pointer and shows the focus of the textarea */
 .editor:hover {
   border-color: var(--text-color);
@@ -45,8 +49,13 @@
   @mixin focus-ring;
 }
 
-.editor.invalid {
+/* An invalid editor keeps the danger color for its focus, as an invalid field does */
+.editor.invalid:focus-within {
   border-color: var(--danger-tint-text-color);
+}
+
+.editor.invalid:has(.editor-input:focus-visible) {
+  @mixin focus-ring var(--danger-tint-text-color);
 }
 
 .editor .editor-toolbar {
