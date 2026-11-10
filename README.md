@@ -143,6 +143,10 @@ The framework is plain CSS, so some structure is on you:
 - **Badge-sized buttons.** `.button-size-badge` on a `.button`, or on a `.button-group` to size every button in
   it, gives buttons the size and shape of a badge (`--badge-*` sizes, `--border-radius-large`) for toolbars and
   list rows.
+- **Toggle buttons.** `<input class="button-check-input" type="checkbox">` (or a radio) right before a
+  `<label class="button">` for it draws the input as that button, pressed while it is checked. Radios with one name
+  make a choice of buttons. Put them in a `.button-group.separated`; a joined group needs the buttons as its only
+  children.
 - **Media box actions.** `.media-box-header.actions` is the header of a Philomena image thumbnail: a row of
   `.media-box-action` links with a kind (`.fave`, `.upvote`, `.downvote`, `.comments`, `.hide`) and a
   `.media-box-score`. An action has the color of its kind, taken from the tag palette, and is filled with it when hovered or `.active`.

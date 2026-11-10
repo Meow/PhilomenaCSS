@@ -1025,6 +1025,37 @@ export const stories: Story[] = [
     html: badgeSizedButtons,
   },
   {
+    id: 'toggle-buttons',
+    title: 'Toggle buttons',
+    description:
+      'A checkbox or radio drawn as the button after it (a label for it), pressed while it is checked, for filters and choices: checkboxes with the second one unchecked and the last one disabled, then radios as a choice of badge-sized buttons. The inputs are real ones, out of sight, so they submit with a form and take the focus.',
+    html: `<div class="docs-stack">
+<div class="button-group separated">
+${(
+  [
+    ['Open', ' checked', ''],
+    ['Claimed', '', ''],
+    ['Rejected', ' checked', ' button-danger'],
+    ['Accepted', ' disabled', ''],
+  ] as [string, string, string][]
+)
+  .map(
+    ([text, attrs, classes]) =>
+      `  <input class="button-check-input" type="checkbox" id="toggle-${text.toLowerCase()}"${attrs}><label class="button${classes}" for="toggle-${text.toLowerCase()}">${text}</label>`,
+  )
+  .join('\n')}
+</div>
+<div class="button-group separated button-size-badge" role="radiogroup" aria-label="Sort by">
+${['Newest', 'Score', 'Relevance']
+  .map(
+    (text, i) =>
+      `  <input class="button-check-input" type="radio" name="toggle-sort" id="toggle-sort-${i}"${i === 0 ? ' checked' : ''}><label class="button" for="toggle-sort-${i}">${text}</label>`,
+  )
+  .join('\n')}
+</div>
+</div>`,
+  },
+  {
     id: 'pagination',
     title: 'Pagination',
     description:

@@ -61,8 +61,8 @@
   padding-inline-end: 0.15em;
 }
 
-/* A pressed button keeps its darker shade under the pointer */
-.button:not(:disabled, .pressed):hover {
+/* A pressed button keeps its darker shade under the pointer, a disabled toggle button (below) gets no shade */
+.button:not(:disabled, .pressed):where(:not(.button-check-input:disabled + *)):hover {
   --_shade: var(--_hover-shade);
 }
 
@@ -104,11 +104,31 @@
   text-overflow: ellipsis;
 }
 
-.button:not(:disabled):active,
-.button.pressed {
+.button:not(:disabled):where(:not(.button-check-input:disabled + *)):active,
+.button.pressed,
+.button-check-input:checked + .button {
   --_shade: var(--_active-shade);
   --_bevel: var(--well-shadow);
   --_drop: transparent;
+}
+
+/*
+ * A toggle button: a checkbox or radio drawn as the .button right after it, a <label> for it, which is pressed while
+ * the input is checked. While the input is disabled the button is faded, without a hover or pressed look:
+ *   <input class="button-check-input" type="checkbox" id="x"><label class="button" for="x">Open</label>
+ */
+
+.button-check-input {
+  @mixin hidden-toggle;
+}
+
+.button-check-input:focus-visible + .button {
+  @mixin focus-ring-offset;
+}
+
+.button-check-input:disabled + .button {
+  cursor: not-allowed;
+  @mixin faded;
 }
 
 .button.loading {
