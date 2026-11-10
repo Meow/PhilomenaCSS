@@ -1499,7 +1499,31 @@ ${['primary', 'success', 'warning', 'danger', 'special']
   </section>`,
   )
   .join('\n')}
+</div>
+<div style="min-height: 9rem">
+  <section class="block allow-overflow">
+    <header class="block-header"><span class="block-header-title">Allow overflow</span><div class="block-header-actions">
+      <div class="dropdown manual open">
+        ${button('Options', 'button-size-badge', 'aria-haspopup="true" aria-expanded="true"')}
+        <div class="dropdown-menu end">
+${(
+  [
+    ['Edit', 'pen'],
+    ['Copy link', 'link'],
+    ['Hide', 'eye-slash'],
+  ] as [string, FaName][]
+)
+  .map(dropdownItem)
+  .join('\n')}
+        </div>
+      </div>
+    </div></header>
+    <div class="block-content"><p>A short block.</p></div>
+  </section>
 </div>`,
+    notes: [
+      'A block clips what is inside it to its rounded corners. The last one has <code class="code-span">.allow-overflow</code>, so that the menu in its header opens beyond its edges; a <code class="code-span">.communication</code> takes it too.',
+    ],
   },
   {
     id: 'content',
