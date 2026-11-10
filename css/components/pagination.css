@@ -17,6 +17,7 @@
  */
 
 .pagination {
+  position: relative;
   display: inline-flex;
   flex-flow: row wrap;
   align-items: stretch;
@@ -29,7 +30,10 @@
   font-weight: bold;
   line-height: normal;
   overflow: hidden;
+  box-shadow: var(--raised-shadow);
 }
+
+@mixin bevel .pagination;
 
 .pagination .pagination-link,
 .pagination .pagination-gap {

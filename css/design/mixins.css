@@ -80,6 +80,21 @@ $bar-controls: .button, .tag a, .badge a;
   align-self: flex-start;
 }
 
+/*
+ * The bevel of a raised piece (--emphasis-shadow) as a layer over $selector, so that it also runs over the bars and
+ * fills of its children, which would cover an inset shadow of the piece itself. $selector has to be positioned.
+ */
+@define-mixin bevel $selector {
+  $(selector):after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var(--emphasis-shadow);
+    pointer-events: none;
+  }
+}
+
 /* Unavailable controls and muted content are faded by the same amount */
 @define-mixin faded {
   opacity: var(--faded-opacity);

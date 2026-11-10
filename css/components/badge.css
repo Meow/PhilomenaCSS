@@ -2,12 +2,16 @@
   color: var(--neutral-tint-text-color);
   background-color: var(--neutral-tint-color);
   border-radius: var(--border-radius-large);
+  position: relative;
   overflow: hidden;
   font-weight: normal;
   display: inline-flex;
   font-size: var(--badge-font-size);
   align-items: center;
+  box-shadow: var(--raised-shadow);
 }
+
+@mixin bevel .badge;
 
 .badge > * {
   padding: var(--badge-padding-vertical) var(--badge-padding-horizontal);

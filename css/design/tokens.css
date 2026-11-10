@@ -52,20 +52,24 @@ $_syntax-punctuation: #6b6d78;
  * the dark theme they are the strong fill, on the light theme a pale tint with dark text, as a pagination, because
  * a fill dark enough for light text is heavy on a white card.
  */
-@define-mixin type-color-light $type, $color, $sat: 0, $fill: 41%, $button-sat: 15 {
+@define-mixin type-color-light $type, $color, $sat: 0, $fill: 41% {
   --$(type)-color: hsl(from $color h calc(s + $sat) $(fill));
   --$(type)-text-color: hsl(from $color h calc(s + $sat) 98%);
-  --$(type)-border-color: hsl(from $color h calc(s + $sat) 53%);
-  --$(type)-button-color: hsl(from $color h calc(s + $sat + $(button-sat)) 88%);
   --$(type)-button-text-color: hsl(from $color h calc(s + $sat) 18%);
-  --$(type)-button-hover-color: hsl(from $color h calc(s + $sat + 20) 38% / 0.2);
-  --$(type)-button-active-color: hsl(from $color h calc(s + $sat + 20) 34% / 0.4);
   --$(type)-tint-color: hsl(from $color h calc(s + $sat) 90%);
   --$(type)-tint-text-color: hsl(from $color h calc(s + $sat) 28%);
   --$(type)-bar-color: hsl(from $color h calc(s + $sat) 82%);
   --$(type)-bar-text-color: hsl(from $color h calc(s + $sat) 20%);
   --$(type)-wash-color: hsl(from $color h calc(s + $sat - 15) 92%);
   --$(type)-affix-color: hsl(from $color h calc(s + $sat + 20) 82%);
+}
+
+/* The fill, shades and border of a colored button on the light theme; the default button has its own */
+@define-mixin button-color-light $type, $color {
+  --$(type)-border-color: hsl(from $color h s 53%);
+  --$(type)-button-color: hsl(from $color h calc(s + 15) 88%);
+  --$(type)-button-hover-color: hsl(from $color h calc(s + 20) 38% / 0.2);
+  --$(type)-button-active-color: hsl(from $color h calc(s + 20) 34% / 0.4);
 }
 
 @define-mixin type-color-dark $type, $color, $sat: 0, $fill: 35% {
@@ -141,13 +145,17 @@ $_syntax-punctuation: #6b6d78;
   --active-shade-color: rgba(0, 0, 0, 0.25);
   /* Shadows and the inset emphasis lines of containers */
   --shadow-color: rgba(0, 0, 0, 0.5);
-  --inset-highlight-color: rgba(255, 255, 255, 0.7);
-  --inset-shadow-color: rgba(0, 0, 0, 0.08);
+  --inset-highlight-color: rgba(255, 255, 255, 0.6);
+  --inset-shadow-color: rgba(0, 0, 0, 0.1);
+  --raised-inset-color: var(--inset-shadow-color);
+  --raised-shadow-color: hsl(from $base-color-light h s 93%);
+  --container-shadow-color: var(--raised-shadow-color);
   /* Scrollbars */
   --scrollbar-thumb-color: hsl(from $base-color-light h calc(s - 20) 62%);
   --scrollbar-track-color: hsl(from $base-color-light h calc(s - 20) 92%);
   /* The site header, Philomena's dark bar */
   --header-color: hsl(from $base-color-light h s 38%);
+  --header-border-color: hsl(from $base-color-light h s 30%);
   --header-text-color: #ffffff;
   --header-brand-color: hsl(from $base-color-light h s 89%);
   /* Labels and veils over media */
@@ -164,13 +172,24 @@ $_syntax-punctuation: #6b6d78;
   --syntax-punctuation-color: hsl(from $_syntax-punctuation h s 37%);
   /* The semantic types and the tag categories */
   /* Each strong fill is as light as its hue allows with light text at 4.5:1: green is bright, red and purple are not.
-     Neutral is close to grey and its button is not saturated like the others, so that it differs from primary */
-  @mixin type-color-light neutral, $base-color-light, -48, 43%, 0;
+     Neutral is close to grey, so that it differs from primary */
+  @mixin type-color-light neutral, $base-color-light, -48, 43%;
   @mixin type-color-light primary, $primary-color;
   @mixin type-color-light success, $success-color, 0, 32%;
   @mixin type-color-light warning, $warning-color;
   @mixin type-color-light danger, $danger-color, 0, 48%;
   @mixin type-color-light special, $special-color, 0, 45%;
+  --neutral-border-color: hsl(from $base-color-light h calc(s - 48) 53%);
+  /* The default button is the color of the page with a border and shades in the base color */
+  --neutral-button-border-color: hsl(from $base-color-light h calc(s - 5) 62%);
+  --neutral-button-color: $page-color-light;
+  --neutral-button-hover-color: hsl(from $base-color-light h s 45% / 0.16);
+  --neutral-button-active-color: hsl(from $base-color-light h s 40% / 0.34);
+  @mixin button-color-light primary, $primary-color;
+  @mixin button-color-light success, $success-color;
+  @mixin button-color-light warning, $warning-color;
+  @mixin button-color-light danger, $danger-color;
+  @mixin button-color-light special, $special-color;
   @mixin tag-colors light;
 }
 
@@ -207,11 +226,15 @@ $_syntax-punctuation: #6b6d78;
   --bar-hover-shade-color: rgba(0, 0, 0, 0.18);
   --active-shade-color: rgba(0, 0, 0, 0.35);
   --shadow-color: rgba(0, 0, 0, 0.5);
-  --inset-highlight-color: rgba(255, 255, 255, 0.06);
-  --inset-shadow-color: rgba(0, 0, 0, 0.45);
+  --inset-highlight-color: rgba(255, 255, 255, 0.08);
+  --inset-shadow-color: rgba(0, 0, 0, 0.35);
+  --raised-inset-color: transparent;
+  --raised-shadow-color: rgba(0, 0, 0, 0.3);
+  --container-shadow-color: rgba(0, 0, 0, 0.55);
   --scrollbar-thumb-color: hsl(from $base-color-dark h s 40%);
   --scrollbar-track-color: hsl(from $base-color-dark h calc(s - 5) 13%);
   --header-color: hsl(from $base-color-dark h calc(s + 20) 30%);
+  --header-border-color: hsl(from $base-color-dark h s 25%);
   --header-text-color: #ffffff;
   --header-brand-color: hsl(from $base-color-dark h calc(s + 20) 88%);
   --overlay-color: rgba(0, 0, 0, 0.7);
@@ -226,6 +249,7 @@ $_syntax-punctuation: #6b6d78;
   --syntax-punctuation-color: hsl(from $_syntax-punctuation h s 73%);
 
   @mixin type-color-dark neutral, $base-color-dark, -9;
+  --neutral-button-border-color: hsl(from $base-color-dark h calc(s - 9) 53%);
   @mixin type-color-dark primary, $primary-color;
   @mixin type-color-dark success, $success-color, -20, 32%;
   @mixin type-color-dark warning, $warning-color;
@@ -306,7 +330,20 @@ $_syntax-punctuation: #6b6d78;
   /* The drop shadow of menus (dropdowns, navbar menus, combobox suggestions): it is as far down as it is blurred and
      pulled in a little, so that none of it falls on the trigger above the menu */
   --menu-shadow: 0 var(--spacing-lg) var(--spacing-lg) calc(-1 * var(--spacing-sm)) var(--shadow-color);
-  --emphasis-shadow: inset 1px 1px 0 var(--inset-highlight-color), inset -1px -1px 0 var(--inset-shadow-color);
+  /* The bevel, a very subtle polished edge lit from the top left corner: a raised piece (containers, bars, buttons,
+     badges) has a light line along its top and left and a dark one along its bottom and right, a well (inputs,
+     pressed buttons) the reverse. Both are one pixel inside the border and have the same two layers, so that one
+     can transition into the other */
+  --emphasis-shadow: inset 1px 1px 0 var(--inset-highlight-color), inset -1px -1px 0 var(--raised-inset-color);
+  --well-shadow: inset 1px 1px 0 var(--inset-shadow-color), inset -1px -1px 0 var(--inset-highlight-color);
+  /* The dark line of a raised piece is inside its bottom and right edges on the light theme (--raised-inset-color)
+     and outside them on the dark theme (--raised-shadow-color). The light theme has a very light line in the base
+     color outside instead, lighter than the borders */
+  /* The bevel of a piece with a strong fill (a navbar, a counter), where the light theme's highlight is too bright */
+  --fill-bevel-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.14), inset -1px -1px 0 rgba(0, 0, 0, 0.14);
+  --raised-shadow: 1px 1px 0 var(--raised-shadow-color);
+  /* The same line for containers (cards, blocks, tables, media boxes ...), stronger on the dark theme */
+  --container-shadow: 1px 1px 0 var(--container-shadow-color);
   /* The same for a bar that runs from edge to edge of the screen: only its bottom line, the other sides have no edge */
   --edge-shadow: inset 0 -1px 0 var(--inset-shadow-color);
   --block-header-padding-vertical: var(--spacing-md);
@@ -338,8 +375,6 @@ $_syntax-punctuation: #6b6d78;
   --input-padding: var(--spacing-sm);
   --color-input-width: 4rem;
   --color-input-height: 2.5rem;
-  --input-shadow-offset: 1px;
-  --input-shadow-size: 2px;
   --form-control-spacing: var(--spacing-md);
   --focus-outline: 0.1875em;
   /* How much unavailable controls and muted content are faded */
@@ -401,9 +436,16 @@ $_syntax-punctuation: #6b6d78;
   --burger-width: 16rem;
   --dropdown-min-width: 10rem;
   --slider-width: 12rem;
+  /* The editor: the least height of its textarea, and the size of a toolbar button */
+  --editor-min-height: 8rem;
+  --editor-button-size: 1.75rem;
   --slider-track-height: var(--spacing-md);
   --slider-thumb-size: 1.25em;
   --layout-side-width: 22rem;
+  --side-tabs-width: 14rem;
+  --side-tabs-toggle-size: 2.75rem;
+  /* More than a row of side tabs is ever tall: the height their slide is measured from */
+  --side-tabs-row-max-height: 6rem;
   --layout-narrow-width: 50rem;
   --accordion-header-padding-vertical: var(--spacing-md);
   --accordion-padding: var(--spacing-lg);

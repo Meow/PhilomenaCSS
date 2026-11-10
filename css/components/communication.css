@@ -38,9 +38,12 @@
   background-color: var(--surface-color);
   border: var(--border-width) solid var(--tint-color);
   border-radius: var(--border-radius-outer);
-  box-shadow: var(--emphasis-shadow);
+  position: relative;
   overflow: hidden;
+  box-shadow: var(--container-shadow);
 }
+
+@mixin bevel .communication;
 
 .communication:target {
   border-color: var(--focus-color);

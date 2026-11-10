@@ -4,7 +4,7 @@
   overflow: hidden;
   border-radius: var(--border-radius-outer);
   background-color: var(--well-deep-color);
-  box-shadow: var(--emphasis-shadow);
+  box-shadow: var(--emphasis-shadow), var(--container-shadow);
   box-sizing: border-box;
   margin: 0;
 }

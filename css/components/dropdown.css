@@ -92,6 +92,8 @@ details.dropdown[open] > .button,
 :not(details).dropdown:not(.manual):hover > .button,
 :not(details).dropdown:not(.manual):focus-within > .button {
   --_shade: var(--_active-shade);
+  --_bevel: var(--well-shadow);
+  --_drop: transparent;
   border-end-start-radius: 0;
   border-end-end-radius: 0;
 }

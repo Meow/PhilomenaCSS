@@ -13,7 +13,7 @@
   align-items: center;
   padding: var(--header-spacing-vertical) var(--header-spacing-horizontal);
   box-sizing: border-box;
-  border-bottom: var(--border-width) solid var(--tint-color);
+  border-bottom: var(--border-width) solid var(--header-border-color);
   box-shadow: var(--edge-shadow);
 }
 

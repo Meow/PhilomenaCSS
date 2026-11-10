@@ -20,8 +20,12 @@
   border: var(--tag-border) solid var(--_affix);
   border-radius: var(--border-radius-inner);
   box-sizing: border-box;
+  position: relative;
   overflow: hidden;
+  box-shadow: var(--raised-shadow);
 }
+
+@mixin bevel .tag;
 
 /* The vertical padding gives way to the border, so a bordered tag is as tall as a borderless one */
 .tag > * {

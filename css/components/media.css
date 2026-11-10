@@ -17,10 +17,13 @@
   color: var(--text-color);
   background-color: var(--surface-color);
   border: var(--border-width) solid var(--tint-color);
-  box-shadow: var(--emphasis-shadow);
+  position: relative;
   border-radius: var(--border-radius-outer);
   overflow: hidden;
+  box-shadow: var(--container-shadow);
 }
+
+@mixin bevel .media-box;
 
 /* The title bar: one line, truncated; links in it are bold */
 .media-box .media-box-header {

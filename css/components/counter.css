@@ -24,6 +24,7 @@
   white-space: nowrap;
   color: var(--neutral-text-color);
   background-color: var(--neutral-color);
+  box-shadow: var(--fill-bevel-shadow);
 }
 
 @mixin each-type counter-color-variation;
@@ -31,6 +32,7 @@
 .counter.subtle {
   color: inherit;
   background-color: var(--active-shade-color);
+  box-shadow: none;
 }
 
 /* After a button's text the counter keeps a word space, the content gap alone is made for icons */

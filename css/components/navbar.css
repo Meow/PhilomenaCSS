@@ -34,8 +34,8 @@
   align-items: stretch;
   color: var(--header-text-color);
   background-color: var(--header-color);
-  border-bottom: var(--border-width) solid var(--tint-color);
-  box-shadow: var(--emphasis-shadow);
+  border-bottom: var(--border-width) solid var(--header-border-color);
+  box-shadow: var(--fill-bevel-shadow);
 }
 
 /* A bar that touches the edges of the screen keeps only the bottom line of the shadow, like a header */

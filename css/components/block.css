@@ -12,10 +12,13 @@
   color: var(--text-color);
   background-color: var(--surface-color);
   border: var(--border-width) solid var(--tint-color);
-  box-shadow: var(--emphasis-shadow);
+  position: relative;
   border-radius: var(--border-radius-outer);
   overflow: hidden;
+  box-shadow: var(--container-shadow);
 }
+
+@mixin bevel .block;
 
 .block .block-header {
   display: flex;

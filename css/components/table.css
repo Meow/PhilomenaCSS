@@ -8,7 +8,7 @@
 .table-wrap {
   width: 100%;
   border: var(--border-width) solid var(--tint-color);
-  box-shadow: var(--emphasis-shadow);
+  box-shadow: var(--emphasis-shadow), var(--container-shadow);
   border-radius: var(--border-radius-inner);
   overflow: hidden;
   box-sizing: border-box;
@@ -30,6 +30,15 @@
   padding: var(--table-cell-padding-vertical) var(--table-cell-padding-horizontal);
   vertical-align: middle;
   text-align: start;
+}
+
+/* The top of the bevel runs over the header row, which covers the one of the frame */
+.table thead tr:first-child > * {
+  box-shadow: inset 0 1px 0 var(--inset-highlight-color);
+}
+
+.table thead tr:first-child > :first-child {
+  box-shadow: inset 1px 1px 0 var(--inset-highlight-color);
 }
 
 .table th {

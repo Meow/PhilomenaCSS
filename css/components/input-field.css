@@ -2,13 +2,21 @@
   display: block;
   border: var(--border-width) solid var(--control-border-color);
   border-radius: var(--border-radius-inner);
-  box-shadow: inset 0 var(--input-shadow-offset) var(--input-shadow-size) var(--inset-shadow-color);
+  box-shadow: var(--well-shadow);
   transition: border-color 0.1s;
 }
 
 /* Under the pointer the border of a control takes the text color, the counterpart of a button's hover shade */
 .input-field:where(:not(:disabled, [readonly])):hover {
   border-color: var(--text-color);
+}
+
+/* A textarea is resized by its lower edge only, so that it never outgrows its column */
+textarea.input-field {
+  min-block-size: calc(2em * var(--text-line-height) + 2 * var(--input-padding));
+  line-height: var(--text-line-height);
+  resize: vertical;
+  scrollbar-width: thin;
 }
 
 .input-field.full-width {

@@ -110,7 +110,10 @@ rings, and button text are at least **4.5:1** from what they sit on:
 
 Everything else keeps Philomena's tones: the page under the cards, inputs, badges, alerts and code are tints rather
 than contrasting blocks. Containers (cards, blocks, tables, code blocks, media boxes) have subtle borders in
-the tint of their title bar and are set apart by sharp 1px inset lines (`--emphasis-shadow`) instead.
+the tint of their title bar and a very subtle bevel, one pixel inside the border: raised pieces (containers,
+buttons, badges, tags, paginations) are lit from the top left (`--emphasis-shadow`), wells (inputs, pressed buttons)
+are the reverse (`--well-shadow`). On the dark theme a raised piece also has a line of shadow outside its bottom
+and right edges (`--raised-shadow`).
 
 The lightness of every derived color is fixed, so the ratios hold for other base colors too, give or take a little.
 `pnpm run check:contrast` measures every pair in the built stylesheet (`pnpm run build` first) and fails when one is
@@ -164,6 +167,10 @@ The framework is plain CSS, so some structure is on you:
   `.nav-link`s, a row with `.horizontal`. `.progress` holds a `.progress-bar` whose width you set.
 - **Alerts.** `.alert` is a flat tinted bar of text and links, as Philomena's flash notices: it has no title or
   action slots. An optional `.alert-icon` goes first, with the text in an `.alert-text` beside it. It is neutral; `.alert-{type}` tints it, like the variants of every other component.
+- **Editor.** `.editor` frames a `<textarea class="editor-input">` with an `.editor-toolbar` of flat
+  `.editor-button`s (in `.editor-toolbar-group`s, `.active` for a format that is on, an `.editor-toolbar-spacer`
+  to push buttons to the end) and an optional `.editor-footer`. The textarea is resized by its lower edge;
+  `.mono` sets it in the monospace font. The buttons do nothing by themselves, wire them up in your script.
 - **Dropdowns.** A `.dropdown` wraps any trigger and a `.dropdown-menu` of `.dropdown-item`s. It opens on hover and
   on focus without a script, `.open` holds it open and `.manual` turns the hover off.
 - **Menus with controls.** An item of a dropdown or navbar menu can be a `<label>` holding a control: a checkbox or
@@ -173,7 +180,10 @@ The framework is plain CSS, so some structure is on you:
 - **Burger menu.** A `.burger` panel slides in from the start side over a `.burger-overlay`. Toggle `.open` on
   both, or put a `.burger-toggle` checkbox before them and use labels as the buttons for a script-free menu.
 - **Tabs.** `.tabs` holds `.tab` links, followed by one `.tab-panel` each. Your script moves `.selected` between
-  them.
+  them. Wrap the bar and the panels in a `.side-tabs` to get the tabs as a column next to the panel
+  (`--side-tabs-width` wide, with `.tabs-title` headings between groups); the tabs can also be plain links to other
+  pages, each of which marks its own tab `.selected`. Below `md` the column is a list over the panel; with a `.side-tabs-toggle` checkbox before the bar and a
+  `.side-tabs-expand` label inside it, that list is a selector that only shows the selected tab until it is clicked.
 - **Spoiler text.** `<span class="spoiler">` is blacked out until hovered or focused, `.revealed` shows it for good.
 - **Separators.** `<hr>` and `.separator` draw a rule in the border tint, with `.thin` and `.vertical` variants.
 - **Sliders.** `<input class="slider" type="range">`. Set `--slider-fill` to the value as a percentage for a

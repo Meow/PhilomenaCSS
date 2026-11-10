@@ -47,7 +47,11 @@ export type IconName =
   | 'trash'
   | 'flag'
   | 'quote'
-  | 'reply';
+  | 'reply'
+  | 'bold'
+  | 'italic'
+  | 'strikethrough'
+  | 'underline';
 
 export const iconSetLabels: Record<IconSet, string> = {
   fontawesome: 'Font Awesome Free',
@@ -92,6 +96,10 @@ const faIcons: Record<IconName, { icon: [number, number, unknown, unknown, strin
   flag: fontAwesome.faFlag as never,
   quote: fontAwesome.faQuoteRight as never,
   reply: fontAwesome.faReply as never,
+  bold: fontAwesome.faBold as never,
+  italic: fontAwesome.faItalic as never,
+  strikethrough: fontAwesome.faStrikethrough as never,
+  underline: fontAwesome.faUnderline as never,
 };
 
 // The build runs from docs/

@@ -240,6 +240,42 @@ const readonlyFields = `<div class="form-control-group vertical">
   </div>
 </div>`;
 
+const editorButton = (name: IconName, title: string, extra = '') =>
+  `        <button class="editor-button${extra}" type="button" title="${title}" aria-label="${title}">${icon('fontawesome', name)}</button>`;
+const editor = `<div class="docs-stack">
+  <div class="editor">
+    <div class="editor-toolbar" role="toolbar" aria-label="Formatting">
+      <div class="editor-toolbar-group">
+${editorButton('bold', 'Bold')}
+${editorButton('italic', 'Italic', ' active')}
+${editorButton('underline', 'Underline')}
+${editorButton('strikethrough', 'Strikethrough')}
+      </div>
+      <div class="editor-toolbar-group">
+${editorButton('quote', 'Quote')}
+${editorButton('code', 'Code')}
+${editorButton('eye-slash', 'Spoiler')}
+      </div>
+      <div class="editor-toolbar-group">
+${editorButton('link', 'Link')}
+${editorButton('image', 'Image')}
+        <button class="editor-button" type="button" disabled>Escape</button>
+      </div>
+      <span class="editor-toolbar-spacer"></span>
+      <button class="editor-button" type="button">${icon('fontawesome', 'eye')}Preview</button>
+    </div>
+    <textarea class="editor-input" rows="6" aria-label="Comment" placeholder="Write a comment. The lower edge resizes the box.">Some *italic* text, with the Italic button marked .active.</textarea>
+    <div class="editor-footer"><span>Markdown is supported. <a href="#">Syntax help</a></span><span>58 / 2,000</span></div>
+  </div>
+  <div class="editor">
+    <textarea class="editor-input mono" rows="3" aria-label="Bare editor" placeholder="Without a toolbar or footer, in the monospace font (.mono)."></textarea>
+  </div>
+  <div class="form-control">
+    <label class="form-control-label" for="editor-plain">A plain textarea (.input-field), resized by its lower edge as well</label>
+    <textarea id="editor-plain" class="input-field full-width" rows="3"></textarea>
+  </div>
+</div>`;
+
 const tagCategories: [string | undefined, string, number][] = [
   [undefined, 'space opera', 1234],
   ['rating', 'safe', 987654],
@@ -444,6 +480,38 @@ ${item(['Logout', 'sign-out'])}
 const burger = `<input class="burger-toggle" type="checkbox" id="burger-demo">
 <label class="button" for="burger-demo"><span class="button-content"><span class="button-icon">${fai('bars')}</span><span class="button-text">Open the menu</span></span></label>
 ${burgerPanel('burger-demo')}`;
+
+const sideTabs = `<div class="docs-stack">
+<div class="side-tabs">
+  <input class="side-tabs-toggle" type="checkbox" id="side-tabs-toggle-1" aria-label="Show all sections">
+  <nav class="tabs" role="tablist" aria-orientation="vertical" aria-label="Settings">
+    <label class="side-tabs-expand" for="side-tabs-toggle-1"></label>
+    <span class="tabs-title">Content</span>
+    <a class="tab selected" href="#" role="tab" aria-selected="true" data-tab="side-tabs-1">${fai('eye')}Watch list</a>
+    <a class="tab" href="#" role="tab" aria-selected="false" data-tab="side-tabs-2">${fai('tags')}Tag filters <span class="counter subtle">3</span></a>
+    <a class="tab" href="#" role="tab" aria-selected="false" data-tab="side-tabs-3">${fai('image')}Display</a>
+    <span class="tabs-title">Site</span>
+    <a class="tab" href="#" role="tab" aria-selected="false" data-tab="side-tabs-4">${fai('comments')}Comments</a>
+    <span class="tab disabled">${fai('bell')}Notifications</span>
+  </nav>
+  <div id="side-tabs-1" class="tab-panel selected" role="tabpanel"><h4>Watch list</h4><p>The panel of the selected tab sits next to the column. ${lorem}</p><p>${lorem}</p></div>
+  <div id="side-tabs-2" class="tab-panel" role="tabpanel"><h4>Tag filters</h4><p>The tag filters panel.</p></div>
+  <div id="side-tabs-3" class="tab-panel" role="tabpanel"><h4>Display</h4><p>The display panel.</p></div>
+  <div id="side-tabs-4" class="tab-panel" role="tabpanel"><h4>Comments</h4><p>The comments panel.</p></div>
+</div>
+<div class="side-tabs">
+  <input class="side-tabs-toggle" type="checkbox" id="side-tabs-toggle-2" aria-label="Show all pages">
+  <nav class="tabs" aria-label="Account">
+    <label class="side-tabs-expand" for="side-tabs-toggle-2"></label>
+    <a class="tab selected" href="#" aria-current="page">${fai('user')}Account settings</a>
+    <a class="tab" href="#">${fai('gear')}Content settings</a>
+    <a class="tab" href="#">${fai('image')}Avatar</a>
+    <a class="tab" href="#">${fai('pen')}Username</a>
+    <a class="tab" href="#">${fai('link')}Two-factor authentication</a>
+  </nav>
+  <div class="tab-panel selected"><h4>Account settings</h4><p>Here the tabs are plain links to other pages: each page has this one panel and marks its own link .selected, and no script is involved.</p></div>
+</div>
+</div>`;
 
 const tabs = `<div class="docs-stack">
 <div>
@@ -886,7 +954,7 @@ export const stories: Story[] = [
     id: 'buttons',
     title: 'Buttons',
     description:
-      'Every colour in the default, disabled, pressed and loading state. Buttons are flat: hovering darkens the fill a little, pressing (or .pressed) darkens it more. Icon-only variants (.icon-only with a .button-icon) follow. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the content, which fades to 20%.',
+      'Every colour in the default, disabled, pressed and loading state. Buttons have a very subtle bevel, raised at rest: hovering darkens the fill a little, pressing (or .pressed) darkens it more and turns the bevel into a well. Icon-only variants (.icon-only with a .button-icon) follow. The loading state puts a .loading-icon (a slot for any icon, here the clock indicator) over the content, which fades to 20%.',
     html: buttonsFor('fontawesome'),
     notes: [
       'Loading: put a <code class="code-span">.loading-icon</code> element before <code class="code-span">.button-content</code> inside the button. The dimming of the content comes from it, a button with only <code class="code-span">.loading</code> only changes the cursor. It is a slot for any icon or spinner. <code class="code-span">.icon-only</code> buttons put their icon in <code class="code-span">.button-icon</code>.',
@@ -973,6 +1041,13 @@ export const stories: Story[] = [
     html: tabs,
   },
   {
+    id: 'side-tabs',
+    title: 'Side tabs',
+    description:
+      'The same tabs as a column at the start with the panel next to it (.side-tabs), for settings pages: with .tabs-title headings between groups and a panel per tab (this page moves .selected on click), or, as in the second one, as a list of plain links to other pages, each of which marks its own link .selected. Below the md breakpoint the column is a selector over the panel: only the selected tab shows until it is clicked, through a hidden checkbox (.side-tabs-toggle) and a label (.side-tabs-expand), without a script. Narrow the window to see it.',
+    html: sideTabs,
+  },
+  {
     id: 'spoiler',
     title: 'Spoiler text and separators',
     description:
@@ -1044,6 +1119,16 @@ export const stories: Story[] = [
     title: 'Forms: disabled',
     description: 'The same controls disabled.',
     html: formFields('disabled'),
+  },
+  {
+    id: 'editor',
+    title: 'Editor',
+    description:
+      "A textarea in one frame with a toolbar and a footer, the scaffolding for a Markdown editor: groups of flat .editor-buttons divided by a line, a spacer that pushes Preview to the end, a resizable .editor-input and an .editor-footer. The frame shows the hover and the focus of the textarea. What the buttons do is your script's job.",
+    html: editor,
+    notes: [
+      'The buttons take any icon or a short text. Give icon-only buttons a <code class="code-span">title</code> and an <code class="code-span">aria-label</code>.',
+    ],
   },
   iconStory('fontawesome'),
   iconStory('lucide'),
