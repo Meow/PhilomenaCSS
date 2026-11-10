@@ -27,7 +27,7 @@ const alerts = `<div class="alert alert-primary">${alertIcon('question')}<div cl
 <div class="alert alert-success">${alertIcon('check')}<div class="alert-text">Success alert. ${lorem} <a href="#">A link</a>.</div></div>
 <div class="alert alert-danger">${alertIcon('flag')}<div class="alert-text">Danger alert. ${lorem} <a href="#">A link</a>.</div></div>
 <div class="alert alert-special">${alertIcon('star')}<div class="alert-text">Special alert. ${lorem} <a href="#">A link</a>.</div></div>
-<div class="alert">Plain alert without an icon. ${lorem} <a href="#">A link</a>.</div>`;
+<div class="alert"><p>Plain alert without an icon. ${lorem}</p><p>A second paragraph with <a href="#">a link</a>.</p></div>`;
 
 const loadingIndicator =
   '<svg class="loading-indicator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1em" height="1em"><path d="M35 32a3.001 3.001 0 0 1-6 0l3-26.074L35 32Z" class="minute"/><path d="M35 32a3.001 3.001 0 0 1-6 0l3-13.037L35 32Z" class="hour"/><g class="base"><circle cx="32" cy="32" r="29" class="face"/><path d="M32 3v7m0 44v7m22-29h7M3 32h7" class="ticking"/></g></svg>';
@@ -997,7 +997,7 @@ export const stories: Story[] = [
     id: 'alerts',
     title: 'Alerts',
     description:
-      "A flat tinted bar of text and links, as Philomena's flash notices. An alert is neutral without a colour; .alert-{color} tints it and colours its links and its optional .alert-icon (put the text in an .alert-text next to one). Here: primary, warning, success, danger and special, and a plain one.",
+      "A flat tinted bar of text and links, as Philomena's flash notices. An alert is neutral without a colour; .alert-{color} tints it and colours its links and its optional .alert-icon (put the text in an .alert-text next to one). Here: primary, warning, success, danger and special, and a plain one with two paragraphs.",
     html: alerts,
   },
   {
