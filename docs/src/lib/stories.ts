@@ -297,9 +297,9 @@ const tagList = () =>
     )
     .join('\n');
 
-// Placeholder pictures for the media stories: an SVG gradient with the size written on it
+// Placeholder pictures for the media stories: an SVG gradient of that size, with the size written on it
 const picture = (w: number, h: number, from: string, to: string) =>
-  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="${Math.min(w, h) / 8}" fill="#fff" opacity=".85">${w} × ${h}</text></svg>`)}`;
+  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="${Math.min(w, h) / 8}" fill="#fff" opacity=".85">${w} × ${h}</text></svg>`)}`;
 // A spoiler image as Philomena's tags have: an SVG emblem that is shown instead of the thumbnail
 const spoilerImage = (name: Parameters<typeof icon>[1], bg: string, fg: string) => {
   const [, viewBox, path] = icon('fontawesome', name).match(/viewBox="([^"]+)".*<path d="([^"]+)"/)!;
@@ -1419,6 +1419,19 @@ ${[
   imageBox(141, 250, '#ff8787', '#c92a2a', 3, 9, 0, 'upvote'),
   imageBox(250, 250, '#a9e34b', '#5c940d', 0, -2, 1, 'downvote'),
 ].join('\n')}
+</div>`,
+  },
+  {
+    id: 'media-fits',
+    title: 'Media box fits',
+    description:
+      '.scale-down on a media box fits a picture without enlarging it, so that a small one (the 100 × 60 and 60 × 100 pictures here) keeps its size, centered in the area, while a large one is fitted as usual.',
+    html: `<div class="media-list">
+${mediaBoxes([
+  ['Scaled down', 100, 60, '#da77f2', '#862e9c', ' scale-down'],
+  ['Scaled down, tall', 60, 100, '#f783ac', '#a61e4d', ' scale-down'],
+  ['Scaled down, large', 400, 300, '#63e6be', '#087f5b', ' scale-down'],
+])}
 </div>`,
   },
   {

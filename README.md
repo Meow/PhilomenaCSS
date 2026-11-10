@@ -254,6 +254,7 @@ The framework is plain CSS, so some structure is on you:
   `.media-box-veil` with the `.spoilered` blur are static; revealing a spoiler means removing them from your script.
 - **Media boxes are square.** `.media-box-content` is a square `aspect-ratio` area and the image is fitted inside
   it like a thumbnail (`object-fit: contain`); add `.cover` to the box to crop it to fill the area instead.
+  `.scale-down` fits a larger picture but leaves a smaller one at its size, centered, instead of enlarging it.
   `.media-list` fills the row with boxes at
   least the thumbnail width (`--media-box-width`, 250px, 150px below the `md` breakpoint).
 - **Tag boxes are styling only.** `.tag-box` holds `.tag` elements (with an optional `.tag-remove` control) and an
