@@ -1464,6 +1464,27 @@ ${['primary', 'warning', 'danger', 'special']
     ],
   },
   {
+    id: 'disclosure',
+    title: 'Disclosure',
+    description:
+      'A <details> opened and closed by its <summary>, here a button, with a caret that turns while it is open, for options that most people do not need. It needs no script. In running content a disclosure is spaced like the other blocks; the second one starts open.',
+    html: `<div class="content">
+<p>${lorem}</p>
+<details class="disclosure">
+  <summary class="button">Advanced options</summary>
+  <div class="content">
+    <p>${lorem}</p>
+    ${button('Make public', 'button-danger')}
+  </div>
+</details>
+<details class="disclosure" open>
+  <summary class="button button-size-badge">Show the source</summary>
+  <pre class="code-block"><code>&lt;details class="disclosure"&gt;…&lt;/details&gt;</code></pre>
+</details>
+<p>${lorem}</p>
+</div>`,
+  },
+  {
     id: 'code',
     title: 'Code',
     description:

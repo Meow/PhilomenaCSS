@@ -145,7 +145,7 @@
   margin-block-end: var(--spacing-md);
 }
 
-.docs-main details:where(:not(.dropdown)) + details:where(:not(.dropdown)) {
+.docs-main details:where(:not(.dropdown, .disclosure)) + details:where(:not(.dropdown, .disclosure)) {
   margin-block-start: var(--spacing-md);
 }
 
