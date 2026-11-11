@@ -1026,6 +1026,37 @@ export const stories: Story[] = [
     html: badgeSizedButtons,
   },
   {
+    id: 'toggle-buttons',
+    title: 'Toggle buttons',
+    description:
+      'A checkbox or radio drawn as the button after it (a label for it), pressed while it is checked, for filters and choices: checkboxes with the second one unchecked and the last one disabled, then radios as a choice of badge-sized buttons. The inputs are real ones, out of sight, so they submit with a form and take the focus.',
+    html: `<div class="docs-stack">
+<div class="button-group separated">
+${(
+  [
+    ['Open', ' checked', ''],
+    ['Claimed', '', ''],
+    ['Rejected', ' checked', ' button-danger'],
+    ['Accepted', ' disabled', ''],
+  ] as [string, string, string][]
+)
+  .map(
+    ([text, attrs, classes]) =>
+      `  <input class="button-check-input" type="checkbox" id="toggle-${text.toLowerCase()}"${attrs}><label class="button${classes}" for="toggle-${text.toLowerCase()}">${text}</label>`,
+  )
+  .join('\n')}
+</div>
+<div class="button-group separated button-size-badge" role="radiogroup" aria-label="Sort by">
+${['Newest', 'Score', 'Relevance']
+  .map(
+    (text, i) =>
+      `  <input class="button-check-input" type="radio" name="toggle-sort" id="toggle-sort-${i}"${i === 0 ? ' checked' : ''}><label class="button" for="toggle-sort-${i}">${text}</label>`,
+  )
+  .join('\n')}
+</div>
+</div>`,
+  },
+  {
     id: 'pagination',
     title: 'Pagination',
     description:
@@ -1138,6 +1169,41 @@ export const stories: Story[] = [
     notes: [
       'Icons are slots: the framework ships none. <code class="code-span">.form-checkbox-check-icon</code> and <code class="code-span">.form-select-icon</code> are positioned for a fixed-width icon (about 1.25em wide, 1em tall, such as Font Awesome\'s <code class="code-span">fa-fw</code>), a text glyph will not line up.',
     ],
+  },
+  {
+    id: 'forms-horizontal',
+    title: 'Forms: horizontal',
+    description:
+      'Controls with .horizontal have the label in a column beside the field, --form-label-width (30%) wide, from the md breakpoint up; below it the label is over the field. A .form-message stays under its field. The checkbox is the only child of its control, so it lines up with the fields. Narrow the window to see them stack.',
+    html: `<div class="content">
+  <div class="form-control horizontal">
+    <label class="form-control-label" for="horizontal-name">Name</label>
+    <input id="horizontal-name" class="input-field" type="text" value="Rarity">
+    <span class="form-message form-message-description">The name shown on the staff page.</span>
+  </div>
+  <div class="form-control horizontal">
+    <label class="form-control-label" for="horizontal-role">Role</label>
+    <div class="form-control-select">
+      <select id="horizontal-role" class="form-select-input input-field">
+        <option>Moderator</option>
+        <option>Assistant</option>
+      </select>
+      <span class="form-select-icon">${icon('fontawesome', 'chevron-down')}</span>
+    </div>
+  </div>
+  <div class="form-control horizontal">
+    <div class="form-control-checkbox">
+      <span class="form-checkbox-input-wrap">
+        <input id="horizontal-check" class="form-checkbox-input" type="checkbox" checked>
+        ${icon('fontawesome', 'check', 'form-checkbox-check-icon')}
+      </span>
+      <label class="form-checkbox-label" for="horizontal-check">Senior staff</label>
+    </div>
+  </div>
+  <div class="form-control horizontal">
+    ${button('Save', 'button-primary')}
+  </div>
+</div>`,
   },
   {
     id: 'input-field',
