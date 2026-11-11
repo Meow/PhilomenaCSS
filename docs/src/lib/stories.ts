@@ -297,9 +297,9 @@ const tagList = () =>
     )
     .join('\n');
 
-// Placeholder pictures for the media stories: an SVG gradient with the size written on it
+// Placeholder pictures for the media stories: an SVG gradient of that size, with the size written on it
 const picture = (w: number, h: number, from: string, to: string) =>
-  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="${Math.min(w, h) / 8}" fill="#fff" opacity=".85">${w} × ${h}</text></svg>`)}`;
+  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="${Math.min(w, h) / 8}" fill="#fff" opacity=".85">${w} × ${h}</text></svg>`)}`;
 // A spoiler image as Philomena's tags have: an SVG emblem that is shown instead of the thumbnail
 const spoilerImage = (name: Parameters<typeof icon>[1], bg: string, fg: string) => {
   const [, viewBox, path] = icon('fontawesome', name).match(/viewBox="([^"]+)".*<path d="([^"]+)"/)!;
@@ -599,6 +599,7 @@ const avatars = `<div class="docs-stack">
   <span class="avatar avatar-xs">A</span>
   <span class="avatar avatar-sm">LF</span>
   <span class="avatar avatar-sm square">LF</span>
+  <span class="avatar avatar-sm" role="img" aria-label="Generated avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 5"><rect width="5" height="5" fill="#e7f5ff"/><path d="M1 0h1v2H1zM3 0h1v2H3zM0 2h5v1H0zM1 3h1v2H1zM3 3h1v2H3z" fill="#1971c2"/></svg></span>
   <img class="avatar avatar-sm square" src="${face('#f783ac', '#a61e4d')}" alt="Square avatar">
   <span class="counter-anchor"><img class="avatar avatar-sm" src="${face('#63e6be', '#087f5b')}" alt="Avatar with a badge"><span class="counter counter-danger corner">3</span></span>
   <span class="avatar-group">
@@ -1217,7 +1218,7 @@ ${badgeColors.map(color => `  <span class="counter${color ? ` counter-${color}` 
     id: 'avatars',
     title: 'Avatars',
     description:
-      "A round picture or initials. The sizes are Philomena's: .avatar-xs 28px, .avatar-sm 50px, .avatar-md 100px and .avatar-lg 125px; the two large ones step down a size on narrow screens. .square takes the roundness off, a .counter can be pinned to one and .avatar-group overlaps a row of them.",
+      "A round picture or initials. The sizes are Philomena's: .avatar-xs 28px, .avatar-sm 50px, .avatar-md 100px and .avatar-lg 125px; the two large ones step down a size on narrow screens. .square takes the roundness off, a .counter can be pinned to one and .avatar-group overlaps a row of them. An avatar can hold an image, initials or an inline SVG, such as a generated pattern, which fills it.",
     html: avatars,
   },
   {
@@ -1265,12 +1266,12 @@ ${badgeColors.map(color => `  <span class="counter${color ? ` counter-${color}` 
     id: 'tags',
     title: 'Tags',
     description:
-      'Tags: a bold name with an optional count, colored by category with .tag-{category}. They are borderless; set --tag-border to a width to draw a border in the count colour (the second list does, inline). Add .muted for spoilered or hidden tags.',
+      'Tags: a bold name with an optional count, colored by category with .tag-{category}. They are borderless; set --tag-border to a width to draw a border in the count colour and --tag-border-radius for other corners (the second list does both, inline, with square corners). Add .muted for spoilered or hidden tags.',
     html: `<div class="docs-stack">
 <div class="tag-list">
 ${tagList()}
 </div>
-<div class="tag-list" style="--tag-border: .0625rem">
+<div class="tag-list" style="--tag-border: .0625rem; --tag-border-radius: 0">
 ${tagList()}
 </div>
 <div class="tag-list">
@@ -1303,7 +1304,7 @@ ${tagCategories
     id: 'table',
     title: 'Table',
     description:
-      'A framed table with the header row in the input material and thin row dividers. Add .striped for zebra rows and .hover to tint the row under the pointer, .numeric on a column aligns its numbers. Wrap it in .table-wrap, with .responsive to scroll sideways on narrow screens.',
+      'A framed table with the header row in the input material and thin row dividers. Add .striped for zebra rows and .hover to tint the row under the pointer, .numeric on a column aligns its numbers. Wrap it in .table-wrap, with .responsive to scroll sideways on narrow screens and .allow-overflow to let a menu in a cell open beyond the frame (the second table, from the md breakpoint up).',
     html: `<div class="table-wrap responsive">
   <table class="table striped hover">
     <thead>
@@ -1318,6 +1319,25 @@ ${tagCategories
     <tfoot>
       <tr><td>4 genres</td><td>4 titles</td><td class="numeric">1937–2011</td></tr>
     </tfoot>
+  </table>
+</div>
+<div class="table-wrap responsive allow-overflow" style="margin-bottom: 7rem">
+  <table class="table">
+    <thead>
+      <tr><th>Title</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><a href="#">Dune</a></td><td>
+        <div class="dropdown manual open">
+          ${button('Options', 'button-size-badge', 'aria-haspopup="true" aria-expanded="true"')}
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Edit</a>
+            <a class="dropdown-item" href="#">Copy link</a>
+            <a class="dropdown-item dropdown-danger" href="#">Delete</a>
+          </div>
+        </div>
+      </td></tr>
+    </tbody>
   </table>
 </div>`,
   },
@@ -1421,6 +1441,25 @@ ${[
 </div>`,
   },
   {
+    id: 'media-fits',
+    title: 'Media box fits and fixed lists',
+    description:
+      '.scale-down on a media box fits a picture without enlarging it, so that a small one (the 100 × 60 and 60 × 100 pictures here) keeps its size, centered in the area, while a large one is fitted as usual. Under them a .media-list.small.fixed, whose boxes keep the small width instead of stretching across the row.',
+    html: `<div class="media-list">
+${mediaBoxes([
+  ['Scaled down', 100, 60, '#da77f2', '#862e9c', ' scale-down'],
+  ['Scaled down, tall', 60, 100, '#f783ac', '#a61e4d', ' scale-down'],
+  ['Scaled down, large', 400, 300, '#63e6be', '#087f5b', ' scale-down'],
+])}
+</div>
+<div class="media-list small fixed">
+${mediaBoxes([
+  ['Fixed', 150, 150, '#4dabf7', '#1864ab', ''],
+  ['Width', 150, 84, '#69db7c', '#2b8a3e', ''],
+])}
+</div>`,
+  },
+  {
     id: 'media-overlays',
     title: 'Media overlays',
     description:
@@ -1482,7 +1521,31 @@ ${['primary', 'success', 'warning', 'danger', 'special']
   </section>`,
   )
   .join('\n')}
+</div>
+<div style="min-height: 9rem">
+  <section class="block allow-overflow">
+    <header class="block-header"><span class="block-header-title">Allow overflow</span><div class="block-header-actions">
+      <div class="dropdown manual open">
+        ${button('Options', 'button-size-badge', 'aria-haspopup="true" aria-expanded="true"')}
+        <div class="dropdown-menu end">
+${(
+  [
+    ['Edit', 'pen'],
+    ['Copy link', 'link'],
+    ['Hide', 'eye-slash'],
+  ] as [string, FaName][]
+)
+  .map(dropdownItem)
+  .join('\n')}
+        </div>
+      </div>
+    </div></header>
+    <div class="block-content"><p>A short block.</p></div>
+  </section>
 </div>`,
+    notes: [
+      'A block clips what is inside it to its rounded corners. The last one has <code class="code-span">.allow-overflow</code>, so that the menu in its header opens beyond its edges; a <code class="code-span">.communication</code> takes it too.',
+    ],
   },
   {
     id: 'content',
